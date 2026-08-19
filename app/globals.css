@@ -297,23 +297,23 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero: sala de Casa Zenia y velo de arena                            */
+/* Hero: video vertical, still de Casa Zenia, velo de arena            */
 /* ------------------------------------------------------------------ */
 
-/* La foto es 4/3. Cover recorta arriba y abajo en pantallas altas.
-   El eje Y apunta a los cuencos, sin cortar caras (aquí no hay). */
+/* El clip es 9:16. Cover recorta arriba y abajo. El eje Y deja
+   la cara completa, con aire arriba, nunca un corte a media cara. */
 @utility media-hero {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
-  object-position: 50% 52%;
+  object-position: 50% 24%;
 }
 
 @media (min-width: 1024px) {
   .media-hero {
-    object-position: 58% 48%;
+    object-position: 50% 26%;
   }
 }
 
