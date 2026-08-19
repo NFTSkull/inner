@@ -64,14 +64,6 @@ export function Lugar() {
                   cojín.
                 </dd>
               </div>
-              <div>
-                <dt className="text-etiqueta uppercase text-tinta">
-                  Qué encuentras
-                </dt>
-                <dd className="text-cuerpo-l mt-1 text-tinta">
-                  El espacio, la guía y un té al final.
-                </dd>
-              </div>
             </dl>
           </Reveal>
         </div>
