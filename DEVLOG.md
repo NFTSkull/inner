@@ -1,5 +1,20 @@
 # Devlog: decisiones
 
+## 2026-08-19
+
+- **Hero cinematográfico, no columna de velo.** El clip es 9:16 con
+  la protagonista centrada: no se puede mover a un lado con
+  `object-position`. La composición correcta es ella al centro y el
+  copy anclado abajo a la izquierda sobre un degradado de base, como
+  en cine. Se elimina el `bg-arena/40 mix-blend-multiply` de pantalla
+  completa que dejaba todo lechoso.
+- **Título en dos líneas fijas.** `\n` en TituloTrazo
+  (`Tu pausa` / `empieza aquí.`) en vez de depender del `max-width`:
+  el quiebre es idéntico en todos los anchos.
+- **Velo por zonas.** Arriba un degradado corto para el nav, abajo a
+  la izquierda una mancha radial de arena que se disuelve (no una
+  caja), y en móvil una base densa que sube desde abajo.
+
 ## 2026-08-17
 
 - **Políticas en una página, no en un modal.** El texto es largo

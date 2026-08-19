@@ -317,29 +317,29 @@
   }
 }
 
-/* Velo de arena y papel, no negro: la tinta se lee y la sala
-   respira a la derecha. En móvil el copy va encima, velo más denso. */
+/* Velo cinematográfico: el video respira limpio en el centro,
+   arena arriba para el nav y una base que sube desde abajo a la
+   izquierda para que el copy se lea sin encajonar la escena. */
 @utility velo-hero {
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-arena) 82%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 42%, transparent) 72px,
-      transparent 150px
+      color-mix(in srgb, var(--color-arena) 78%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 34%, transparent) 80px,
+      transparent 170px
+    ),
+    radial-gradient(
+      120% 130% at 12% 100%,
+      color-mix(in srgb, var(--color-arena) 97%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 78%, transparent) 42%,
+      color-mix(in srgb, var(--color-arena) 32%, transparent) 60%,
+      transparent 74%
     ),
     linear-gradient(
-      100deg,
-      color-mix(in srgb, var(--color-arena) 92%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 68%, transparent) 24%,
-      color-mix(in srgb, var(--color-arena) 22%, transparent) 42%,
-      transparent 62%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      transparent 72%,
-      color-mix(in srgb, var(--color-arena) 42%, transparent) 88%,
-      color-mix(in srgb, var(--color-arena) 94%, transparent) 100%
+      0deg,
+      color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 36%, transparent) 24%,
+      transparent 46%
     );
 }
 
@@ -348,16 +348,16 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-arena) 88%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 72%, transparent) 72px,
-        transparent 140px
+        color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 40%, transparent) 76px,
+        transparent 160px
       ),
       linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 70%, transparent) 34%,
-        color-mix(in srgb, var(--color-arena) 38%, transparent) 58%,
-        color-mix(in srgb, var(--color-arena) 90%, transparent) 100%
+        0deg,
+        color-mix(in srgb, var(--color-arena) 97%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 84%, transparent) 26%,
+        color-mix(in srgb, var(--color-arena) 42%, transparent) 52%,
+        transparent 72%
       );
   }
 }

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-08-19
+
+### Hero: composición cinematográfica
+
+- El copy del hero baja a la esquina inferior izquierda, anclado a
+  la base del viewport, con el título en dos líneas fijas
+  (`Tu pausa` / `empieza aquí.`) y tamaño hasta 3.8rem.
+- Se quita el lavado global de arena (`multiply`) que apagaba el
+  video: ahora la escena respira limpia en el centro y solo hay
+  velo donde hace falta (nav arriba, mancha radial abajo a la
+  izquierda y base que sube en móvil).
+- El botón de pausa pasa a la esquina inferior derecha para no
+  chocar con el copy.
+- Verificado a 390, 768, 1440 y 2560 px.
+
 ## 2026-08-17
 
 ### Bloque 10: políticas y privacidad
