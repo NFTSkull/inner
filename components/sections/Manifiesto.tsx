@@ -16,8 +16,18 @@ import { useRef } from "react";
 
 const ESTROFAS: string[][] = [
   [
-    "Meditar no hace que tus problemas desaparezcan,",
-    "pero sí puede cambiar la manera en la que los atraviesas.",
+    "Meditar no es dejar de pensar.",
+    "Es aprender a observar tus pensamientos",
+    "sin tener que seguirlos todos.",
+  ],
+  [
+    "Tu mente se va a distraer, y cuando lo notes,",
+    "simplemente regresas. De eso se trata la práctica.",
+  ],
+  [
+    "No tienes que haber meditado antes.",
+    "No tienes que sentarte de una forma especial.",
+    "No tienes que hacer nada raro.",
   ],
   [
     "Te sientas, cierras los ojos, y alguien te va guiando.",
