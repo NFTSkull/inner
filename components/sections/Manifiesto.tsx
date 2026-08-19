@@ -16,11 +16,8 @@ import { useRef } from "react";
 
 const ESTROFAS: string[][] = [
   [
-    "Medirtar no hace
-
-    "Que tus probelmas desaparezcan.",
-    "pero si muede cambiar la manera en la que los atraviesas."
-.",
+    "Meditar no hace que tus problemas desaparezcan,",
+    "pero sí puede cambiar la manera en la que los atraviesas.",
   ],
   [
     "Te sientas, cierras los ojos, y alguien te va guiando.",
