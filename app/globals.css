@@ -1,26 +1,363 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------ */
+/* Tokens de InnerFlow. La marca vive en papel.                        */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* Color: el papel y la tinta */
+  --color-arena: #dcd1c2;
+  --color-arena-hondo: #c8baa7;
+  --color-papel: #fbf8f2;
+  --color-tinta: #4b3a24;
+  /* Subido un paso desde #756046 para pasar AA en texto chico */
+  --color-tinta-suave: #6b573e;
+  --color-azul: #9cbcdb;
+  --color-azul-hondo: #7aa0c6;
+  --color-salvia: #8c9c75;
+  --color-salvia-hondo: #74855d;
+
+  /* Tipografía */
+  --font-display: var(--font-shantell), cursive;
+  --font-cuerpo: var(--font-jost), sans-serif;
+
+  /* Escala fluida, sin breakpoints para el tipo */
+  --text-display-xl: clamp(3.5rem, 11vw, 9rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-l: clamp(2.5rem, 6vw, 5rem);
+  --text-display-l--line-height: 1.08;
+  --text-titulo: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-titulo--line-height: 1.2;
+  --text-cuerpo-l: clamp(1.125rem, 1.5vw, 1.375rem);
+  --text-cuerpo-l--line-height: 1.7;
+  --text-cuerpo: 1rem;
+  --text-cuerpo--line-height: 1.7;
+  --text-etiqueta: 0.8125rem;
+  --text-etiqueta--line-height: 1.4;
+  --text-etiqueta--letter-spacing: 0.14em;
+
+  /* El compás: mismas constantes que lib/breath.ts */
+  --ease-respiro: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-corta: 400ms; /* inhalar corto */
+  --dur-larga: 600ms; /* exhalar */
+  --dur-ciclo: 14s;
+
+  /* Papel sobre papel: la única sombra permitida */
+  --shadow-papel: 0 2px 24px rgba(75, 58, 36, 0.07);
+
+  /* Radio asimétrico: que no se lea como caja de CSS */
+  --radius-papel: 24px 20px 26px 22px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background-color: var(--color-arena);
+  }
+
+  body {
+    background-color: var(--color-arena);
+    color: var(--color-tinta);
+    font-family: var(--font-cuerpo);
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-azul);
+    color: var(--color-tinta);
+  }
+
+  /* Foco visible en todo. Nada de outline: none sin reemplazo. */
+  :focus-visible {
+    outline: 2px solid var(--color-azul-hondo);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  strong,
+  b {
+    font-weight: 400;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------ */
+/* Utilidades de marca                                                 */
+/* ------------------------------------------------------------------ */
+
+/* Lettering de plumón: Shantell con rebote alto e informalidad media */
+@utility display-trazo {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "BNCE" 38,
+    "INFM" 62;
+  font-weight: 640;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Datos y precios: Jost tabular, peso ligero, tracking abierto */
+@utility numero-tabular {
+  font-variant-numeric: tabular-nums;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+
+/* La hoja de papel: fondo papel, radio asimétrico, sombra de papel
+   y dobleces reales hechos con gradientes de baja opacidad */
+@utility tarjeta-papel {
+  background-color: var(--color-papel);
+  border-radius: var(--radius-papel);
+  box-shadow: var(--shadow-papel);
+  background-image:
+    /* doblez horizontal: sombra arriba del pliegue, luz abajo */
+    linear-gradient(
+      to bottom,
+      transparent calc(34% - 10px),
+      rgba(75, 58, 36, 0.035) calc(34% - 1px),
+      rgba(75, 58, 36, 0.055) 34%,
+      rgba(255, 253, 248, 0.5) calc(34% + 1px),
+      transparent calc(34% + 12px)
+    ),
+    /* doblez vertical, más tenue */
+    linear-gradient(
+      to right,
+      transparent calc(66% - 8px),
+      rgba(75, 58, 36, 0.025) calc(66% - 1px),
+      rgba(75, 58, 36, 0.045) 66%,
+      rgba(255, 253, 248, 0.4) calc(66% + 1px),
+      transparent calc(66% + 10px)
+    );
+}
+
+/* Variante con el doblez en otra posición, para que dos tarjetas
+   juntas no parezcan troqueladas con el mismo molde */
+@utility tarjeta-papel-b {
+  background-color: var(--color-papel);
+  border-radius: 22px 26px 20px 25px;
+  box-shadow: var(--shadow-papel);
+  background-image:
+    linear-gradient(
+      to bottom,
+      transparent calc(58% - 10px),
+      rgba(75, 58, 36, 0.035) calc(58% - 1px),
+      rgba(75, 58, 36, 0.055) 58%,
+      rgba(255, 253, 248, 0.5) calc(58% + 1px),
+      transparent calc(58% + 12px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(30% - 8px),
+      rgba(75, 58, 36, 0.025) calc(30% - 1px),
+      rgba(75, 58, 36, 0.045) 30%,
+      rgba(255, 253, 248, 0.4) calc(30% + 1px),
+      transparent calc(30% + 10px)
+    );
+}
+
+/* La píldora de tinta: borde en reposo, al hover el fondo sube
+   desde abajo como agua llenando el vaso, en el tiempo de exhalar */
+@utility pildora {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1.5px solid var(--color-tinta);
+  border-radius: 999px;
+  color: var(--color-tinta);
+  font-family: var(--font-cuerpo);
+  font-weight: 400;
+  cursor: pointer;
+  background: transparent;
+  transition: color var(--dur-larga) var(--ease-respiro);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: 999px;
+    background: var(--color-tinta);
+    transform: translateY(101%);
+    transition: transform var(--dur-larga) var(--ease-respiro);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-papel);
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pildora,
+  .pildora::before {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Enlace con subrayado que se dibuja de izquierda a derecha,
+   con trazo irregular de plumón, no una línea recta */
+@utility enlace-plumon {
+  position: relative;
+  display: inline-block;
+  color: var(--color-tinta);
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.18em;
+    height: 0.22em;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 20 4, 38 9, 58 7 C 78 5, 98 9, 118 5' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E")
+      no-repeat left center / 100% 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-corta) var(--ease-respiro);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enlace-plumon::after {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* El dibujado del preloader: el trazo del isotipo en 1 segundo */
+.preloader-trazo path,
+.preloader-trazo ellipse {
+  transition: stroke-dashoffset 1000ms var(--ease-respiro);
+}
+
+/* El trazo de los círculos a mano: se dibuja en el tiempo de exhalar */
+@utility circulo-trazo {
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--dur-larga) var(--ease-respiro);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circulo-trazo {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* El latido: escala en el compás 4-4-6                                */
+/* 4s inhalar (0 a 28.57%), 4s sostener (a 57.14%), 6s exhalar (a 100%)*/
+/* ------------------------------------------------------------------ */
+
+@keyframes respirar {
+  0% {
+    transform: scale(1);
+  }
+  28.5714% {
+    transform: scale(1.045);
+  }
+  57.1429% {
+    transform: scale(1.045);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@utility respira {
+  animation: respirar var(--dur-ciclo) var(--ease-respiro) infinite;
+  will-change: transform;
+}
+
+/* El mismo latido pero al doble de ciclo, para fondos y footer */
+@utility respira-lento {
+  animation: respirar calc(var(--dur-ciclo) * 2) var(--ease-respiro) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .respira,
+  .respira-lento {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero: recorte del clip vertical y velo de papel                     */
+/* ------------------------------------------------------------------ */
+
+/* El footage es 9:16. En escritorio cover recorta arriba y abajo;
+   en móvil recorta un poco a los lados. El eje Y apunta al gesto. */
+@utility media-hero {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 36%;
+}
+
+@media (min-width: 1024px) {
+  .media-hero {
+    object-position: 50% 32%;
+  }
+}
+
+/* Velo de papel, no negro: la tinta se lee y el parque respira a la derecha.
+   En móvil el copy va encima de la figura, así que el velo es más denso. */
+@utility velo-hero {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-papel) 78%, transparent) 0%,
+      color-mix(in srgb, var(--color-papel) 42%, transparent) 72px,
+      transparent 150px
+    ),
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--color-papel) 90%, transparent) 0%,
+      color-mix(in srgb, var(--color-papel) 62%, transparent) 22%,
+      color-mix(in srgb, var(--color-papel) 18%, transparent) 38%,
+      transparent 56%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 72%,
+      color-mix(in srgb, var(--color-arena) 38%, transparent) 88%,
+      color-mix(in srgb, var(--color-arena) 92%, transparent) 100%
+    );
+}
+
+@media (max-width: 1023px) {
+  .velo-hero {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-papel) 86%, transparent) 0%,
+        color-mix(in srgb, var(--color-papel) 70%, transparent) 72px,
+        transparent 140px
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-papel) 82%, transparent) 0%,
+        color-mix(in srgb, var(--color-papel) 72%, transparent) 32%,
+        color-mix(in srgb, var(--color-arena) 36%, transparent) 58%,
+        color-mix(in srgb, var(--color-arena) 88%, transparent) 100%
+      );
+  }
 }

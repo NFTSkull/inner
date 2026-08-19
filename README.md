@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InnerFlow · Meditation Club
 
-## Getting Started
+Sitio del Meditation Club de InnerFlow en Monterrey. Todo el sitio
+respira en un compás de 14 segundos: inhalar 4, sostener 4, exhalar 6.
 
-First, run the development server:
+## Correr en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando             | Qué hace                              |
+| ------------------- | ------------------------------------- |
+| `npm run dev`       | Servidor de desarrollo                |
+| `npm run build`     | Build de producción (estático)        |
+| `npm run lint`      | ESLint                                |
+| `npm run typecheck` | TypeScript sin emitir                 |
 
-## Learn More
+## Dónde se edita el contenido
 
-To learn more about Next.js, take a look at the following resources:
+- `lib/data/sesiones.ts`: calendario del mes, sesión de presentación
+  (el banner se oculta solo cuando la fecha pasa) y enlace de reserva.
+- `lib/data/politicas.ts`: políticas del club y aviso de privacidad.
+- `lib/data/precios.ts`: precios y membresías.
+- `lib/breath.ts`: el compás de movimiento. Única fuente de verdad de
+  todas las duraciones del sitio.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Sistema de diseño
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Tokens de color y tipografía en `app/globals.css` bajo `@theme`.
+- Display: Shantell Sans (ejes BNCE e INFM). Cuerpo: Jost.
+- El isotipo vive vectorizado en `components/ui/IsotipoTrazo.tsx`,
+  redibujado como paths de línea central para poder animar el trazo.
+- El Respirador (el ejercicio guiado de un minuto) está en
+  `components/breathe/`.
 
-## Deploy on Vercel
+## Assets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `public/inner.png`: wordmark completo (nav y footer).
+- `public/innerlogo.png`: isotipo original.
+- `public/lugar.JPG` y `public/lugar1.jpeg`: fotos de Casa Zenia
+  (sección El lugar).
+- `public/hero.MOV`: fuente del fondo del hero. No se sirve en la página.
+- `public/hero.mp4` y `public/hero-poster.jpg` se regeneran con
+  `bash scripts/generar-hero.sh` (requiere ffmpeg).
+- `app/icon.png` y `public/og.png` se regeneran con
+  `node scripts/generar-assets.mjs`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Stack
+
+Next.js 15 (App Router), TypeScript, Tailwind CSS v4, Motion, Lenis.
+Sin librerías de componentes: cada pieza está escrita a mano.
