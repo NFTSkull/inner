@@ -24,16 +24,6 @@ const ESTROFAS: string[][] = [
     "Tu mente se va a distraer, y cuando lo notes,",
     "simplemente regresas. De eso se trata la práctica.",
   ],
-  [
-    "No tienes que haber meditado antes.",
-    "No tienes que sentarte de una forma especial.",
-    "No tienes que hacer nada raro.",
-  ],
-  [
-    "Te sientas, cierras los ojos, y alguien te va guiando.",
-    "Cuarenta y cinco minutos. Luego sigues tu día.",
-    "La primera vez se siente raro. A la tercera, ya no.",
-  ],
 ];
 
 const TODAS_LAS_LINEAS = ESTROFAS.flat();
