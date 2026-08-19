@@ -1,7 +1,5 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
-import { useState } from "react";
 import { useRespirador } from "@/components/breathe/RespiradorContext";
 import { FondoHero } from "@/components/sections/FondoHero";
 import { Reveal } from "@/components/motion/Reveal";
@@ -11,15 +9,13 @@ import { TituloTrazo } from "@/components/ui/TituloTrazo";
 
 export function Hero() {
   const { abrir } = useRespirador();
-  const reducir = useReducedMotion();
-  const [pausado, setPausado] = useState(false);
 
   return (
     <section
       id="hero"
       className="relative flex min-h-dvh items-center overflow-hidden px-5 pb-24 pt-28 sm:px-8 lg:min-h-[115dvh] lg:pb-28"
     >
-      <FondoHero pausado={pausado} />
+      <FondoHero />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl">
         <div className="relative max-w-xl lg:max-w-[34rem]">
@@ -64,20 +60,6 @@ export function Hero() {
           </Reveal>
         </div>
       </div>
-
-      {!reducir && (
-        <button
-          type="button"
-          onClick={() => setPausado((v) => !v)}
-          aria-pressed={pausado}
-          aria-label={
-            pausado ? "Reanudar video de fondo" : "Pausar video de fondo"
-          }
-          className="enlace-plumon absolute bottom-6 left-5 z-10 rounded-full bg-papel/75 px-3.5 py-1.5 text-etiqueta uppercase text-tinta-suave sm:left-8"
-        >
-          {pausado ? "Reanudar" : "Pausar"}
-        </button>
-      )}
     </section>
   );
 }

@@ -297,49 +297,49 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero: recorte del clip vertical y velo de papel                     */
+/* Hero: sala de Casa Zenia y velo de arena                            */
 /* ------------------------------------------------------------------ */
 
-/* El footage es 9:16. En escritorio cover recorta arriba y abajo;
-   en móvil recorta un poco a los lados. El eje Y apunta al gesto. */
+/* La foto es 4/3. Cover recorta arriba y abajo en pantallas altas.
+   El eje Y apunta a los cuencos, sin cortar caras (aquí no hay). */
 @utility media-hero {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
-  object-position: 50% 36%;
+  object-position: 50% 52%;
 }
 
 @media (min-width: 1024px) {
   .media-hero {
-    object-position: 50% 32%;
+    object-position: 58% 48%;
   }
 }
 
-/* Velo de papel, no negro: la tinta se lee y el parque respira a la derecha.
-   En móvil el copy va encima de la figura, así que el velo es más denso. */
+/* Velo de arena y papel, no negro: la tinta se lee y la sala
+   respira a la derecha. En móvil el copy va encima, velo más denso. */
 @utility velo-hero {
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-papel) 78%, transparent) 0%,
-      color-mix(in srgb, var(--color-papel) 42%, transparent) 72px,
+      color-mix(in srgb, var(--color-arena) 82%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 42%, transparent) 72px,
       transparent 150px
     ),
     linear-gradient(
       100deg,
-      color-mix(in srgb, var(--color-papel) 90%, transparent) 0%,
-      color-mix(in srgb, var(--color-papel) 62%, transparent) 22%,
-      color-mix(in srgb, var(--color-papel) 18%, transparent) 38%,
-      transparent 56%
+      color-mix(in srgb, var(--color-arena) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 68%, transparent) 24%,
+      color-mix(in srgb, var(--color-arena) 22%, transparent) 42%,
+      transparent 62%
     ),
     linear-gradient(
       180deg,
       transparent 0%,
       transparent 72%,
-      color-mix(in srgb, var(--color-arena) 38%, transparent) 88%,
-      color-mix(in srgb, var(--color-arena) 92%, transparent) 100%
+      color-mix(in srgb, var(--color-arena) 42%, transparent) 88%,
+      color-mix(in srgb, var(--color-arena) 94%, transparent) 100%
     );
 }
 
@@ -348,16 +348,16 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-papel) 86%, transparent) 0%,
-        color-mix(in srgb, var(--color-papel) 70%, transparent) 72px,
+        color-mix(in srgb, var(--color-arena) 88%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 72%, transparent) 72px,
         transparent 140px
       ),
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-papel) 82%, transparent) 0%,
-        color-mix(in srgb, var(--color-papel) 72%, transparent) 32%,
-        color-mix(in srgb, var(--color-arena) 36%, transparent) 58%,
-        color-mix(in srgb, var(--color-arena) 88%, transparent) 100%
+        color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 70%, transparent) 34%,
+        color-mix(in srgb, var(--color-arena) 38%, transparent) 58%,
+        color-mix(in srgb, var(--color-arena) 90%, transparent) 100%
       );
   }
 }
