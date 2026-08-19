@@ -69,7 +69,6 @@ export function FondoHero({ pausado }: Props) {
           <source src="/hero.mp4" type="video/mp4" />
         </video>
       )}
-      <div className="absolute inset-0 bg-arena/40 mix-blend-multiply" />
       <div className="velo-hero absolute inset-0" />
     </div>
   );
