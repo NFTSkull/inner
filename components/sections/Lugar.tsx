@@ -3,7 +3,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
 import {
   MAPS_CASA_ZENIA,
-  MAPS_CASA_ZENIA_EMBED,
+  MAPS_CASA_ZENIA_VISTA,
 } from "@/lib/data/sesiones";
 
 export function Lugar() {
@@ -57,24 +57,25 @@ export function Lugar() {
             </p>
           </Reveal>
           <Reveal indice={2}>
-            <div className="tarjeta-papel mt-8 overflow-hidden">
+            <div className="tarjeta-papel relative mt-8 overflow-hidden">
               <iframe
-                title="Mapa de Casa Zenia, Monterrey"
-                src={MAPS_CASA_ZENIA_EMBED}
-                className="h-52 w-full border-0 grayscale-[0.35] contrast-[0.95]"
+                title="Mapa de Casa Zenia, Vista Hermosa, Monterrey"
+                src={MAPS_CASA_ZENIA_VISTA}
+                className="pointer-events-none h-56 w-full border-0 grayscale-[0.25] contrast-[0.96]"
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
+                tabIndex={-1}
               />
+              <a
+                href={MAPS_CASA_ZENIA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 z-10 flex items-end"
+              >
+                <span className="w-full bg-arena/90 px-4 py-3 text-cuerpo text-tinta">
+                  Ver en Google Maps
+                </span>
+              </a>
             </div>
-            <a
-              href={MAPS_CASA_ZENIA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="enlace-plumon text-cuerpo mt-3 inline-block font-normal"
-            >
-              Abrir en Google Maps
-            </a>
           </Reveal>
           <Reveal indice={3}>
             <dl className="mt-8 space-y-5">

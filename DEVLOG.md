@@ -7,9 +7,9 @@
 - **Vigencia del mes.** La política deja de anclarse a septiembre
   2026 y habla del mes vigente. La nota de precios sigue el mismo
   criterio.
-- **Mapa en El lugar.** Se incrusta el pin de Google Maps de Casa
-  Zenia, Monterrey (cid 0xd1534ad6e7c54ed3), con enlace para abrir
-  la ficha.
+- **Mapa en El lugar.** Google bloquea el embed por cid (salía el
+  mundo). Ahora se ve el barrio de Vista Hermosa y todo el recuadro
+  abre el pin de Casa Zenia en Google Maps.
 
 ## 2026-08-19
 

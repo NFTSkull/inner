@@ -20,7 +20,7 @@ const DATOS_LOCALES = {
     "Club de meditación guiada con sesiones presenciales en Casa Zenia, Monterrey, y sesiones online.",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Casa Zenia",
+    streetAddress: "Sto. Domingo 218, Vista Hermosa",
     addressLocality: "Monterrey",
     addressRegion: "Nuevo León",
     addressCountry: "MX",
