@@ -13,33 +13,37 @@ export function Lugar() {
       aria-label="El lugar, Casa Zenia"
       className="bg-arena-hondo px-5 py-24 sm:px-8 sm:py-28"
     >
-      <div className="mx-auto grid max-w-6xl items-start gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16 xl:gap-20">
-        <Reveal>
-          <div className="relative mx-auto max-w-xl pb-16 lg:mx-0 lg:max-w-none lg:pb-20">
-            <figure className="tarjeta-papel overflow-hidden p-2 sm:p-2.5">
-              <Image
-                src="/lugar.JPG"
-                alt="Sala de Casa Zenia: cuencos de cristal alineados sobre el tapete, entre plantas y el arco de madera."
-                width={4032}
-                height={3024}
-                sizes="(min-width: 1024px) 38rem, 92vw"
-                className="h-auto w-full"
-              />
-            </figure>
-            <figure className="tarjeta-papel-b absolute -bottom-2 right-0 w-[46%] origin-bottom rotate-[2.4deg] overflow-hidden p-1.5 shadow-[0_18px_40px_-18px_rgba(75,58,36,0.35)] sm:right-4 sm:w-[42%] sm:p-2 lg:-right-6">
-              <Image
-                src="/lugar1.jpeg"
-                alt="Detalle de los cuencos de cristal y un ramo sobre el tapete, en Casa Zenia."
-                width={4284}
-                height={5712}
-                sizes="(min-width: 1024px) 16rem, 42vw"
-                className="h-auto w-full"
-              />
-            </figure>
-          </div>
+      <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
+        <Reveal className="lg:col-span-7 lg:row-start-1">
+          <figure className="tarjeta-papel overflow-hidden p-2 sm:p-2.5">
+            <Image
+              src="/lugar.JPG"
+              alt="Sala de Casa Zenia: cuencos de cristal alineados sobre el tapete, entre plantas y el arco de madera."
+              width={4032}
+              height={3024}
+              sizes="(min-width: 1024px) 40rem, 92vw"
+              className="h-auto w-full"
+            />
+          </figure>
         </Reveal>
 
-        <div className="lg:pt-2">
+        <Reveal
+          indice={1}
+          className="mx-auto w-[78%] sm:w-[62%] lg:col-span-4 lg:col-start-3 lg:row-start-2 lg:mx-0 lg:w-full"
+        >
+          <figure className="tarjeta-papel-b origin-top rotate-[-1.8deg] overflow-hidden p-2 sm:p-2.5">
+            <Image
+              src="/lugar1.jpeg"
+              alt="Detalle de los cuencos de cristal y un ramo sobre el tapete, en Casa Zenia."
+              width={4284}
+              height={5712}
+              sizes="(min-width: 1024px) 18rem, 62vw"
+              className="h-auto w-full"
+            />
+          </figure>
+        </Reveal>
+
+        <div className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:pt-1">
           <Reveal>
             <TituloTrazo
               texto="El lugar"
@@ -61,7 +65,7 @@ export function Lugar() {
               <iframe
                 title="Mapa de Casa Zenia, Vista Hermosa, Monterrey"
                 src={MAPS_CASA_ZENIA_VISTA}
-                className="pointer-events-none h-52 w-full border-0 grayscale-[0.25] contrast-[0.96] sm:h-60"
+                className="pointer-events-none h-52 w-full border-0 grayscale-[0.25] contrast-[0.96] sm:h-56"
                 loading="lazy"
                 tabIndex={-1}
               />
