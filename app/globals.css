@@ -161,6 +161,13 @@
 
 /* La píldora de tinta: borde en reposo, al hover el fondo sube
    desde abajo como agua llenando el vaso, en el tiempo de exhalar */
+/* El wordmark es negro. Lo pasamos a --tinta para que coincida
+   con el resto de la marca. */
+@utility logo-tinta {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(24%)
+    saturate(748%) hue-rotate(352deg) brightness(92%) contrast(90%);
+}
+
 @utility pildora {
   position: relative;
   isolation: isolate;

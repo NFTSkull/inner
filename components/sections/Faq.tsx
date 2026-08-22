@@ -18,7 +18,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Cuánto dura una sesión?",
-    respuesta: "Cuarenta y cinco minutos.",
+    respuesta: "De 50 a 60 minutos.",
   },
   {
     pregunta: "¿Puedo ir a una sola antes de comprometerme?",

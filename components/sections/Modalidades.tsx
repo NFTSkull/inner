@@ -18,7 +18,7 @@ const MODALIDADES = [
       "Domingos 10:00 am",
       "Martes 8:00 pm",
     ],
-    nota: "Llega 10 minutos antes. Si te sientas en el piso, trae tu tapete.",
+    nota: "Llega 10 minutos antes. Trae tu tapete.",
   },
   {
     nombre: "Online",
@@ -30,7 +30,7 @@ const MODALIDADES = [
       "Jueves 8:00 pm",
       "Recibes el enlace 30 min antes",
     ],
-    nota: "Solo necesitas audífonos y un lugar donde nadie te hable.",
+    nota: "Solo necesitas audífonos y un lugar sin interrupciones.",
   },
 ] as const;
 

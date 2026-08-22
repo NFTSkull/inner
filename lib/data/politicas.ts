@@ -4,7 +4,7 @@
  */
 
 export const POLITICAS_CLUB = [
-  "Las membresías son personales y tienen vigencia únicamente durante septiembre de 2026.",
+  "Las membresías son personales y tienen vigencia únicamente durante el mes vigente.",
   "Las sesiones presenciales deben reservarse previamente y están sujetas a disponibilidad.",
   "Puedes solicitar un cambio de fecha hasta un día antes de la sesión reservada. El cambio dependerá de que exista espacio en otra fecha.",
   "Si necesitas cancelar, deberás avisar con un mínimo de 9 horas de anticipación. Podrás reponer la sesión durante septiembre únicamente si hay disponibilidad en otra fecha.",

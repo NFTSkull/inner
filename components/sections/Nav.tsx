@@ -54,7 +54,7 @@ export function Nav() {
             alt=""
             width={64}
             height={64}
-            className="h-12 w-auto"
+            className="logo-tinta h-12 w-auto"
             priority
           />
         </Link>

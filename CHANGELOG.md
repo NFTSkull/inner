@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-22
+
+- Logos del nav y del footer en `--tinta` (café), no negros.
+- Copy: tapete, online sin interrupciones, vigencia del mes, terraza,
+  sesión de 50 a 60 minutos.
+- El lugar: mapa de Casa Zenia en lugar del texto de cómo llegar.
+
 ## 2026-08-19
 
 ### Hero: composición cinematográfica

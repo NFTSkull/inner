@@ -46,7 +46,7 @@ export const MEMBRESIAS: readonly Renglon[] = [
 ];
 
 export const NOTA_PRECIOS =
-  "Precios en MXN. Las membresías son personales y vigentan en septiembre de 2026. Los pagos no son reembolsables.";
+  "Precios en MXN. Las membresías son personales y vigentan en el mes vigente. Los pagos no son reembolsables.";
 
 export function formatearPrecio(precio: number): string {
   return `$${precio.toLocaleString("en-US")}`;

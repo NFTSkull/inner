@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
+import {
+  MAPS_CASA_ZENIA,
+  MAPS_CASA_ZENIA_EMBED,
+} from "@/lib/data/sesiones";
 
 export function Lugar() {
   return (
@@ -48,20 +52,38 @@ export function Lugar() {
               Casa Zenia, Monterrey.
             </p>
             <p className="text-cuerpo-l mt-2 max-w-md text-tinta">
-              Una casa tranquila, con jardín y espacio para estar en
-              silencio. Te mandamos la ubicación exacta y cómo llegar
-              cuando reserves.
+              Una casa tranquila, con terraza y espacio para estar en
+              silencio.
             </p>
           </Reveal>
           <Reveal indice={2}>
+            <div className="tarjeta-papel mt-8 overflow-hidden">
+              <iframe
+                title="Mapa de Casa Zenia, Monterrey"
+                src={MAPS_CASA_ZENIA_EMBED}
+                className="h-52 w-full border-0 grayscale-[0.35] contrast-[0.95]"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+            <a
+              href={MAPS_CASA_ZENIA}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="enlace-plumon text-cuerpo mt-3 inline-block font-normal"
+            >
+              Abrir en Google Maps
+            </a>
+          </Reveal>
+          <Reveal indice={3}>
             <dl className="mt-8 space-y-5">
               <div>
                 <dt className="text-etiqueta uppercase text-tinta">
                   Qué traer
                 </dt>
                 <dd className="text-cuerpo-l mt-1 text-tinta">
-                  Ropa cómoda. Si te sientas en el piso, tu tapete o
-                  cojín.
+                  Ropa cómoda. Trae tu tapete.
                 </dd>
               </div>
             </dl>

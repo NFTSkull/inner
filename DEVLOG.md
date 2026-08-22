@@ -1,5 +1,16 @@
 # Devlog: decisiones
 
+## 2026-08-22
+
+- **Logo en tinta, no negro.** El PNG es negro. Un filtro CSS lo
+  lleva a `--tinta` (#4b3a24) en nav y footer, sin un asset nuevo.
+- **Vigencia del mes.** La política deja de anclarse a septiembre
+  2026 y habla del mes vigente. La nota de precios sigue el mismo
+  criterio.
+- **Mapa en El lugar.** Se incrusta el pin de Google Maps de Casa
+  Zenia, Monterrey (cid 0xd1534ad6e7c54ed3), con enlace para abrir
+  la ficha.
+
 ## 2026-08-19
 
 - **Hero cinematográfico, no columna de velo.** El clip es 9:16 con

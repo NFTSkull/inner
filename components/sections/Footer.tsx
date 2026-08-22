@@ -21,7 +21,7 @@ export function Footer() {
           alt="InnerFlow"
           width={420}
           height={420}
-          className="h-auto w-56 opacity-90 sm:w-72"
+          className="logo-tinta h-auto w-56 sm:w-72"
         />
 
         <p className="text-cuerpo-l mt-10 max-w-md text-tinta-suave">

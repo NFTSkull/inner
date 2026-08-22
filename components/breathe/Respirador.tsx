@@ -14,8 +14,8 @@ import { CICLO, DURACION, EASE_RESPIRO, RESPIRO } from "@/lib/breath";
 /**
  * El Respirador: un minuto de respiración guiada en el compás 4-4-6.
  * Cuatro ciclos, 56 segundos. El anillo es el reloj, no hay números.
- * Al terminar: "Eso fue un minuto. Una sesión del club son
- * cuarenta y cinco." Ese momento es el que convierte.
+ * Al terminar: "Eso fue un minuto. Una sesión del club dura
+ * de 50 a 60 minutos." Ese momento es el que convierte.
  */
 
 type Fase = "velo" | "inhala" | "sosten" | "exhala" | "final";
@@ -264,7 +264,7 @@ export function Respirador({ abierto, alCerrar }: Props) {
               >
                 <TituloFinal />
                 <p className="text-cuerpo-l mt-6 text-tinta-suave">
-                  Una sesión del club son cuarenta y cinco.
+                  Una sesión del club dura de 50 a 60 minutos.
                 </p>
                 <div className="mt-10">
                   <Boton variante="primario" onClick={cerrarYSeguir}>

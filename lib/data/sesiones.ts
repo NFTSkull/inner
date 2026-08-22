@@ -53,3 +53,9 @@ export const PRESENTACION = {
 
 /** Reservas por Instagram mientras no hay sistema de pagos */
 export const ENLACE_RESERVA = "https://instagram.com/innerflow.mx";
+
+/** Ubicación pública de las sesiones presenciales */
+export const MAPS_CASA_ZENIA =
+  "https://www.google.com/maps/place/casa+zenia+monterrey/data=!4m2!3m1!1s0x866297005dcca8d1:0xd1534ad6e7c54ed3";
+export const MAPS_CASA_ZENIA_EMBED =
+  "https://www.google.com/maps?cid=15077488947854778067&hl=es&z=16&output=embed";
