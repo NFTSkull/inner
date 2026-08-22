@@ -4,6 +4,11 @@
 
 - **Sin cursor custom.** El halo azul que seguía al mouse se
   percibía como un defecto. Queda el cursor nativo.
+- **Scroll más ágil.** Lenis bajó la inercia (lerp 0.14) y las
+  anclas del nav llegan en 0.85s, con offset del header. El video
+  del hero usa `preload=metadata` y el still es `hero-poster.jpg`
+  (247 KB) en vez de `lugar.JPG` (2.7 MB). El Respirador se importa
+  en diferido.
 - **Logo en tinta, no negro.** El PNG es negro. Un filtro CSS lo
   lleva a `--tinta` (#4b3a24) en nav y footer, sin un asset nuevo.
 - **Vigencia del mes.** La política deja de anclarse a septiembre

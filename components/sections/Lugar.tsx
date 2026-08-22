@@ -11,7 +11,7 @@ export function Lugar() {
     <section
       id="lugar"
       aria-label="El lugar, Casa Zenia"
-      className="bg-arena-hondo px-5 py-24 sm:px-8 sm:py-28"
+      className="scroll-mt-24 bg-arena-hondo px-5 py-24 sm:px-8 sm:py-28"
     >
       <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
         <Reveal className="lg:col-span-7 lg:row-start-1">
@@ -22,6 +22,7 @@ export function Lugar() {
               width={4032}
               height={3024}
               sizes="(min-width: 1024px) 40rem, 92vw"
+              quality={72}
               className="h-auto w-full"
             />
           </figure>
@@ -38,6 +39,7 @@ export function Lugar() {
               width={4284}
               height={5712}
               sizes="(min-width: 1024px) 18rem, 62vw"
+              quality={72}
               className="h-auto w-full"
             />
           </figure>

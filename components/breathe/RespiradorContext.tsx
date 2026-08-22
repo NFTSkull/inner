@@ -1,7 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { createContext, useCallback, useContext, useState } from "react";
-import { Respirador } from "@/components/breathe/Respirador";
+
+const Respirador = dynamic(
+  () =>
+    import("@/components/breathe/Respirador").then((m) => m.Respirador),
+  { ssr: false }
+);
 
 const Contexto = createContext<{ abrir: () => void }>({ abrir: () => {} });
 

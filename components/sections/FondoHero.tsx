@@ -48,10 +48,11 @@ export function FondoHero({ pausado }: Props) {
       aria-hidden="true"
     >
       <Image
-        src="/lugar.JPG"
+        src={reducir ? "/lugar.JPG" : "/hero-poster.jpg"}
         alt=""
         fill
         priority
+        quality={70}
         sizes="100vw"
         className="media-hero"
       />
@@ -63,7 +64,8 @@ export function FondoHero({ pausado }: Props) {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster="/hero-poster.jpg"
           disablePictureInPicture
         >
           <source src="/hero.mp4" type="video/mp4" />

@@ -10,9 +10,18 @@ export function useLenis() {
   return useContext(LenisContext);
 }
 
+const OFFSET_NAV = -72;
+
+function destinoDeAncla(ancla: HTMLAnchorElement): Element | null {
+  const url = new URL(ancla.href, window.location.href);
+  if (url.pathname !== window.location.pathname) return null;
+  if (!url.hash) return null;
+  return document.querySelector(url.hash);
+}
+
 /**
- * Scroll suave con inercia larga, en el carácter del compás.
- * Con prefers-reduced-motion el scroll queda nativo, sin inercia.
+ * Scroll suave con inercia corta. Con prefers-reduced-motion
+ * queda el scroll nativo, sin inercia.
  */
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
@@ -23,7 +32,10 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     ).matches;
     if (reduceMotion) return;
 
-    const instancia = new Lenis({ lerp: 0.08 });
+    const instancia = new Lenis({
+      lerp: 0.14,
+      wheelMultiplier: 1.12,
+    });
     setLenis(instancia);
 
     let raf = requestAnimationFrame(function loop(tiempo) {
@@ -31,21 +43,35 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       raf = requestAnimationFrame(loop);
     });
 
-    /* Los anclajes internos navegan con la misma inercia del sitio */
+    const irA = (nodo: HTMLElement, inmediata = false) => {
+      instancia.scrollTo(nodo, {
+        offset: OFFSET_NAV,
+        immediate: inmediata,
+        duration: 0.85,
+      });
+    };
+
+    if (window.location.hash) {
+      const inicial = document.querySelector(window.location.hash);
+      if (inicial) irA(inicial as HTMLElement, true);
+    }
+
     const alHacerClick = (e: MouseEvent) => {
-      const ancla = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
-      if (!ancla?.hash) return;
-      const destino = document.querySelector(ancla.hash);
+      const ancla = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+        "a[href]"
+      );
+      if (!ancla) return;
+      const destino = destinoDeAncla(ancla);
       if (!destino) return;
       e.preventDefault();
-      instancia.scrollTo(destino as HTMLElement, { offset: -72 });
-      history.pushState(null, "", ancla.hash);
+      irA(destino as HTMLElement);
+      history.pushState(null, "", ancla.hash || new URL(ancla.href).hash);
     };
-    document.addEventListener("click", alHacerClick);
+    document.addEventListener("click", alHacerClick, true);
 
     return () => {
       cancelAnimationFrame(raf);
-      document.removeEventListener("click", alHacerClick);
+      document.removeEventListener("click", alHacerClick, true);
       instancia.destroy();
       setLenis(null);
     };

@@ -39,7 +39,7 @@ export function Modalidades() {
     <section
       id="modalidades"
       aria-label="Cómo funciona el club"
-      className="px-5 pb-28 pt-4 sm:px-8"
+      className="scroll-mt-24 px-5 pb-28 pt-4 sm:px-8"
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>

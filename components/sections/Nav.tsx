@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useLenis } from "@/components/motion/LenisProvider";
 import { Boton } from "@/components/ui/Boton";
 import { DURACION, EASE_RESPIRO } from "@/lib/breath";
 
@@ -16,6 +17,7 @@ const ENLACES = [
 
 export function Nav() {
   const pathname = usePathname();
+  const lenis = useLenis();
   const [conFondo, setConFondo] = useState(pathname !== "/");
   const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -23,9 +25,13 @@ export function Nav() {
     const alScrollear = () =>
       setConFondo(pathname !== "/" || window.scrollY > 32);
     alScrollear();
+    if (lenis) {
+      lenis.on("scroll", alScrollear);
+      return () => lenis.off("scroll", alScrollear);
+    }
     window.addEventListener("scroll", alScrollear, { passive: true });
     return () => window.removeEventListener("scroll", alScrollear);
-  }, [pathname]);
+  }, [pathname, lenis]);
 
   useEffect(() => {
     if (!menuAbierto) return;
@@ -55,6 +61,8 @@ export function Nav() {
             width={64}
             height={64}
             className="logo-tinta h-12 w-auto"
+            sizes="48px"
+            quality={70}
             priority
           />
         </Link>

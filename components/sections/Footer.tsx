@@ -22,6 +22,8 @@ export function Footer() {
           width={420}
           height={420}
           className="logo-tinta h-auto w-56 sm:w-72"
+          sizes="(min-width: 640px) 18rem, 14rem"
+          quality={70}
         />
 
         <p className="text-cuerpo-l mt-10 max-w-md text-tinta-suave">

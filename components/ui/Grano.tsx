@@ -11,8 +11,8 @@ export function Grano() {
       <filter id="grano-papel" x="0" y="0" width="100%" height="100%">
         <feTurbulence
           type="fractalNoise"
-          baseFrequency="0.8"
-          numOctaves="4"
+          baseFrequency="0.75"
+          numOctaves="2"
           stitchTiles="stitch"
           result="ruido"
         />

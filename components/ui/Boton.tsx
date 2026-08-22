@@ -46,6 +46,13 @@ export function Boton({
         </a>
       );
     }
+    if (href.includes("#")) {
+      return (
+        <a href={href} className={clases} onClick={onClick}>
+          {contenido}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={clases} onClick={onClick}>
         {contenido}

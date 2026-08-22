@@ -79,7 +79,7 @@ export function Calendario() {
     <section
       id="calendario"
       aria-label="Calendario de sesiones"
-      className="bg-arena-hondo px-5 py-28 sm:px-8"
+      className="scroll-mt-24 bg-arena-hondo px-5 py-28 sm:px-8"
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>

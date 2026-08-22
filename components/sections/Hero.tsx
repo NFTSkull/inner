@@ -17,7 +17,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-dvh items-end px-5 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pb-24"
+      className="relative flex min-h-dvh scroll-mt-24 items-end px-5 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pb-24"
     >
       <FondoHero pausado={pausado} />
 
