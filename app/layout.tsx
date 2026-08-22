@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Jost, Shantell_Sans } from "next/font/google";
-import { Cursor } from "@/components/motion/Cursor";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { Preloader } from "@/components/motion/Preloader";
 import { Grano } from "@/components/ui/Grano";
@@ -48,7 +47,6 @@ export default function RootLayout({
       <body>
         <LenisProvider>{children}</LenisProvider>
         <Preloader />
-        <Cursor />
         <Grano />
       </body>
     </html>

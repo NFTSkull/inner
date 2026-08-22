@@ -2,6 +2,8 @@
 
 ## 2026-08-22
 
+- **Sin cursor custom.** El halo azul que seguía al mouse se
+  percibía como un defecto. Queda el cursor nativo.
 - **Logo en tinta, no negro.** El PNG es negro. Un filtro CSS lo
   lleva a `--tinta` (#4b3a24) en nav y footer, sin un asset nuevo.
 - **Vigencia del mes.** La política deja de anclarse a septiembre

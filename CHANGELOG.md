@@ -2,6 +2,8 @@
 
 ## 2026-08-22
 
+- Se elimina el halo que seguía al cursor.
+- El lugar: fotos más grandes, como impresos superpuestos.
 - Logos del nav y del footer en `--tinta` (café), no negros.
 - Copy: tapete, online sin interrupciones, vigencia del mes, terraza,
   sesión de 50 a 60 minutos.
