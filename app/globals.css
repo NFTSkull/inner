@@ -325,6 +325,12 @@
   }
 }
 
+@media (max-width: 1023px) {
+  .media-hero {
+    object-position: 50% 16%;
+  }
+}
+
 /* Velo cinematográfico: el video respira limpio en el centro,
    arena arriba para el nav y una base que sube desde abajo a la
    izquierda para que el copy se lea sin encajonar la escena. */
@@ -356,16 +362,21 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 40%, transparent) 76px,
-        transparent 160px
+        color-mix(in srgb, var(--color-arena) 72%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 28%, transparent) 68px,
+        transparent 130px
+      ),
+      radial-gradient(
+        125% 90% at 8% 100%,
+        color-mix(in srgb, var(--color-arena) 94%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 62%, transparent) 36%,
+        transparent 58%
       ),
       linear-gradient(
         0deg,
-        color-mix(in srgb, var(--color-arena) 97%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 84%, transparent) 26%,
-        color-mix(in srgb, var(--color-arena) 42%, transparent) 52%,
-        transparent 72%
+        color-mix(in srgb, var(--color-arena) 90%, transparent) 0%,
+        color-mix(in srgb, var(--color-arena) 48%, transparent) 16%,
+        transparent 34%
       );
   }
 }

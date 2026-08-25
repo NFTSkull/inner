@@ -2,9 +2,8 @@
 
 ## 2026-08-22
 
-- Navegación más rápida: anclas en 0.85s, video del hero sin
-  precarga completa, póster liviano en el LCP, El Respirador se
-  carga al usarlo.
+- El hero en móvil vuelve a mostrar el video: velo más ligero,
+  precarga auto y reintento de autoplay en Safari.
 - Se elimina el halo que seguía al cursor.
 - El lugar: fotos más grandes, como impresos superpuestos.
 - Logos del nav y del footer en `--tinta` (café), no negros.
