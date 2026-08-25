@@ -13,8 +13,8 @@ export function Lugar() {
       aria-label="El lugar, Casa Zenia"
       className="scroll-mt-24 bg-arena-hondo px-5 py-24 sm:px-8 sm:py-28"
     >
-      <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
-        <Reveal className="lg:col-span-7 lg:row-start-1">
+      <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-12 lg:gap-x-14">
+        <Reveal className="lg:col-span-7">
           <figure className="tarjeta-papel overflow-hidden p-2 sm:p-2.5">
             <Image
               src="/lugar.JPG"
@@ -28,24 +28,7 @@ export function Lugar() {
           </figure>
         </Reveal>
 
-        <Reveal
-          indice={1}
-          className="mx-auto w-[78%] sm:w-[62%] lg:col-span-4 lg:col-start-3 lg:row-start-2 lg:mx-0 lg:w-full"
-        >
-          <figure className="tarjeta-papel-b origin-top rotate-[-1.8deg] overflow-hidden p-2 sm:p-2.5">
-            <Image
-              src="/lugar1.jpeg"
-              alt="Detalle de los cuencos de cristal y un ramo sobre el tapete, en Casa Zenia."
-              width={4284}
-              height={5712}
-              sizes="(min-width: 1024px) 18rem, 62vw"
-              quality={72}
-              className="h-auto w-full"
-            />
-          </figure>
-        </Reveal>
-
-        <div className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:pt-1">
+        <div className="lg:col-span-5 lg:pt-1">
           <Reveal>
             <TituloTrazo
               texto="El lugar"
