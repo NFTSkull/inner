@@ -15,53 +15,63 @@ type Props = {
 export function FondoHero({ pausado }: Props) {
   const reducir = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [enVista, setEnVista] = useState(true);
-  const [esMovil, setEsMovil] = useState(false);
-
-  useEffect(() => {
-    const consulta = window.matchMedia("(max-width: 1023px)");
-    const actualizar = () => setEsMovil(consulta.matches);
-    actualizar();
-    consulta.addEventListener("change", actualizar);
-    return () => consulta.removeEventListener("change", actualizar);
-  }, []);
-
-  useEffect(() => {
-    const nodo = videoRef.current;
-    if (!nodo) return;
-    const observador = new IntersectionObserver(
-      ([entrada]) => setEnVista(entrada.isIntersecting),
-      { threshold: 0.2 }
-    );
-    observador.observe(nodo);
-    return () => observador.disconnect();
-  }, [reducir]);
+  const [videoActivo, setVideoActivo] = useState(false);
 
   useEffect(() => {
     const nodo = videoRef.current;
     if (!nodo || reducir) return;
 
+    nodo.muted = true;
+    nodo.playsInline = true;
+    nodo.setAttribute("webkit-playsinline", "true");
+
     const reproducir = () => {
-      nodo.muted = true;
-      nodo.playsInline = true;
-      if (!pausado && enVista) {
-        void nodo.play().catch(() => {
-          /* Autoplay bloqueado: se queda el still. */
-        });
-      } else {
+      if (pausado) {
         nodo.pause();
+        return;
       }
+      void nodo.play().then(() => setVideoActivo(true)).catch(() => {
+        /* Autoplay bloqueado: se queda el still. */
+      });
     };
 
-    nodo.addEventListener("loadeddata", reproducir);
-    nodo.addEventListener("canplay", reproducir);
-    reproducir();
+    const alListo = () => {
+      setVideoActivo(true);
+      reproducir();
+    };
+
+    nodo.addEventListener("loadeddata", alListo);
+    nodo.addEventListener("canplay", alListo);
+
+    if (nodo.readyState >= 2) {
+      alListo();
+    } else {
+      nodo.load();
+    }
 
     return () => {
-      nodo.removeEventListener("loadeddata", reproducir);
-      nodo.removeEventListener("canplay", reproducir);
+      nodo.removeEventListener("loadeddata", alListo);
+      nodo.removeEventListener("canplay", alListo);
     };
-  }, [pausado, enVista, reducir]);
+  }, [pausado, reducir]);
+
+  useEffect(() => {
+    const nodo = videoRef.current;
+    if (!nodo || reducir) return;
+
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        if (entrada.isIntersecting && !pausado) {
+          void nodo.play().catch(() => {});
+        } else {
+          nodo.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observador.observe(nodo);
+    return () => observador.disconnect();
+  }, [pausado, reducir]);
 
   return (
     <div
@@ -75,7 +85,9 @@ export function FondoHero({ pausado }: Props) {
         priority
         quality={70}
         sizes="100vw"
-        className="media-hero"
+        className={`media-hero transition-opacity duration-500 ${
+          videoActivo && !reducir ? "opacity-0" : "opacity-100"
+        }`}
       />
       {!reducir && (
         <video
@@ -85,7 +97,7 @@ export function FondoHero({ pausado }: Props) {
           muted
           loop
           playsInline
-          preload={esMovil ? "auto" : "metadata"}
+          preload="auto"
           poster="/hero-poster.jpg"
           disablePictureInPicture
         >
