@@ -7,11 +7,13 @@ import {
   useTransform,
 } from "motion/react";
 import { useRef } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 
 /**
- * Qué esperar de una sesión, en palabras que cualquiera entiende.
- * Las líneas se encienden con el scroll. La sección más importante
- * después del hero.
+ * Qué esperar de una sesión.
+ * Desktop: palabras que se encienden con el scroll (sin cambios).
+ * Móvil: revelado por línea (el scrub por palabra se siente mal
+ * con el dedo y pantallas cortas).
  */
 
 const ESTROFAS: string[][] = [
@@ -30,6 +32,44 @@ const TODAS_LAS_LINEAS = ESTROFAS.flat();
 const TOTAL_PALABRAS = TODAS_LAS_LINEAS.join(" ").split(" ").length;
 
 export function Manifiesto() {
+  return (
+    <>
+      <div className="lg:hidden">
+        <ManifiestoMovil />
+      </div>
+      <div className="hidden lg:block">
+        <ManifiestoEscritorio />
+      </div>
+    </>
+  );
+}
+
+/** Solo móvil: una Reveal por línea, sin scrub de scroll. */
+function ManifiestoMovil() {
+  return (
+    <section
+      aria-label="Qué esperar de una sesión"
+      className="px-5 py-28 sm:px-8 sm:py-36"
+    >
+      <div className="mx-auto max-w-3xl">
+        {ESTROFAS.map((estrofa, e) => (
+          <div key={e} className={e > 0 ? "mt-12" : ""}>
+            {estrofa.map((linea, i) => (
+              <Reveal key={`${e}-${i}`} indice={i}>
+                <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-light leading-[1.6] text-tinta">
+                  {linea}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** Desktop: comportamiento original por scroll. */
+function ManifiestoEscritorio() {
   const ref = useRef<HTMLDivElement>(null);
   const reducir = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -82,7 +122,6 @@ function Linea({
   progreso: ReturnType<typeof useScroll>["scrollYProgress"];
   reducir: boolean;
 }) {
-  /* La línea se desplaza 12px cuando sus palabras empiezan a encenderse */
   const inicio = desde / TOTAL_PALABRAS;
   const fin = (desde + palabras.length) / TOTAL_PALABRAS;
   const y = useTransform(progreso, [inicio, fin], [12, 0]);

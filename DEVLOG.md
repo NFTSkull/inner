@@ -2,14 +2,17 @@
 
 ## 2026-08-27
 
+- **Móvil ≠ desktop en motion.** Lenis en touch hacía que
+  reveals y el manifiesto por scroll se sintieran rotos o
+  instantáneos. Lenis solo corre en ≥1024px. En móvil: scroll
+  nativo, Reveal más lento, Manifiesto por línea (`lg:hidden` /
+  `lg:block` para no alterar el scrub de escritorio), y autoplay
+  del hero con reintentos en scroll/gesto sin `video.load()`.
 - **Video invisible en móvil.** `hero-entra` con `fill-mode: both`
   partía en `opacity: 0`. En la columna bajo el fold el motor
   dejaba la animación colgada y el still (poster) tapaba todo.
   Se elimina esa animación; el `<video>` queda encima a opacity 1
   y el poster detrás como fallback. Fuera `lugar.JPG` del hero.
-- **Autoplay hero sin pause por IO.** El observer con pause
-  mataba el clip bajo el fold; ahora solo dispara `play()` al
-  entrar al viewport, sin pausar.
 
 ## 2026-08-25
 

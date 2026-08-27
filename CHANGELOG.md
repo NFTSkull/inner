@@ -2,6 +2,10 @@
 
 ## 2026-08-27
 
+- Solo móvil: Lenis desactivado (scroll nativo); video con
+  autoplay más agresivo (gesto/scroll, sin `load()`); reveals
+  un poco más lentos; manifiesto por línea en vez de scrub.
+  Desktop (≥1024px) sin cambios de comportamiento.
 - Hero móvil: el video ya se ve. Se elimina la animación
   `hero-entra` (opacity 0→1) que en la columna bajo el fold
   quedaba congelada en 0; el clip va encima del poster del

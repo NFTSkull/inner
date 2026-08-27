@@ -30,7 +30,11 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (reduceMotion) return;
+    /* Lenis en touch pelea con el scroll nativo: reveals y el
+       manifiesto por scroll se sienten rotos o “a tirones”.
+       Desktop (≥1024px) sigue igual. */
+    const movil = window.matchMedia("(max-width: 1023px)").matches;
+    if (reduceMotion || movil) return;
 
     const instancia = new Lenis({
       lerp: 0.14,
