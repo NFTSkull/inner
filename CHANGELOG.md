@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-27
+
+- Banner de próxima meditación: cuenta regresiva en vivo a la
+  siguiente sesión del calendario (Septiembre). Al pasar la hora,
+  salta sola a la que sigue; si el mes se acabó, se oculta.
+
 ## 2026-08-25
 
 - Nav siempre sobre papel (`bg-arena`): los enlaces ya no se

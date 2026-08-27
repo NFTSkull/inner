@@ -31,25 +31,17 @@ export const HORARIOS = {
   },
 } as const;
 
-/** Hora de cada día según su día de la semana (domingo 10am, entre semana 8pm) */
-export function horaDeSesion(dia: number): string {
-  const diaSemana = new Date(
-    MES_CALENDARIO.anio,
-    MES_CALENDARIO.mes,
-    dia
-  ).getDay();
-  return diaSemana === 0 ? "10:00 am" : "8:00 pm";
+/** Día de la semana estable (mediodía UTC) para no depender del TZ del servidor. */
+export function diaSemanaDelCalendario(dia: number): number {
+  return new Date(
+    Date.UTC(MES_CALENDARIO.anio, MES_CALENDARIO.mes, dia, 12)
+  ).getUTCDay();
 }
 
-/** Sesión de presentación. Si la fecha ya pasó, el banner se oculta solo. */
-export const PRESENTACION = {
-  titulo: "Ven a conocer el Meditation Club",
-  fechaTexto: "Martes 25 de agosto, 8:00 pm",
-  lugar: "Casa Zenia, Mty",
-  costo: "Aportación voluntaria",
-  /** Monterrey es UTC-6 */
-  fecha: new Date("2026-08-25T20:00:00-06:00"),
-} as const;
+/** Hora de cada día según su día de la semana (domingo 10am, entre semana 8pm) */
+export function horaDeSesion(dia: number): string {
+  return diaSemanaDelCalendario(dia) === 0 ? "10:00 am" : "8:00 pm";
+}
 
 /** Reservas por Instagram mientras no hay sistema de pagos */
 export const ENLACE_RESERVA = "https://instagram.com/innerflow.mx";

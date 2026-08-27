@@ -1,5 +1,13 @@
 # Devlog: decisiones
 
+## 2026-08-27
+
+- **Contador → próxima del mes.** La presentación del 25 ago
+  ya pasó; el banner ahora lee `SESIONES` + horarios (dom 10am /
+  entre semana 8pm, UTC-6) y apunta a la primera fecha futura.
+  Lógica en `lib/data/proxima-sesion.ts`; el banner hace tick
+  cada segundo y avanza solo. Sin más fechas del mes → null.
+
 ## 2026-08-25
 
 - **Nav legible, video en lazo.** El header transparente
