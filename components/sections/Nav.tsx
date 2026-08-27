@@ -44,10 +44,10 @@ export function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-[600ms] ease-[var(--ease-respiro)] ${
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-[600ms] ease-[var(--ease-respiro)] ${
         conFondo
-          ? "border-b border-tinta/10 bg-arena/90"
-          : "border-b border-transparent bg-transparent"
+          ? "border-tinta/10 bg-arena/95 shadow-[0_1px_0_color-mix(in_srgb,var(--color-tinta)_6%,transparent)]"
+          : "border-tinta/8 bg-arena/92"
       }`}
     >
       <nav

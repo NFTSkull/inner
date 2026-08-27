@@ -4,15 +4,11 @@ import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-type Props = {
-  pausado: boolean;
-};
-
 /**
- * Fondo del hero: video en lazo, velo de arena, y still
- * si hay prefers-reduced-motion o si el autoplay falla (Safari/iOS).
+ * Fondo del hero: video en lazo continuo, y still si hay
+ * prefers-reduced-motion o si el autoplay falla (Safari/iOS).
  */
-export function FondoHero({ pausado }: Props) {
+export function FondoHero() {
   const reducir = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoActivo, setVideoActivo] = useState(false);
@@ -23,7 +19,6 @@ export function FondoHero({ pausado }: Props) {
 
     let cancelado = false;
 
-    // iOS/Safari: muted + playsInline son obligatorios para autoplay.
     nodo.defaultMuted = true;
     nodo.muted = true;
     nodo.playsInline = true;
@@ -40,10 +35,7 @@ export function FondoHero({ pausado }: Props) {
     };
 
     const reproducir = () => {
-      if (cancelado || pausado) {
-        nodo.pause();
-        return;
-      }
+      if (cancelado) return;
       void nodo.play().then(marcarActivo).catch(marcarInactivo);
     };
 
@@ -53,7 +45,6 @@ export function FondoHero({ pausado }: Props) {
     nodo.addEventListener("canplay", reproducir);
     nodo.addEventListener("playing", alPlaying);
 
-    // Tras un gesto del usuario iOS suele permitir play().
     const alGesto = () => reproducir();
     const alVisible = () => {
       if (document.visibilityState === "visible") reproducir();
@@ -77,7 +68,7 @@ export function FondoHero({ pausado }: Props) {
       document.removeEventListener("click", alGesto);
       document.removeEventListener("visibilitychange", alVisible);
     };
-  }, [pausado, reducir]);
+  }, [reducir]);
 
   useEffect(() => {
     const nodo = videoRef.current;
@@ -85,7 +76,7 @@ export function FondoHero({ pausado }: Props) {
 
     const observador = new IntersectionObserver(
       ([entrada]) => {
-        if (entrada.isIntersecting && !pausado) {
+        if (entrada.isIntersecting) {
           void nodo
             .play()
             .then(() => setVideoActivo(true))
@@ -98,7 +89,7 @@ export function FondoHero({ pausado }: Props) {
     );
     observador.observe(nodo);
     return () => observador.disconnect();
-  }, [pausado, reducir]);
+  }, [reducir]);
 
   return (
     <div
@@ -121,7 +112,6 @@ export function FondoHero({ pausado }: Props) {
             <source src="/hero.mp4?v=10" type="video/mp4" />
           </video>
         )}
-        {/* Still encima hasta que play() confirma; si autoplay falla, se queda. */}
         <Image
           src={reducir ? "/lugar.JPG" : "/hero-poster.jpg?v=10"}
           alt=""

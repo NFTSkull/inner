@@ -1,7 +1,5 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
-import { useState } from "react";
 import { useRespirador } from "@/components/breathe/RespiradorContext";
 import { FondoHero } from "@/components/sections/FondoHero";
 import { Reveal } from "@/components/motion/Reveal";
@@ -14,8 +12,6 @@ import { TituloTrazo } from "@/components/ui/TituloTrazo";
  */
 export function Hero() {
   const { abrir } = useRespirador();
-  const reducir = useReducedMotion();
-  const [pausado, setPausado] = useState(false);
 
   return (
     <section
@@ -63,20 +59,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Escena: video a pantalla en su columna. En móvil, alto generoso. */}
+      {/* Escena: video en lazo continuo. */}
       <div className="relative min-h-[62dvh] overflow-hidden lg:min-h-dvh">
-        <FondoHero pausado={pausado} />
-
-        {!reducir && (
-          <div className="absolute bottom-5 right-5 z-10 sm:bottom-6 sm:right-6">
-            <Boton
-              className="!px-4 !py-1.5 text-sm"
-              onClick={() => setPausado((v) => !v)}
-            >
-              {pausado ? "Reanudar" : "Pausar"}
-            </Boton>
-          </div>
-        )}
+        <FondoHero />
       </div>
     </section>
   );

@@ -2,6 +2,9 @@
 
 ## 2026-08-25
 
+- Nav siempre sobre papel (`bg-arena`): los enlaces ya no se
+  pierden contra el video. Se quita Pausar/Reanudar; el hero
+  corre en lazo continuo.
 - Hero rediseñado (“marca | escena”): columna de papel con
   **InnerFlow** + promesa; video a cuadro completo al lado
   (abajo en móvil). El cuenco ya no queda bajo el texto.

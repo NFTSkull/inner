@@ -2,6 +2,10 @@
 
 ## 2026-08-25
 
+- **Nav legible, video en lazo.** El header transparente
+  perdía los enlaces sobre el verde del clip. Queda fondo
+  `arena` siempre. Se elimina Pausar/Reanudar: el fondo es
+  decorativo y corre en loop (muted, playsInline).
 - **Hero marca | escena.** El overlay full-bleed tapaba el
   cuenco en desktop (cover solo ve ~1/3 del 9:16). Nueva
   composición en dos columnas: papel con marca `InnerFlow` a
