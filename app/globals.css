@@ -305,11 +305,9 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero: video vertical — cuenco alto y libre, copy solo arriba        */
+/* Hero marca | escena: video en su columna, sin texto encima.         */
 /* ------------------------------------------------------------------ */
 
-/* El MP4 ya viene recortado (manos + cuenco). Cover simple; un
-   leve ancla baja deja aire bajo el cuenco en viewports altos. */
 @utility marco-hero {
   overflow: hidden;
 }
@@ -320,38 +318,31 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  /* El MP4 ya trae el cuenco completo anclado abajo; no escalar
-     ni desplazar o se vuelve a cortar la base. */
-  object-position: 50% 100%;
+  object-position: 50% 78%;
 }
 
 @media (min-width: 1024px) {
   .media-hero {
-    object-position: 50% 92%;
+    object-position: 48% 80%;
   }
 }
 
-/* Velo solo en la franja del nav + copy. Mitad inferior limpia. */
+/* Sin velo global: el papel ya es la columna izquierda. */
 @utility velo-hero {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-arena) 92%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 55%, transparent) 5.5rem,
-      color-mix(in srgb, var(--color-arena) 16%, transparent) 10rem,
-      transparent 14rem
-    );
+  background: transparent;
 }
 
-@media (max-width: 1023px) {
-  .velo-hero {
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--color-arena) 94%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 60%, transparent) 4.5rem,
-        color-mix(in srgb, var(--color-arena) 18%, transparent) 8rem,
-        transparent 11rem
-      );
+@media (prefers-reduced-motion: no-preference) {
+  .marco-hero .media-hero {
+    animation: hero-entra 1.2s var(--ease-respiro) both;
+  }
+}
+
+@keyframes hero-entra {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

@@ -6,9 +6,12 @@ import { useRespirador } from "@/components/breathe/RespiradorContext";
 import { FondoHero } from "@/components/sections/FondoHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { Boton } from "@/components/ui/Boton";
-import { IsotipoTrazo } from "@/components/ui/IsotipoTrazo";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
 
+/**
+ * Hero “marca | escena”: el copy vive en papel; el video es puro
+ * (mujer + cuenco enteros), sin texto encima.
+ */
 export function Hero() {
   const { abrir } = useRespirador();
   const reducir = useReducedMotion();
@@ -17,40 +20,42 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-dvh scroll-mt-24 items-start px-5 pb-8 pt-[5.25rem] sm:px-8 sm:pt-28 lg:pt-32"
+      className="hero-escena relative grid min-h-dvh scroll-mt-24 grid-cols-1 lg:grid-cols-[minmax(22rem,40%)_minmax(0,1fr)]"
     >
-      <FondoHero pausado={pausado} />
-
-      {/* Franja superior corta: manos + cuenco ocupan el resto sin texto. */}
-      <div className="relative z-10 mx-auto w-full max-w-6xl">
-        <div className="max-w-[30rem]">
+      {/* Papel: marca y promesa. Nunca se superpone al cuenco. */}
+      <div className="relative z-10 flex flex-col justify-end bg-arena px-5 pb-10 pt-28 sm:px-8 sm:pb-14 sm:pt-32 lg:justify-center lg:px-10 lg:pb-16 lg:pt-28 xl:px-14">
+        <div className="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
           <Reveal>
-            <p className="flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.14em] text-tinta-suave sm:text-etiqueta">
-              <IsotipoTrazo className="h-4 w-4 shrink-0 text-tinta" />
+            <p className="text-etiqueta uppercase tracking-[0.18em] text-tinta-suave">
               Meditation Club · Monterrey
             </p>
           </Reveal>
 
           <Reveal indice={1}>
             <TituloTrazo
-              texto={"Tu pausa\nempieza aquí."}
-              className="mt-2 text-[clamp(1.7rem,3.8vw,3rem)] leading-[1.05] text-tinta"
+              texto="InnerFlow"
+              className="mt-4 text-[clamp(2.75rem,6vw,4.5rem)] leading-[0.95] text-tinta"
             />
           </Reveal>
 
           <Reveal indice={2}>
-            <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2">
-              <Boton
-                variante="primario"
-                className="!px-5 !py-2 text-sm"
-                onClick={abrir}
-              >
+            <p className="display-trazo mt-4 text-[clamp(1.2rem,2.2vw,1.65rem)] leading-snug text-tinta">
+              Tu pausa empieza aquí.
+            </p>
+          </Reveal>
+
+          <Reveal indice={3}>
+            <p className="text-cuerpo mt-3 max-w-[22rem] text-tinta-suave">
+              Presencial en Casa Zenia y online. Sin experiencia.
+            </p>
+          </Reveal>
+
+          <Reveal indice={4}>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Boton variante="primario" onClick={abrir}>
                 Respira un minuto
               </Boton>
-              <a
-                href="#calendario"
-                className="enlace-plumon text-sm font-normal sm:text-cuerpo"
-              >
+              <a href="#calendario" className="enlace-plumon text-cuerpo font-normal">
                 Ver calendario
               </a>
             </div>
@@ -58,16 +63,21 @@ export function Hero() {
         </div>
       </div>
 
-      {!reducir && (
-        <div className="absolute right-5 top-[5.25rem] z-10 sm:right-8 sm:top-28">
-          <Boton
-            className="!px-3.5 !py-1 text-xs sm:text-sm"
-            onClick={() => setPausado((v) => !v)}
-          >
-            {pausado ? "Reanudar" : "Pausar"}
-          </Boton>
-        </div>
-      )}
+      {/* Escena: video a pantalla en su columna. En móvil, alto generoso. */}
+      <div className="relative min-h-[62dvh] overflow-hidden lg:min-h-dvh">
+        <FondoHero pausado={pausado} />
+
+        {!reducir && (
+          <div className="absolute bottom-5 right-5 z-10 sm:bottom-6 sm:right-6">
+            <Boton
+              className="!px-4 !py-1.5 text-sm"
+              onClick={() => setPausado((v) => !v)}
+            >
+              {pausado ? "Reanudar" : "Pausar"}
+            </Boton>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

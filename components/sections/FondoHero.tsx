@@ -115,15 +115,15 @@ export function FondoHero({ pausado }: Props) {
             loop
             playsInline
             preload="auto"
-            poster="/hero-poster.jpg?v=8"
+            poster="/hero-poster.jpg?v=10"
             disablePictureInPicture
           >
-            <source src="/hero.mp4?v=8" type="video/mp4" />
+            <source src="/hero.mp4?v=10" type="video/mp4" />
           </video>
         )}
         {/* Still encima hasta que play() confirma; si autoplay falla, se queda. */}
         <Image
-          src={reducir ? "/lugar.JPG" : "/hero-poster.jpg?v=8"}
+          src={reducir ? "/lugar.JPG" : "/hero-poster.jpg?v=10"}
           alt=""
           fill
           priority

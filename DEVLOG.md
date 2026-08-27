@@ -2,12 +2,12 @@
 
 ## 2026-08-25
 
-- **Cuenco libre, copy arriba.** El texto anclado abajo tapaba
-  los cuencos tibetanos. El hero pasa a `items-start`: marca,
-  título y CTA arriba; la mitad inferior es solo escena. Velo
-  solo desde arriba. El MP4 se regenera (`scripts/generar-hero.sh`)
-  con zoom a manos + cuenco y extensión del césped bajo el
-  cuenco para que quede entero y más alto en el cuadro.
+- **Hero marca | escena.** El overlay full-bleed tapaba el
+  cuenco en desktop (cover solo ve ~1/3 del 9:16). Nueva
+  composición en dos columnas: papel con marca `InnerFlow` a
+  la izquierda; video puro a la derecha (y abajo en móvil).
+  El cuenco ya no compite con el texto. Cuadro completo sin
+  zoom agresivo.
 - **Still encima hasta play confirmado.** En `FondoHero`,
   `setVideoActivo(true)` en `loadeddata` ocultaba el still aunque
   `play()` fallara (Low Power Mode / políticas de Safari). El still

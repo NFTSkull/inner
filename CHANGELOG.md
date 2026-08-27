@@ -2,9 +2,9 @@
 
 ## 2026-08-25
 
-- Hero: el copy sube arriba; los cuencos quedan libres abajo,
-  sin velo ni texto encima. El video se regenera con zoom a
-  manos + cuenco completo y césped extendido bajo el cuenco.
+- Hero rediseñado (“marca | escena”): columna de papel con
+  **InnerFlow** + promesa; video a cuadro completo al lado
+  (abajo en móvil). El cuenco ya no queda bajo el texto.
 - Hero en móvil: el still ya no se oculta si Safari bloquea el
   autoplay; solo cede cuando `play()` confirma. Reintento tras
   el primer toque/click y al volver a la pestaña.
