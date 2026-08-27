@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-25
+
+- Hero: el copy sube arriba; los cuencos quedan libres abajo,
+  sin velo ni texto encima. El video se regenera con zoom a
+  manos + cuenco completo y césped extendido bajo el cuenco.
+- Hero en móvil: el still ya no se oculta si Safari bloquea el
+  autoplay; solo cede cuando `play()` confirma. Reintento tras
+  el primer toque/click y al volver a la pestaña.
+
 ## 2026-08-22
 
 - El hero en móvil vuelve a mostrar el video: velo más ligero,

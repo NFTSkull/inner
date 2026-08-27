@@ -9,8 +9,8 @@ type Props = {
 };
 
 /**
- * Fondo del hero: video en lazo, velo de arena, y lugar.JPG
- * si hay prefers-reduced-motion.
+ * Fondo del hero: video en lazo, velo de arena, y still
+ * si hay prefers-reduced-motion o si el autoplay falla (Safari/iOS).
  */
 export function FondoHero({ pausado }: Props) {
   const reducir = useReducedMotion();
@@ -21,37 +21,61 @@ export function FondoHero({ pausado }: Props) {
     const nodo = videoRef.current;
     if (!nodo || reducir) return;
 
+    let cancelado = false;
+
+    // iOS/Safari: muted + playsInline son obligatorios para autoplay.
+    nodo.defaultMuted = true;
     nodo.muted = true;
     nodo.playsInline = true;
+    nodo.setAttribute("muted", "");
+    nodo.setAttribute("playsinline", "");
     nodo.setAttribute("webkit-playsinline", "true");
 
+    const marcarActivo = () => {
+      if (!cancelado) setVideoActivo(true);
+    };
+
+    const marcarInactivo = () => {
+      if (!cancelado) setVideoActivo(false);
+    };
+
     const reproducir = () => {
-      if (pausado) {
+      if (cancelado || pausado) {
         nodo.pause();
         return;
       }
-      void nodo.play().then(() => setVideoActivo(true)).catch(() => {
-        /* Autoplay bloqueado: se queda el still. */
-      });
+      void nodo.play().then(marcarActivo).catch(marcarInactivo);
     };
 
-    const alListo = () => {
-      setVideoActivo(true);
-      reproducir();
-    };
+    const alPlaying = () => marcarActivo();
 
-    nodo.addEventListener("loadeddata", alListo);
-    nodo.addEventListener("canplay", alListo);
+    nodo.addEventListener("loadeddata", reproducir);
+    nodo.addEventListener("canplay", reproducir);
+    nodo.addEventListener("playing", alPlaying);
+
+    // Tras un gesto del usuario iOS suele permitir play().
+    const alGesto = () => reproducir();
+    const alVisible = () => {
+      if (document.visibilityState === "visible") reproducir();
+    };
+    document.addEventListener("touchstart", alGesto, { passive: true });
+    document.addEventListener("click", alGesto, { passive: true });
+    document.addEventListener("visibilitychange", alVisible);
 
     if (nodo.readyState >= 2) {
-      alListo();
+      reproducir();
     } else {
       nodo.load();
     }
 
     return () => {
-      nodo.removeEventListener("loadeddata", alListo);
-      nodo.removeEventListener("canplay", alListo);
+      cancelado = true;
+      nodo.removeEventListener("loadeddata", reproducir);
+      nodo.removeEventListener("canplay", reproducir);
+      nodo.removeEventListener("playing", alPlaying);
+      document.removeEventListener("touchstart", alGesto);
+      document.removeEventListener("click", alGesto);
+      document.removeEventListener("visibilitychange", alVisible);
     };
   }, [pausado, reducir]);
 
@@ -62,7 +86,10 @@ export function FondoHero({ pausado }: Props) {
     const observador = new IntersectionObserver(
       ([entrada]) => {
         if (entrada.isIntersecting && !pausado) {
-          void nodo.play().catch(() => {});
+          void nodo
+            .play()
+            .then(() => setVideoActivo(true))
+            .catch(() => setVideoActivo(false));
         } else {
           nodo.pause();
         }
@@ -78,32 +105,35 @@ export function FondoHero({ pausado }: Props) {
       className="pointer-events-none absolute inset-0 isolate overflow-hidden"
       aria-hidden="true"
     >
-      <Image
-        src={reducir ? "/lugar.JPG" : "/hero-poster.jpg"}
-        alt=""
-        fill
-        priority
-        quality={70}
-        sizes="100vw"
-        className={`media-hero transition-opacity duration-500 ${
-          videoActivo && !reducir ? "opacity-0" : "opacity-100"
-        }`}
-      />
-      {!reducir && (
-        <video
-          ref={videoRef}
-          className="media-hero z-[1]"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/hero-poster.jpg"
-          disablePictureInPicture
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-      )}
+      <div className="marco-hero absolute inset-0">
+        {!reducir && (
+          <video
+            ref={videoRef}
+            className="media-hero z-0"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/hero-poster.jpg?v=8"
+            disablePictureInPicture
+          >
+            <source src="/hero.mp4?v=8" type="video/mp4" />
+          </video>
+        )}
+        {/* Still encima hasta que play() confirma; si autoplay falla, se queda. */}
+        <Image
+          src={reducir ? "/lugar.JPG" : "/hero-poster.jpg?v=8"}
+          alt=""
+          fill
+          priority
+          quality={70}
+          sizes="100vw"
+          className={`media-hero z-[1] transition-opacity duration-500 ${
+            videoActivo && !reducir ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      </div>
       <div className="velo-hero absolute inset-0 z-[2]" />
     </div>
   );

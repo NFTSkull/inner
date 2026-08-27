@@ -305,55 +305,41 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero: video vertical, still de Casa Zenia, velo de arena            */
+/* Hero: video vertical — cuenco alto y libre, copy solo arriba        */
 /* ------------------------------------------------------------------ */
 
-/* El clip es 9:16. Cover recorta la cabeza y deja manos y cuencos
-   altos en el cuadro, bien legibles. */
+/* El MP4 ya viene recortado (manos + cuenco). Cover simple; un
+   leve ancla baja deja aire bajo el cuenco en viewports altos. */
+@utility marco-hero {
+  overflow: hidden;
+}
+
 @utility media-hero {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
-  object-position: 50% 58%;
+  /* El MP4 ya trae el cuenco completo anclado abajo; no escalar
+     ni desplazar o se vuelve a cortar la base. */
+  object-position: 50% 100%;
 }
 
 @media (min-width: 1024px) {
   .media-hero {
-    object-position: 50% 55%;
+    object-position: 50% 92%;
   }
 }
 
-@media (max-width: 1023px) {
-  .media-hero {
-    object-position: 50% 62%;
-  }
-}
-
-/* Velo cinematográfico: el video respira limpio en el centro,
-   arena arriba para el nav y una base que sube desde abajo a la
-   izquierda para que el copy se lea sin encajonar la escena. */
+/* Velo solo en la franja del nav + copy. Mitad inferior limpia. */
 @utility velo-hero {
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-arena) 78%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 34%, transparent) 80px,
-      transparent 170px
-    ),
-    radial-gradient(
-      120% 130% at 12% 100%,
-      color-mix(in srgb, var(--color-arena) 97%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 78%, transparent) 42%,
-      color-mix(in srgb, var(--color-arena) 32%, transparent) 60%,
-      transparent 74%
-    ),
-    linear-gradient(
-      0deg,
-      color-mix(in srgb, var(--color-arena) 84%, transparent) 0%,
-      color-mix(in srgb, var(--color-arena) 36%, transparent) 24%,
-      transparent 46%
+      color-mix(in srgb, var(--color-arena) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-arena) 55%, transparent) 5.5rem,
+      color-mix(in srgb, var(--color-arena) 16%, transparent) 10rem,
+      transparent 14rem
     );
 }
 
@@ -362,21 +348,10 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-arena) 72%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 28%, transparent) 68px,
-        transparent 130px
-      ),
-      radial-gradient(
-        125% 90% at 8% 100%,
         color-mix(in srgb, var(--color-arena) 94%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 62%, transparent) 36%,
-        transparent 58%
-      ),
-      linear-gradient(
-        0deg,
-        color-mix(in srgb, var(--color-arena) 90%, transparent) 0%,
-        color-mix(in srgb, var(--color-arena) 48%, transparent) 16%,
-        transparent 34%
+        color-mix(in srgb, var(--color-arena) 60%, transparent) 4.5rem,
+        color-mix(in srgb, var(--color-arena) 18%, transparent) 8rem,
+        transparent 11rem
       );
   }
 }

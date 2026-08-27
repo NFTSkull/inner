@@ -17,15 +17,16 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-dvh scroll-mt-24 items-end px-5 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pb-24"
+      className="relative flex min-h-dvh scroll-mt-24 items-start px-5 pb-8 pt-[5.25rem] sm:px-8 sm:pt-28 lg:pt-32"
     >
       <FondoHero pausado={pausado} />
 
+      {/* Franja superior corta: manos + cuenco ocupan el resto sin texto. */}
       <div className="relative z-10 mx-auto w-full max-w-6xl">
-        <div className="max-w-[40rem]">
+        <div className="max-w-[30rem]">
           <Reveal>
-            <p className="flex items-center gap-3 text-etiqueta uppercase text-tinta-suave">
-              <IsotipoTrazo className="h-5 w-5 shrink-0 text-tinta" />
+            <p className="flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.14em] text-tinta-suave sm:text-etiqueta">
+              <IsotipoTrazo className="h-4 w-4 shrink-0 text-tinta" />
               Meditation Club · Monterrey
             </p>
           </Reveal>
@@ -33,25 +34,23 @@ export function Hero() {
           <Reveal indice={1}>
             <TituloTrazo
               texto={"Tu pausa\nempieza aquí."}
-              className="mt-5 text-[clamp(2.35rem,4.6vw,3.8rem)] leading-[1.05] text-tinta"
+              className="mt-2 text-[clamp(1.7rem,3.8vw,3rem)] leading-[1.05] text-tinta"
             />
           </Reveal>
 
           <Reveal indice={2}>
-            <p className="text-cuerpo-l mt-6 max-w-[26rem] text-tinta-suave">
-              Meditaciones para hacer una pausa, explorar distintas
-              prácticas y conectar contigo. Meditaciones presenciales
-              en Casa Zenia y online donde sea que estés. No necesitas
-              experiencia.
-            </p>
-          </Reveal>
-
-          <Reveal indice={3}>
-            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Boton variante="primario" onClick={abrir}>
-                Respira un minuto conmigo
+            <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2">
+              <Boton
+                variante="primario"
+                className="!px-5 !py-2 text-sm"
+                onClick={abrir}
+              >
+                Respira un minuto
               </Boton>
-              <a href="#calendario" className="enlace-plumon text-cuerpo font-normal">
+              <a
+                href="#calendario"
+                className="enlace-plumon text-sm font-normal sm:text-cuerpo"
+              >
                 Ver calendario
               </a>
             </div>
@@ -60,9 +59,9 @@ export function Hero() {
       </div>
 
       {!reducir && (
-        <div className="absolute bottom-6 right-5 z-10 sm:right-8">
+        <div className="absolute right-5 top-[5.25rem] z-10 sm:right-8 sm:top-28">
           <Boton
-            className="!px-5 !py-2 text-sm"
+            className="!px-3.5 !py-1 text-xs sm:text-sm"
             onClick={() => setPausado((v) => !v)}
           >
             {pausado ? "Reanudar" : "Pausar"}

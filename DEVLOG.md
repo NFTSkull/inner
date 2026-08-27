@@ -1,5 +1,20 @@
 # Devlog: decisiones
 
+## 2026-08-25
+
+- **Cuenco libre, copy arriba.** El texto anclado abajo tapaba
+  los cuencos tibetanos. El hero pasa a `items-start`: marca,
+  título y CTA arriba; la mitad inferior es solo escena. Velo
+  solo desde arriba. El MP4 se regenera (`scripts/generar-hero.sh`)
+  con zoom a manos + cuenco y extensión del césped bajo el
+  cuenco para que quede entero y más alto en el cuadro.
+- **Still encima hasta play confirmado.** En `FondoHero`,
+  `setVideoActivo(true)` en `loadeddata` ocultaba el still aunque
+  `play()` fallara (Low Power Mode / políticas de Safari). El still
+  queda en `z-[1]` sobre el `<video>` y solo pasa a `opacity-0`
+  cuando `play()` o el evento `playing` confirman. Tras el primer
+  gesto (`touchstart`/`click`) se reintenta el autoplay.
+
 ## 2026-08-22
 
 - **Sin cursor custom.** El halo azul que seguía al mouse se
