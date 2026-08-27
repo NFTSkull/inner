@@ -332,8 +332,9 @@
   background: transparent;
 }
 
+/* Solo el video entra; el still no anima opacity (chocaba con opacity-0). */
 @media (prefers-reduced-motion: no-preference) {
-  .marco-hero .media-hero {
+  .marco-hero .media-hero-video {
     animation: hero-entra 1.2s var(--ease-respiro) both;
   }
 }

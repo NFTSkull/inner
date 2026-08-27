@@ -2,6 +2,9 @@
 
 ## 2026-08-27
 
+- Autoplay del hero: se quita el IntersectionObserver que
+  pausaba el clip al cargar; se refuerza `muted`/`playsInline`,
+  y la animación de entrada ya no bloquea el fade-out del still.
 - Banner de próxima meditación: cuenta regresiva en vivo a la
   siguiente sesión del calendario (Septiembre). Al pasar la hora,
   salta sola a la que sigue; si el mes se acabó, se oculta.

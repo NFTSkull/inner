@@ -2,6 +2,15 @@
 
 ## 2026-08-27
 
+- **Autoplay hero sin IO.** El observer con `threshold: 0.1`
+  llamaba `pause()` cuando la columna del video no intersectaba
+  (móvil: marca arriba, escena abajo). Quedaba el still eterno.
+  Ahora el clip muted intenta `play()` al montar, con reintentos
+  y al primer gesto; no se pausa por scroll. `src` en el `<video>`
+  (sin `<source>`) y atributos iOS en el callback ref.
+  Además: `hero-entra` animaba todos los `.media-hero` con
+  `fill-mode: both`, así que el still quedaba en `opacity: 1`
+  aunque React pusiera `opacity-0`. La animación solo aplica al video.
 - **Contador → próxima del mes.** La presentación del 25 ago
   ya pasó; el banner ahora lee `SESIONES` + horarios (dom 10am /
   entre semana 8pm, UTC-6) y apunta a la primera fecha futura.
