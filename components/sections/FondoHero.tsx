@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-const HERO_MP4 = "/hero.mp4?v=11";
-const HERO_POSTER = "/hero-poster.jpg?v=11";
+const HERO_MP4 = "/hero.mp4?v=12";
+const HERO_POSTER = "/hero-poster.jpg?v=12";
 
 /**
  * Atributos iOS/Safari que React a veces no aplica a tiempo
@@ -22,14 +22,13 @@ function prepararParaAutoplay(nodo: HTMLVideoElement) {
 }
 
 /**
- * Fondo del hero: video en lazo continuo.
- * Still encima hasta que play() confirma; si el autoplay falla,
- * el still se queda (Safari Low Power / políticas del navegador).
+ * Fondo del hero: video encima del poster del mismo clip.
+ * Sin animación de opacity (en móvil quedaba congelada en 0).
+ * Nunca usamos lugar.JPG aquí.
  */
 export function FondoHero() {
   const reducir = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [videoActivo, setVideoActivo] = useState(false);
 
   const asignarVideo = useCallback((nodo: HTMLVideoElement | null) => {
     videoRef.current = nodo;
@@ -46,55 +45,41 @@ export function FondoHero() {
 
     prepararParaAutoplay(nodo);
 
-    const marcarActivo = () => {
-      if (!cancelado) setVideoActivo(true);
-    };
-
-    const marcarInactivo = () => {
-      if (!cancelado) setVideoActivo(false);
-    };
-
     const reproducir = () => {
       if (cancelado || document.visibilityState === "hidden") return;
       prepararParaAutoplay(nodo);
 
-      void nodo
-        .play()
-        .then(() => {
+      void nodo.play().then(
+        () => {
           intentos = 0;
-          marcarActivo();
-        })
-        .catch(() => {
-          marcarInactivo();
-          /* Reintentos cortos: Safari a veces bloquea el primer play(). */
-          if (cancelado || intentos >= 10) return;
+        },
+        () => {
+          if (cancelado || intentos >= 12) return;
           intentos += 1;
-          reintento = setTimeout(reproducir, 350 * intentos);
-        });
+          reintento = setTimeout(reproducir, 300 * intentos);
+        }
+      );
     };
 
-    const alPlaying = () => marcarActivo();
-    const alCanPlay = () => reproducir();
-
-    nodo.addEventListener("playing", alPlaying);
-    nodo.addEventListener("canplay", alCanPlay);
-    nodo.addEventListener("loadeddata", alCanPlay);
+    nodo.addEventListener("canplay", reproducir);
+    nodo.addEventListener("loadeddata", reproducir);
 
     const alGesto = () => reproducir();
     const alVisible = () => {
       if (document.visibilityState === "visible") reproducir();
     };
 
-    /* once: el primer gesto desbloquea políticas estrictas sin spamear play(). */
-    document.addEventListener("touchstart", alGesto, {
-      passive: true,
-      once: true,
-    });
-    document.addEventListener("pointerdown", alGesto, {
-      passive: true,
-      once: true,
-    });
+    document.addEventListener("touchstart", alGesto, { passive: true });
+    document.addEventListener("pointerdown", alGesto, { passive: true });
     document.addEventListener("visibilitychange", alVisible);
+
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        if (entrada.isIntersecting) reproducir();
+      },
+      { threshold: 0.05, rootMargin: "120px 0px" }
+    );
+    observador.observe(nodo);
 
     if (nodo.readyState >= 2) {
       reproducir();
@@ -103,16 +88,15 @@ export function FondoHero() {
       reproducir();
     }
 
-    /* Si tras 1.5s sigue pausado, otro intento (preloader / hidratación). */
-    const tardio = setTimeout(reproducir, 1500);
+    const tardio = setTimeout(reproducir, 1200);
 
     return () => {
       cancelado = true;
       clearTimeout(reintento);
       clearTimeout(tardio);
-      nodo.removeEventListener("playing", alPlaying);
-      nodo.removeEventListener("canplay", alCanPlay);
-      nodo.removeEventListener("loadeddata", alCanPlay);
+      observador.disconnect();
+      nodo.removeEventListener("canplay", reproducir);
+      nodo.removeEventListener("loadeddata", reproducir);
       document.removeEventListener("touchstart", alGesto);
       document.removeEventListener("pointerdown", alGesto);
       document.removeEventListener("visibilitychange", alVisible);
@@ -125,10 +109,19 @@ export function FondoHero() {
       aria-hidden="true"
     >
       <div className="marco-hero absolute inset-0">
+        <Image
+          src={HERO_POSTER}
+          alt=""
+          fill
+          priority
+          quality={70}
+          sizes="(min-width: 1024px) 60vw, 100vw"
+          className="media-hero z-0"
+        />
         {!reducir && (
           <video
             ref={asignarVideo}
-            className="media-hero media-hero-video z-0"
+            className="media-hero z-[1]"
             src={HERO_MP4}
             autoPlay
             muted
@@ -139,19 +132,6 @@ export function FondoHero() {
             disablePictureInPicture
           />
         )}
-        <Image
-          src={reducir ? "/lugar.JPG" : HERO_POSTER}
-          alt=""
-          fill
-          priority
-          quality={70}
-          sizes="(min-width: 1024px) 60vw, 100vw"
-          className={`media-hero z-[1] transition-opacity duration-500 ${
-            videoActivo && !reducir
-              ? "pointer-events-none opacity-0"
-              : "opacity-100"
-          }`}
-        />
       </div>
       <div className="velo-hero absolute inset-0 z-[2]" />
     </div>

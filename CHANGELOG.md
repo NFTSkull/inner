@@ -2,6 +2,10 @@
 
 ## 2026-08-27
 
+- Hero móvil: el video ya se ve. Se elimina la animación
+  `hero-entra` (opacity 0→1) que en la columna bajo el fold
+  quedaba congelada en 0; el clip va encima del poster del
+  mismo video (nunca `lugar.JPG`).
 - Autoplay del hero: se quita el IntersectionObserver que
   pausaba el clip al cargar; se refuerza `muted`/`playsInline`,
   y la animación de entrada ya no bloquea el fade-out del still.

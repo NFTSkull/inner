@@ -332,18 +332,5 @@
   background: transparent;
 }
 
-/* Solo el video entra; el still no anima opacity (chocaba con opacity-0). */
-@media (prefers-reduced-motion: no-preference) {
-  .marco-hero .media-hero-video {
-    animation: hero-entra 1.2s var(--ease-respiro) both;
-  }
-}
-
-@keyframes hero-entra {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* Sin fade de opacity en el video: en móvil (columna bajo el fold)
+   la animación quedaba congelada en opacity:0 y solo se veía el still. */
