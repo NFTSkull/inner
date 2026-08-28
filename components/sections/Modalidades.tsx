@@ -48,6 +48,9 @@ export function Modalidades() {
             etiqueta="h2"
             className="text-display-l text-tinta"
           />
+          <p className="text-cuerpo-l mt-4 max-w-[36ch] text-tinta-suave">
+            Es necesario reservar antes de asistir.
+          </p>
         </Reveal>
 
         <div className="mt-12 grid gap-8 md:grid-cols-2">

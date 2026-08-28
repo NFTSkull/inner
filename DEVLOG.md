@@ -2,6 +2,8 @@
 
 ## 2026-08-27
 
+- **Copy del hero y modalidades.** Marca visible “Inner Flow”;
+  experiencia previa no requerida; reserva obligatoria en Cómo funciona.
 - **Móvil ≠ desktop en motion.** Lenis en touch hacía que
   reveals y el manifiesto por scroll se sintieran rotos o
   instantáneos. Lenis solo corre en ≥1024px. En móvil: scroll

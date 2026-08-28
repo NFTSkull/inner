@@ -2,6 +2,8 @@
 
 ## 2026-08-27
 
+- Copy: **Inner Flow** (con espacio) en el hero; “No es necesario
+  experiencia previa”; en Cómo funciona se aclara que hay que reservar.
 - Solo móvil: Lenis desactivado (scroll nativo); video con
   autoplay más agresivo (gesto/scroll, sin `load()`); reveals
   un poco más lentos; manifiesto por línea en vez de scrub.
