@@ -19,12 +19,12 @@ export const PRIVACIDAD = [
   {
     titulo: "Quiénes somos",
     cuerpo:
-      "InnerFlow Meditation Club opera este sitio desde Monterrey, México. Las reservas y el pago se gestionan por Instagram (@innerflow.mx), no dentro de esta página.",
+      "InnerFlow Meditation Club opera este sitio desde Monterrey, México. Las reservas se confirman por WhatsApp y el pago se gestiona fuera de esta página.",
   },
   {
     titulo: "Qué datos recabamos",
     cuerpo:
-      "Este sitio no pide cuentas, no tiene formularios y no procesa pagos. No guardamos tu nombre, teléfono ni datos bancarios. Si nos escribes por Instagram, esos datos los recibe Instagram según sus propias políticas.",
+      "Este sitio no pide cuentas, no tiene formularios y no procesa pagos. No guardamos tu nombre, teléfono ni datos bancarios. Si nos escribes por WhatsApp, esos datos los recibe WhatsApp según sus propias políticas.",
   },
   {
     titulo: "Qué queda en tu dispositivo",
@@ -34,11 +34,11 @@ export const PRIVACIDAD = [
   {
     titulo: "Con quién se comparte",
     cuerpo:
-      "No vendemos ni cedemos datos. Instagram, si lo usas para reservar, es un tercero independiente. El pago se confirma fuera de este sitio.",
+      "No vendemos ni cedemos datos. WhatsApp, si lo usas para reservar, es un tercero independiente. El pago se confirma fuera de este sitio.",
   },
   {
     titulo: "Tus derechos",
     cuerpo:
-      "Puedes pedir acceso, rectificación, cancelación u oposición al tratamiento de tus datos (derechos ARCO, LFPDPPP) escribiendo a @innerflow.mx. Atenderemos en un plazo razonable.",
+      "Puedes pedir acceso, rectificación, cancelación u oposición al tratamiento de tus datos (derechos ARCO, LFPDPPP) escribiendo por WhatsApp o a @innerflow.mx. Atenderemos en un plazo razonable.",
   },
 ] as const;

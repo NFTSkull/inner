@@ -10,6 +10,7 @@ import { useLenis } from "@/components/motion/LenisProvider";
 import { IsotipoTrazo } from "@/components/ui/IsotipoTrazo";
 import { Boton } from "@/components/ui/Boton";
 import { CICLO, DURACION, EASE_RESPIRO, RESPIRO } from "@/lib/breath";
+import { ENLACE_RESERVA } from "@/lib/data/sesiones";
 
 /**
  * El Respirador: un minuto de respiración guiada en el compás 4-4-6.
@@ -110,6 +111,12 @@ export function Respirador({ abierto, alCerrar }: Props) {
     window.addEventListener("keydown", alTeclear);
     return () => window.removeEventListener("keydown", alTeclear);
   }, [abierto, alCerrar]);
+
+  /* Al cerrar después de terminar, abre WhatsApp para reservar */
+  const cerrarYReservar = () => {
+    alCerrar();
+    window.open(ENLACE_RESERVA, "_blank", "noopener,noreferrer");
+  };
 
   /* Al cerrar después de terminar, el scroll cae en precios */
   const cerrarYSeguir = () => {
@@ -267,7 +274,7 @@ export function Respirador({ abierto, alCerrar }: Props) {
                   Una sesión del club dura de 50 a 60 minutos.
                 </p>
                 <div className="mt-10">
-                  <Boton variante="primario" onClick={cerrarYSeguir}>
+                  <Boton variante="primario" onClick={cerrarYReservar}>
                     Reservar mi primera sesión
                   </Boton>
                 </div>

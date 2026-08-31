@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Boton } from "@/components/ui/Boton";
 import { IsotipoTrazo } from "@/components/ui/IsotipoTrazo";
-import { ENLACE_RESERVA } from "@/lib/data/sesiones";
+import { ENLACE_INSTAGRAM, ENLACE_RESERVA } from "@/lib/data/sesiones";
 
 export function Footer() {
   return (
@@ -33,14 +33,14 @@ export function Footer() {
         </p>
 
         <div className="mt-10">
-          <Boton variante="primario" href="/#calendario">
+          <Boton variante="primario" href={ENLACE_RESERVA} externo>
             Reservar
           </Boton>
         </div>
 
         <div className="mt-16 flex w-full flex-col items-center gap-4 border-t border-tinta/10 pt-8 sm:flex-row sm:justify-between">
           <a
-            href={ENLACE_RESERVA}
+            href={ENLACE_INSTAGRAM}
             target="_blank"
             rel="noopener noreferrer"
             className="enlace-plumon text-cuerpo font-normal"

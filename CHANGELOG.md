@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-30
+
+- Reservas por WhatsApp al 81 3260 8095 con mensaje preestablecido.
+  En el calendario el mensaje incluye día, hora y modalidad.
+
 ## 2026-08-27
 
 - Copy: **Inner Flow** (con espacio) en el hero; “No es necesario

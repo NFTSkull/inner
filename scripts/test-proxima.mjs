@@ -119,3 +119,27 @@ describe("formatearRestante", () => {
     assert.equal(formatearRestante(5 * 60000 + 12 * 1000), "faltan 5 min 12 s");
   });
 });
+
+describe("enlaceReserva WhatsApp", () => {
+  const WHATSAPP = "528132608095";
+
+  function enlaceReserva(mensaje) {
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+  }
+
+  it("abre wa.me con el número de Monterrey", () => {
+    const url = enlaceReserva(
+      "Hola, quiero reservar una sesión del Meditation Club Inner Flow."
+    );
+    assert.match(url, /^https:\/\/wa\.me\/528132608095\?text=/);
+    assert.ok(url.includes(encodeURIComponent("Inner Flow")));
+  });
+
+  it("incluye día y modalidad en el mensaje del calendario", () => {
+    const mensaje =
+      "Hola, quiero reservar la sesión del Martes 1 de septiembre a las 8:00 pm (presencial).";
+    const url = enlaceReserva(mensaje);
+    assert.ok(decodeURIComponent(url).includes("Martes 1 de septiembre"));
+    assert.ok(decodeURIComponent(url).includes("presencial"));
+  });
+});

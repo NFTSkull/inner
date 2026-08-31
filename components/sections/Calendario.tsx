@@ -8,10 +8,10 @@ import { CirculoAMano } from "@/components/ui/CirculoAMano";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
 import { DURACION, EASE_RESPIRO } from "@/lib/breath";
 import {
-  ENLACE_RESERVA,
   HORARIOS,
   MES_CALENDARIO,
   SESIONES,
+  enlaceReservaDia,
   horaDeSesion,
   type Modalidad,
 } from "@/lib/data/sesiones";
@@ -232,7 +232,11 @@ export function Calendario() {
                             : `Online · ${HORARIOS.online.lugar}`}
                         </p>
                       </div>
-                      <Boton href={ENLACE_RESERVA} externo className="!px-6 !py-2.5">
+                      <Boton
+                        href={enlaceReservaDia(diaActivo, detalle)}
+                        externo
+                        className="!px-6 !py-2.5"
+                      >
                         Reservar este día
                       </Boton>
                     </motion.div>

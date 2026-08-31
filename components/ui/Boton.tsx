@@ -41,6 +41,7 @@ export function Boton({
           className={clases}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onClick}
         >
           {contenido}
         </a>

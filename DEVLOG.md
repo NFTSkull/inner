@@ -1,5 +1,11 @@
 # Devlog: decisiones
 
+## 2026-08-30
+
+- **Reservas → WhatsApp.** Todos los “Reservar” abren
+  `wa.me/528132608095` con texto listo. Día del calendario lleva
+  fecha/hora/modalidad. Instagram queda solo como red social.
+
 ## 2026-08-27
 
 - **Copy del hero y modalidades.** Marca visible “Inner Flow”;

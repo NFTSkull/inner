@@ -43,8 +43,40 @@ export function horaDeSesion(dia: number): string {
   return diaSemanaDelCalendario(dia) === 0 ? "10:00 am" : "8:00 pm";
 }
 
-/** Reservas por Instagram mientras no hay sistema de pagos */
-export const ENLACE_RESERVA = "https://instagram.com/innerflow.mx";
+/** WhatsApp de reservas (México, sin +) */
+export const WHATSAPP_RESERVA = "528132608095";
+
+const MENSAJE_RESERVA_BASE =
+  "Hola, quiero reservar una sesión del Meditation Club Inner Flow.";
+
+/** Instagram (red social, no canal de reserva) */
+export const ENLACE_INSTAGRAM = "https://instagram.com/innerflow.mx";
+
+/** Abre WhatsApp con un mensaje listo para enviar. */
+export function enlaceReserva(mensaje: string = MENSAJE_RESERVA_BASE): string {
+  return `https://wa.me/${WHATSAPP_RESERVA}?text=${encodeURIComponent(mensaje)}`;
+}
+
+/** Reserva genérica (nav, footer, banner). */
+export const ENLACE_RESERVA = enlaceReserva();
+
+/** Reserva de un día concreto del calendario. */
+export function enlaceReservaDia(dia: number, modalidad: Modalidad): string {
+  const dias = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ] as const;
+  const diaSemana = dias[diaSemanaDelCalendario(dia)];
+  const hora = horaDeSesion(dia);
+  const tipo = modalidad === "presencial" ? "presencial" : "online";
+  const mensaje = `Hola, quiero reservar la sesión del ${diaSemana} ${dia} de ${MES_CALENDARIO.nombre.toLowerCase()} a las ${hora} (${tipo}).`;
+  return enlaceReserva(mensaje);
+}
 
 /** Ubicación pública de las sesiones presenciales */
 export const MAPS_CASA_ZENIA =
