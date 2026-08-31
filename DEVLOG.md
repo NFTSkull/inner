@@ -2,6 +2,9 @@
 
 ## 2026-08-30
 
+- **Header → calendario.** El botón Reservar del nav hace scroll
+  a `#calendario`; WhatsApp queda para “Reservar este día”, banner,
+  footer y el cierre del Respirador.
 - **Reservas → WhatsApp.** Todos los “Reservar” abren
   `wa.me/528132608095` con texto listo. Día del calendario lleva
   fecha/hora/modalidad. Instagram queda solo como red social.

@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useLenis } from "@/components/motion/LenisProvider";
 import { Boton } from "@/components/ui/Boton";
 import { DURACION, EASE_RESPIRO } from "@/lib/breath";
-import { ENLACE_RESERVA } from "@/lib/data/sesiones";
 
 const ENLACES = [
   { href: "/#calendario", texto: "Calendario" },
@@ -79,14 +78,14 @@ export function Nav() {
               {enlace.texto}
             </a>
           ))}
-          <Boton href={ENLACE_RESERVA} externo className="!px-6 !py-2.5">
+          <Boton href="/#calendario" className="!px-6 !py-2.5">
             Reservar
           </Boton>
         </div>
 
         {/* Móvil */}
         <div className="flex items-center gap-3 md:hidden">
-          <Boton href={ENLACE_RESERVA} externo className="!px-5 !py-2 text-sm">
+          <Boton href="/#calendario" className="!px-5 !py-2 text-sm">
             Reservar
           </Boton>
           <button

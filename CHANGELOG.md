@@ -2,6 +2,8 @@
 
 ## 2026-08-30
 
+- El “Reservar” del header vuelve a llevar al calendario; el resto
+  de reservas sigue abriendo WhatsApp con mensaje preestablecido.
 - Reservas por WhatsApp al 81 3260 8095 con mensaje preestablecido.
   En el calendario el mensaje incluye día, hora y modalidad.
 
