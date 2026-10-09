@@ -5,6 +5,8 @@ type Props = {
   texto: string;
   etiqueta?: "h1" | "h2" | "h3" | "p" | "span";
   className?: string;
+  /** false = firma en minúsculas (mismo trazo, sin uppercase). */
+  mayusculas?: boolean;
 };
 
 /**
@@ -16,12 +18,15 @@ export function TituloTrazo({
   texto,
   etiqueta: Etiqueta = "h1",
   className = "",
+  mayusculas = true,
 }: Props) {
   const lineas = texto.split("\n");
   let indice = 0;
 
   return (
-    <Etiqueta className={`display-trazo ${className}`}>
+    <Etiqueta
+      className={`${mayusculas ? "display-trazo" : "firma-trazo"} ${className}`}
+    >
       {lineas.map((linea, l) => (
         <span key={l} className="block">
           {linea

@@ -28,6 +28,21 @@ export const DURACION = {
   velo: 1.2,
 } as const;
 
+/**
+ * Modos de motion por energia de seccion.
+ * Duraciones sugeridas derivadas de DURACION (no inventar ms sueltos).
+ */
+export const MODO_MOTION = {
+  /** Flujo editorial: hovers y transiciones de seccion. */
+  flow: { duration: DURACION.larga },
+  /** Respuesta rapida: focus, taps, microfeedback. */
+  react: { duration: DURACION.corta },
+  /** Energia breve: entradas de eventos / ritmo alto. */
+  burst: { duration: DURACION.corta },
+  /** Pausa: escenas lentas, Club, intro. */
+  pause: { duration: DURACION.velo },
+} as const;
+
 /** La curva de todo el sitio, formato Motion. */
 export const EASE_RESPIRO = [0.4, 0, 0.2, 1] as const;
 

@@ -1,12 +1,68 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
 import { useEsMovil } from "@/lib/viewport";
 
-const HERO_MP4 = "/hero.mp4?v=13";
-const HERO_POSTER = "/hero-poster.jpg?v=13";
+export type MediosHero = {
+  mp4: string;
+  /** Recorte vertical para pantallas < 768px (se elige con <source media>). */
+  mp4Movil?: string;
+  /** Respaldo para navegadores sin H.264. */
+  webm?: string;
+  poster: string;
+  posterMovil?: string;
+  sizes?: string;
+  /** Clases de encuadre para video y poster. */
+  claseMedia?: string;
+};
+
+const MEDIOS_CLUB: MediosHero = {
+  mp4: "/hero.mp4?v=13",
+  poster: "/hero-poster.jpg?v=13",
+  sizes: "(min-width: 1024px) 60vw, 100vw",
+  claseMedia: "media-hero",
+};
+
+const MEDIA_MOVIL = "(max-width: 767px)";
+const MEDIA_DESKTOP = "(min-width: 768px)";
+
+function Poster({ medios }: { medios: MediosHero }) {
+  const clase = `${medios.claseMedia ?? "media-hero"} z-0`;
+  const sizes = medios.sizes ?? "100vw";
+
+  if (!medios.posterMovil) {
+    return (
+      <Image
+        src={medios.poster}
+        alt=""
+        fill
+        priority
+        quality={70}
+        sizes={sizes}
+        className={clase}
+      />
+    );
+  }
+
+  const comun = { alt: "", fill: true, priority: true, quality: 70, sizes };
+  const {
+    props: { srcSet: srcDesktop },
+  } = getImageProps({ ...comun, src: medios.poster });
+  const {
+    props: { srcSet: srcMovil, ...resto },
+  } = getImageProps({ ...comun, src: medios.posterMovil });
+
+  return (
+    <picture>
+      <source media={MEDIA_DESKTOP} srcSet={srcDesktop} />
+      <source media={MEDIA_MOVIL} srcSet={srcMovil} />
+      {/* eslint-disable-next-line jsx-a11y/alt-text */}
+      <img {...resto} className={clase} />
+    </picture>
+  );
+}
 
 function prepararParaAutoplay(nodo: HTMLVideoElement) {
   nodo.defaultMuted = true;
@@ -23,7 +79,7 @@ function prepararParaAutoplay(nodo: HTMLVideoElement) {
  * mantiene. En móvil: siempre monta el video, reintenta play al
  * scroll/gesto y no llama load() (rompe autoplay en iOS).
  */
-export function FondoHero() {
+export function FondoHero({ medios = MEDIOS_CLUB }: { medios?: MediosHero }) {
   const reducir = useReducedMotion();
   const esMovil = useEsMovil();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -125,28 +181,29 @@ export function FondoHero() {
       aria-hidden="true"
     >
       <div ref={marcoRef} className="marco-hero absolute inset-0">
-        <Image
-          src={HERO_POSTER}
-          alt=""
-          fill
-          priority
-          quality={70}
-          sizes="(min-width: 1024px) 60vw, 100vw"
-          className="media-hero z-0"
-        />
+        <Poster medios={medios} />
         {montarVideo && (
           <video
             ref={asignarVideo}
-            className="media-hero z-[1]"
-            src={HERO_MP4}
+            className={`${medios.claseMedia ?? "media-hero"} z-[1]`}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            poster={HERO_POSTER}
+            poster={medios.posterMovil ? undefined : medios.poster}
             disablePictureInPicture
-          />
+          >
+            {medios.mp4Movil && (
+              <source
+                src={medios.mp4Movil}
+                type="video/mp4"
+                media={MEDIA_MOVIL}
+              />
+            )}
+            <source src={medios.mp4} type="video/mp4" />
+            {medios.webm && <source src={medios.webm} type="video/webm" />}
+          </video>
         )}
       </div>
       <div className="velo-hero absolute inset-0 z-[2]" />

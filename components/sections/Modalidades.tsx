@@ -1,22 +1,37 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { CirculoAMano } from "@/components/ui/CirculoAMano";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
+import { COLOR_SEDE, SEDES, type SedeId } from "@/lib/data/sesiones";
 
 /**
- * Las dos modalidades del club. La codificación es semántica y
- * no se invierte nunca: azul = presencial, salvia = online.
+ * Las dos modalidades del club. Cada sede conserva su color del
+ * calendario; fechas y horarios viven solo en el calendario del mes.
  */
 
-const MODALIDADES = [
+type Linea = { texto: string; sede?: SedeId };
+
+const sede = (id: SedeId): Linea => ({
+  texto: `${SEDES[id].nombre} · ${SEDES[id].zona}`,
+  sede: id,
+});
+
+const MODALIDADES: readonly {
+  nombre: string;
+  color: string;
+  tarjeta: string;
+  variante: 0 | 1;
+  lineas: readonly Linea[];
+  nota: string;
+}[] = [
   {
     nombre: "Presencial",
     color: "text-azul-hondo",
     tarjeta: "tarjeta-papel",
-    variante: 0 as const,
+    variante: 0,
     lineas: [
-      "Casa Zenia, Monterrey",
-      "Domingos 10:00 am",
-      "Martes 8:00 pm",
+      sede("casa-zenia"),
+      sede("oh-my-core"),
+      { texto: "Fechas y horarios en el calendario del mes" },
     ],
     nota: "Llega 10 minutos antes. Trae tu tapete.",
   },
@@ -24,15 +39,14 @@ const MODALIDADES = [
     nombre: "Online",
     color: "text-salvia-hondo",
     tarjeta: "tarjeta-papel-b",
-    variante: 1 as const,
+    variante: 1,
     lineas: [
-      "Desde tu casa, por videollamada",
-      "Jueves 8:00 pm",
-      "Recibes el enlace 30 min antes",
+      { texto: "Desde tu casa, por videollamada", sede: "online" },
+      { texto: "Recibes el enlace 30 min antes" },
     ],
     nota: "Solo necesitas audífonos y un lugar sin interrupciones.",
   },
-] as const;
+];
 
 export function Modalidades() {
   return (
@@ -72,8 +86,17 @@ export function Modalidades() {
                 </h3>
                 <ul className="mt-6 space-y-2">
                   {modalidad.lineas.map((linea) => (
-                    <li key={linea} className="text-cuerpo-l text-tinta">
-                      {linea}
+                    <li
+                      key={linea.texto}
+                      className="flex items-center gap-2.5 text-cuerpo-l text-tinta"
+                    >
+                      {linea.sede && (
+                        <span
+                          aria-hidden="true"
+                          className={`inline-block h-2.5 w-2.5 shrink-0 rounded-full ${COLOR_SEDE[linea.sede].fondo}`}
+                        />
+                      )}
+                      {linea.texto}
                     </li>
                   ))}
                 </ul>

@@ -11,7 +11,7 @@ export function Lugar() {
     <section
       id="lugar"
       aria-label="El lugar, Casa Zenia"
-      className="scroll-mt-24 bg-arena-hondo px-5 py-24 sm:px-8 sm:py-28"
+      className="scroll-mt-24 bg-arena-hondo px-5 py-16 sm:px-8 sm:py-20"
     >
       <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-12 lg:gap-x-14">
         <Reveal className="lg:col-span-7">

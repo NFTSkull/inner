@@ -8,18 +8,26 @@ import { CirculoAMano } from "@/components/ui/CirculoAMano";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
 import { DURACION, EASE_RESPIRO } from "@/lib/breath";
 import {
-  HORARIOS,
-  MES_CALENDARIO,
-  SESIONES,
-  enlaceReservaDia,
-  horaDeSesion,
-  type Modalidad,
+  enlaceReservaSesion,
+  estadoSesion,
+  mesActivo,
+  mesesConSesiones,
+  sesionesDelMes,
+  type SesionProgramada,
+} from "@/lib/data/proxima-sesion";
+import {
+  COLOR_SEDE,
+  HORARIOS_CLUB,
+  ORDEN_SEDES,
+  SEDES,
 } from "@/lib/data/sesiones";
+import { useAhora } from "@/lib/useAhora";
 
 /**
  * La tarjeta del flyer: hoja de papel con dobleces, encabezados
  * D L M M J V S y círculos trazados a mano sobre los días con
  * sesión, dibujados en cascada cuando la hoja entra al viewport.
+ * Mes, días y estado salen de las fechas reales del calendario.
  */
 
 const ENCABEZADOS = [
@@ -42,28 +50,35 @@ const DIAS_SEMANA = [
   "Sábado",
 ] as const;
 
-export function Calendario() {
+export function Calendario({ ahoraISO }: { ahoraISO: string }) {
+  const ahora = useAhora(ahoraISO);
   const hojaRef = useRef<HTMLDivElement>(null);
   const enVista = useInView(hojaRef, { once: true, margin: "-15% 0px" });
   const [diaActivo, setDiaActivo] = useState<number | null>(null);
 
-  const modalidadDe = useMemo(() => {
-    const mapa = new Map<number, Modalidad>();
-    SESIONES.presencial.forEach((d) => mapa.set(d, "presencial"));
-    SESIONES.online.forEach((d) => mapa.set(d, "online"));
+  const claveMes = mesActivo(ahora)?.clave ?? null;
+  const mes = useMemo(
+    () => mesesConSesiones().find((m) => m.clave === claveMes) ?? null,
+    [claveMes]
+  );
+
+  const sesionDe = useMemo(() => {
+    const mapa = new Map<number, SesionProgramada>();
+    if (mes) sesionesDelMes(mes).forEach((s) => mapa.set(s.dia, s));
     return mapa;
-  }, []);
+  }, [mes]);
 
   /* Orden de dibujado de los círculos: cronológico, 80ms entre cada uno */
-  const ordenDibujo = useMemo(() => {
-    const dias = [...modalidadDe.keys()].sort((a, b) => a - b);
-    return new Map(dias.map((d, i) => [d, i]));
-  }, [modalidadDe]);
+  const ordenDibujo = useMemo(
+    () => new Map([...sesionDe.keys()].map((d, i) => [d, i])),
+    [sesionDe]
+  );
 
   const semanas = useMemo(() => {
+    if (!mes) return [];
     const celdas: (number | null)[] = [
-      ...Array.from({ length: MES_CALENDARIO.primerDia }, () => null),
-      ...Array.from({ length: MES_CALENDARIO.dias }, (_, i) => i + 1),
+      ...Array.from({ length: mes.primerDia }, () => null),
+      ...Array.from({ length: mes.dias }, (_, i) => i + 1),
     ];
     while (celdas.length % 7 !== 0) celdas.push(null);
     const filas: (number | null)[][] = [];
@@ -71,20 +86,25 @@ export function Calendario() {
       filas.push(celdas.slice(i, i + 7));
     }
     return filas;
-  }, []);
+  }, [mes]);
 
-  const detalle = diaActivo ? modalidadDe.get(diaActivo) : undefined;
+  if (!mes) return null;
+
+  const detalle = diaActivo ? sesionDe.get(diaActivo) : undefined;
+  const detalleRealizada = detalle
+    ? estadoSesion(detalle, ahora) === "realizada"
+    : false;
 
   return (
     <section
       id="calendario"
       aria-label="Calendario de sesiones"
-      className="scroll-mt-24 bg-arena-hondo px-5 py-28 sm:px-8"
+      className="scroll-mt-24 bg-arena-hondo px-5 py-16 sm:px-8 sm:py-20"
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <TituloTrazo
-            texto={`${MES_CALENDARIO.nombre} en el club`}
+            texto={`${mes.nombre} en el club`}
             etiqueta="h2"
             className="text-display-l text-tinta"
           />
@@ -98,7 +118,7 @@ export function Calendario() {
             >
               <table className="w-full border-separate border-spacing-y-1 text-center">
                 <caption className="display-trazo mb-6 text-titulo text-tinta">
-                  {MES_CALENDARIO.nombre} {MES_CALENDARIO.anio}
+                  {mes.nombre} {mes.anio}
                 </caption>
                 <thead>
                   <tr>
@@ -120,8 +140,8 @@ export function Calendario() {
                     <tr key={s}>
                       {semana.map((dia, d) => {
                         if (!dia) return <td key={d} aria-hidden="true" />;
-                        const modalidad = modalidadDe.get(dia);
-                        if (!modalidad) {
+                        const sesion = sesionDe.get(dia);
+                        if (!sesion) {
                           return (
                             <td
                               key={d}
@@ -133,6 +153,8 @@ export function Calendario() {
                         }
                         const orden = ordenDibujo.get(dia) ?? 0;
                         const activo = diaActivo === dia;
+                        const realizada =
+                          estadoSesion(sesion, ahora) === "realizada";
                         return (
                           <td key={d} className="py-2">
                             <button
@@ -142,8 +164,8 @@ export function Calendario() {
                               }
                               onMouseEnter={() => setDiaActivo(dia)}
                               aria-expanded={activo}
-                              aria-label={`${DIAS_SEMANA[d]} ${dia}, meditación ${modalidad}, ${horaDeSesion(dia)}. Ver detalle`}
-                              className={`numero-tabular relative mx-auto flex h-11 w-11 items-center justify-center text-cuerpo font-normal text-tinta transition-transform duration-[400ms] ease-[var(--ease-respiro)] motion-reduce:transition-none ${activo ? "scale-110" : ""}`}
+                              aria-label={`${DIAS_SEMANA[sesion.diaSemana]} ${dia}, ${sesion.horaTexto}, ${sesion.modalidad === "online" ? "online" : sesion.lugar}${realizada ? ", sesión realizada" : ""}, ver detalle`}
+                              className={`numero-tabular relative mx-auto flex h-11 w-11 items-center justify-center text-cuerpo font-normal transition-transform duration-[400ms] ease-[var(--ease-respiro)] motion-reduce:transition-none ${realizada ? "text-tinta-suave/70" : "text-tinta"} ${activo ? "scale-110" : ""}`}
                             >
                               {dia}
                               <CirculoAMano
@@ -151,11 +173,7 @@ export function Calendario() {
                                 dibujado={enVista}
                                 retrasoMs={orden * 80}
                                 grosor={8}
-                                className={`absolute inset-0 h-full w-full ${
-                                  modalidad === "presencial"
-                                    ? "text-azul-hondo"
-                                    : "text-salvia-hondo"
-                                }`}
+                                className={`absolute inset-0 h-full w-full ${COLOR_SEDE[sesion.sede].texto} ${realizada ? "opacity-35" : ""}`}
                               />
                             </button>
                           </td>
@@ -167,28 +185,23 @@ export function Calendario() {
               </table>
 
               {/* Leyenda */}
-              <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-tinta/10 pt-6">
-                <p className="flex items-center gap-2 text-cuerpo text-tinta-suave">
-                  <CirculoAMano
-                    variante={0}
-                    dibujado={enVista}
-                    retrasoMs={900}
-                    grosor={9}
-                    className="h-4 w-5 text-azul-hondo"
-                  />
-                  meditación presencial
-                </p>
-                <p className="flex items-center gap-2 text-cuerpo text-tinta-suave">
-                  <CirculoAMano
-                    variante={1}
-                    dibujado={enVista}
-                    retrasoMs={980}
-                    grosor={9}
-                    className="h-4 w-5 text-salvia-hondo"
-                  />
-                  meditación online
-                </p>
-              </div>
+              <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-tinta/10 pt-6">
+                {ORDEN_SEDES.map((id, i) => (
+                  <li
+                    key={id}
+                    className="flex items-center gap-2 text-cuerpo text-tinta-suave"
+                  >
+                    <CirculoAMano
+                      variante={((i % 3) as 0 | 1 | 2)}
+                      dibujado={enVista}
+                      retrasoMs={900 + i * 80}
+                      grosor={9}
+                      className={`h-4 w-5 ${COLOR_SEDE[id].texto}`}
+                    />
+                    {SEDES[id].nombre} · {SEDES[id].zona}
+                  </li>
+                ))}
+              </ul>
 
               {/* Detalle del día */}
               <div className="min-h-[92px]" aria-live="polite">
@@ -207,38 +220,32 @@ export function Calendario() {
                     >
                       <div>
                         <p className="text-cuerpo-l text-tinta">
-                          {
-                            DIAS_SEMANA[
-                              new Date(
-                                MES_CALENDARIO.anio,
-                                MES_CALENDARIO.mes,
-                                diaActivo
-                              ).getDay()
-                            ]
-                          }{" "}
-                          {diaActivo} · {horaDeSesion(diaActivo)}
+                          {DIAS_SEMANA[detalle.diaSemana]} {detalle.dia} ·{" "}
+                          {detalle.horaTexto}
                         </p>
                         <p className="flex items-center gap-2 text-cuerpo font-normal text-tinta">
                           <span
                             aria-hidden="true"
-                            className={`inline-block h-2.5 w-2.5 rounded-full ${
-                              detalle === "presencial"
-                                ? "bg-azul-hondo"
-                                : "bg-salvia-hondo"
-                            }`}
+                            className={`inline-block h-2.5 w-2.5 rounded-full ${COLOR_SEDE[detalle.sede].fondo}`}
                           />
-                          {detalle === "presencial"
-                            ? `Presencial · ${HORARIOS.presencial.lugar}`
-                            : `Online · ${HORARIOS.online.lugar}`}
+                          {detalle.modalidad === "online"
+                            ? `Online · ${detalle.lugar}`
+                            : `Presencial · ${detalle.lugar}`}
                         </p>
                       </div>
-                      <Boton
-                        href={enlaceReservaDia(diaActivo, detalle)}
-                        externo
-                        className="!px-6 !py-2.5"
-                      >
-                        Reservar este día
-                      </Boton>
+                      {detalleRealizada ? (
+                        <p className="text-etiqueta uppercase tracking-[0.14em] text-tinta-suave">
+                          Sesión realizada
+                        </p>
+                      ) : (
+                        <Boton
+                          href={enlaceReservaSesion(detalle)}
+                          externo
+                          className="!px-6 !py-2.5"
+                        >
+                          Reservar este día
+                        </Boton>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -249,12 +256,14 @@ export function Calendario() {
           {/* Nota lateral */}
           <Reveal indice={1}>
             <aside className="lg:pt-10">
-              <p className="display-trazo -rotate-2 text-titulo text-tinta-suave">
-                Domingo 10am
-              </p>
-              <p className="display-trazo mt-3 rotate-1 text-titulo text-tinta-suave">
-                Martes y Jueves 8pm
-              </p>
+              {HORARIOS_CLUB.map((linea, i) => (
+                <p
+                  key={linea}
+                  className={`display-trazo text-titulo text-tinta-suave ${i === 0 ? "-rotate-2" : "mt-3 rotate-1"}`}
+                >
+                  {linea}
+                </p>
+              ))}
               <p className="text-cuerpo mt-8 max-w-[26ch] text-tinta">
                 Toca cualquier día con círculo para ver el detalle y
                 reservar.

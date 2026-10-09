@@ -1,23 +1,20 @@
 import { BotonFlotante } from "@/components/breathe/BotonFlotante";
 import { RespiradorProvider } from "@/components/breathe/RespiradorContext";
-import { BannerPresentacion } from "@/components/sections/BannerPresentacion";
-import { Calendario } from "@/components/sections/Calendario";
-import { Faq } from "@/components/sections/Faq";
+import { ClubEnHome } from "@/components/sections/ClubEnHome";
+import { ComunidadEnHome } from "@/components/sections/ComunidadEnHome";
+import { CtaContactoHome } from "@/components/sections/CtaContactoHome";
 import { Footer } from "@/components/sections/Footer";
-import { Hero } from "@/components/sections/Hero";
-import { Lugar } from "@/components/sections/Lugar";
-import { Manifiesto } from "@/components/sections/Manifiesto";
-import { Modalidades } from "@/components/sections/Modalidades";
+import { HeroInicio } from "@/components/sections/HeroInicio";
+import { IntroInnerFlow } from "@/components/sections/IntroInnerFlow";
+import { MundosExperiencia } from "@/components/sections/MundosExperiencia";
 import { Nav } from "@/components/sections/Nav";
-import { Precios } from "@/components/sections/Precios";
-import { OndaDivisor } from "@/components/ui/OndaDivisor";
 
 const DATOS_LOCALES = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  name: "InnerFlow Meditation Club",
+  name: "Inner Flow",
   description:
-    "Club de meditación guiada con sesiones presenciales en Casa Zenia, Monterrey, y sesiones online.",
+    "Movimiento, meditación y experiencias de bienestar en Monterrey.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Sto. Domingo 218, Vista Hermosa",
@@ -27,9 +24,12 @@ const DATOS_LOCALES = {
   },
   url: "https://innerflow.mx",
   sameAs: ["https://instagram.com/innerflow.mx"],
-  priceRange: "$150 - $1,150 MXN",
 };
 
+/**
+ * Inicio: Hero audiovisual → qué es → experiencias → comunidad →
+ * Meditation Club → hablemos.
+ */
 export default function Home() {
   return (
     <RespiradorProvider>
@@ -39,16 +39,12 @@ export default function Home() {
       />
       <Nav />
       <main>
-        <Hero />
-        <BannerPresentacion />
-        <Manifiesto />
-        <OndaDivisor />
-        <Modalidades />
-        <Calendario />
-        <OndaDivisor className="mt-2" />
-        <Precios />
-        <Lugar />
-        <Faq />
+        <HeroInicio />
+        <IntroInnerFlow />
+        <MundosExperiencia variante="inicio" />
+        <ComunidadEnHome />
+        <ClubEnHome />
+        <CtaContactoHome />
       </main>
       <Footer />
       <BotonFlotante />

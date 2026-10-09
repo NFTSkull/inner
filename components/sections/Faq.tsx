@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
+import { SUELTAS, formatearPrecio } from "@/lib/data/precios";
+
+const [SUELTA_PRESENCIAL, SUELTA_ONLINE] = SUELTAS;
 
 /**
  * Acordeón de preguntas. El contenido se despliega en 600ms,
@@ -22,13 +25,12 @@ const PREGUNTAS = [
   },
   {
     pregunta: "¿Puedo ir a una sola antes de comprometerme?",
-    respuesta:
-      "Sí. Una sesión suelta cuesta $180 presencial y $150 online.",
+    respuesta: `Sí. Una sesión suelta cuesta ${formatearPrecio(SUELTA_PRESENCIAL.precio)} presencial y ${formatearPrecio(SUELTA_ONLINE.precio)} online.`,
   },
   {
     pregunta: "¿Qué pasa si no puedo ir a una sesión de mi membresía?",
     respuesta:
-      "Avísanos al menos 9 horas antes. Si hay cupo en otra fecha de septiembre, se puede reponer. Con menos de 9 horas, o si no avisas, la sesión se da por usada. Las online son solo en vivo: si no te conectas, no hay reposición.",
+      "Avísanos al menos 9 horas antes. Si hay cupo en otra fecha del mismo mes, se puede reponer. Con menos de 9 horas, o si no avisas, la sesión se da por usada. Las online son solo en vivo: si no te conectas, no hay reposición.",
   },
   {
     pregunta: "¿Tengo que sentarme en el piso?",
@@ -41,7 +43,7 @@ export function Faq() {
   const [abierta, setAbierta] = useState<number | null>(0);
 
   return (
-    <section aria-label="Preguntas frecuentes" className="px-5 py-28 sm:px-8">
+    <section aria-label="Preguntas frecuentes" className="px-5 py-16 sm:px-8 sm:py-20">
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <TituloTrazo

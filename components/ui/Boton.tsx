@@ -10,6 +10,11 @@ type Props = {
   variante?: "primario" | "secundario";
   className?: string;
   externo?: boolean;
+  /** Solo aplica cuando es <button> (sin href). */
+  type?: "button" | "submit";
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
+  "aria-haspopup"?: boolean | "dialog" | "menu" | "listbox" | "tree" | "grid";
 };
 
 export function Boton({
@@ -19,6 +24,10 @@ export function Boton({
   variante = "secundario",
   className = "",
   externo = false,
+  type = "button",
+  "aria-expanded": ariaExpanded,
+  "aria-controls": ariaControls,
+  "aria-haspopup": ariaHaspopup,
 }: Props) {
   const clases = `pildora group px-7 py-3 text-cuerpo ${className}`;
 
@@ -62,7 +71,14 @@ export function Boton({
   }
 
   return (
-    <button type="button" onClick={onClick} className={clases}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={clases}
+      aria-expanded={ariaExpanded}
+      aria-controls={ariaControls}
+      aria-haspopup={ariaHaspopup}
+    >
       {contenido}
     </button>
   );

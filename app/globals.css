@@ -5,17 +5,26 @@
 /* ------------------------------------------------------------------ */
 
 @theme {
-  /* Color: el papel y la tinta */
+  /* Color: el papel y la tinta (compatibilidad existente) */
   --color-arena: #dcd1c2;
   --color-arena-hondo: #c8baa7;
   --color-papel: #fbf8f2;
   --color-tinta: #4b3a24;
   /* Subido un paso desde #756046 para pasar AA en texto chico */
-  --color-tinta-suave: #6b573e;
+  --color-tinta-suave: #5c4a34;
   --color-azul: #9cbcdb;
   --color-azul-hondo: #7aa0c6;
   --color-salvia: #8c9c75;
   --color-salvia-hondo: #74855d;
+
+  /* Paleta del brief de reestructuracion (capas emocionales) */
+  --color-tierra: #695537;
+  /* salvia-doc: distincta de --color-salvia existente */
+  --color-salvia-doc: #76805d;
+  --color-lima: #c7d2ab;
+  --color-crema: #f1e4d0;
+  --color-cielo: #98bcd8;
+  --color-bosque: #3a5659;
 
   /* Tipografía */
   --font-display: var(--font-shantell), cursive;
@@ -45,8 +54,30 @@
   /* Papel sobre papel: la única sombra permitida */
   --shadow-papel: 0 2px 24px rgba(75, 58, 36, 0.07);
 
-  /* Radio asimétrico: que no se lea como caja de CSS */
+  /* Radios: lenguaje corto (UI / táctil / orgánico) */
+  --radius-ui: 6px;
+  --radius-tactil: 14px 12px 16px 12px;
   --radius-papel: 24px 20px 26px 22px;
+
+  /* Ritmo vertical: densidades controladas */
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.25rem; /* 20 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-section: clamp(3rem, 5.5vw, 5.5rem);
+  --space-section-tight: clamp(2.25rem, 4vw, 3.75rem);
+  --space-section-expressive: clamp(4rem, 7vw, 6.5rem);
+  --space-page-top: clamp(6.5rem, 10vw, 7.5rem);
+  --measure-copy: 38rem;
+  --measure-prose: 42rem;
+  --measure-wide: 64rem;
+  --measure-page: 72rem;
 }
 
 /* ------------------------------------------------------------------ */
@@ -90,6 +121,132 @@
 /* Utilidades de marca                                                 */
 /* ------------------------------------------------------------------ */
 
+/* Ritmo de sección: NORMAL / COMPACT / EXPRESSIVE */
+@utility section-y {
+  padding-block: var(--space-section);
+}
+
+@utility section-y-tight {
+  padding-block: var(--space-section-tight);
+}
+
+@utility section-y-expressive {
+  padding-block: var(--space-section-expressive);
+}
+
+@utility page-pad-x {
+  padding-inline: 1.25rem;
+}
+
+@utility page-top {
+  padding-top: var(--space-page-top);
+}
+
+@utility measure-copy {
+  max-width: var(--measure-copy);
+}
+
+@utility measure-prose {
+  max-width: var(--measure-prose);
+}
+
+@utility measure-wide {
+  max-width: var(--measure-wide);
+}
+
+/*
+ * Coreografía de capítulos.
+ * Continuidad: mismo fondo.
+ * Chapter: lavado 120–180px (no corte duro).
+ * Signature: lavado más expresivo (máx. 1–2 por página).
+ */
+@utility chapter-wash-arena-crema {
+  background: linear-gradient(
+    to bottom,
+    var(--color-arena) 0%,
+    color-mix(in srgb, var(--color-crema) 55%, var(--color-arena)) 55%,
+    var(--color-crema) 100%
+  );
+}
+
+@utility chapter-wash-arena-lima {
+  background: linear-gradient(
+    to bottom,
+    var(--color-arena) 0%,
+    color-mix(in srgb, var(--color-lima) 40%, var(--color-arena)) 45%,
+    var(--color-lima) 100%
+  );
+}
+
+@utility chapter-wash-lima-bosque {
+  background: linear-gradient(
+    to bottom,
+    var(--color-lima) 0%,
+    color-mix(in srgb, var(--color-bosque) 55%, var(--color-lima)) 50%,
+    var(--color-bosque) 100%
+  );
+}
+
+@utility chapter-wash-bosque-tierra {
+  background: linear-gradient(
+    to bottom,
+    var(--color-bosque) 0%,
+    color-mix(in srgb, var(--color-tierra) 60%, var(--color-bosque)) 55%,
+    var(--color-tierra) 100%
+  );
+}
+
+@utility chapter-wash-crema-arena {
+  background: linear-gradient(
+    to bottom,
+    var(--color-crema) 0%,
+    color-mix(in srgb, var(--color-arena) 50%, var(--color-crema)) 50%,
+    var(--color-arena) 100%
+  );
+}
+
+@utility chapter-wash-lima-arena {
+  background: linear-gradient(
+    to bottom,
+    var(--color-lima) 0%,
+    color-mix(in srgb, var(--color-arena) 45%, var(--color-lima)) 50%,
+    var(--color-arena) 100%
+  );
+}
+
+@utility bridge-pad {
+  padding-block: clamp(2.5rem, 4.5vw, 4.25rem);
+}
+
+@utility soft-rule {
+  border-top: 1px solid color-mix(in srgb, var(--color-tinta) 12%, transparent);
+}
+
+/* Fondos de seccion desde la paleta del brief */
+@utility section-bg-crema {
+  background-color: var(--color-crema);
+}
+
+@utility section-bg-lima {
+  background-color: var(--color-lima);
+}
+
+@utility section-bg-cielo {
+  background-color: var(--color-cielo);
+}
+
+@utility section-bg-bosque {
+  background-color: var(--color-bosque);
+}
+
+@utility section-bg-tierra {
+  background-color: var(--color-tierra);
+}
+
+@utility section-bg-salvia-doc {
+  background-color: var(--color-salvia-doc);
+}
+
 /* Lettering de plumón: Shantell con rebote alto e informalidad media */
 @utility display-trazo {
   font-family: var(--font-display);
@@ -99,6 +256,16 @@
   font-weight: 640;
   text-transform: uppercase;
   letter-spacing: -0.01em;
+}
+
+/* Firma: el mismo trazo de plumón, sin mayúsculas forzadas */
+@utility firma-trazo {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "BNCE" 30,
+    "INFM" 55;
+  font-weight: 540;
+  letter-spacing: -0.02em;
 }
 
 /* Datos y precios: Jost tabular, peso ligero, tracking abierto */
@@ -330,6 +497,28 @@
 /* Sin velo global: el papel ya es la columna izquierda. */
 @utility velo-hero {
   background: transparent;
+}
+
+/* Hero de Inicio: velo solo donde vive el copy (arriba en móvil,
+   esquina inferior izquierda en desktop). El resto del video queda limpio. */
+@utility velo-hero-inicio {
+  background: linear-gradient(
+    to bottom,
+    rgb(36 27 16 / 0.58) 0%,
+    rgb(36 27 16 / 0.26) 30%,
+    transparent 50%
+  );
+
+  @media (min-width: 48rem) {
+    background:
+      radial-gradient(
+        95% 85% at 0% 100%,
+        rgb(36 27 16 / 0.74) 0%,
+        rgb(36 27 16 / 0.5) 40%,
+        transparent 74%
+      ),
+      linear-gradient(to top, rgb(36 27 16 / 0.18), transparent 40%);
+  }
 }
 
 /* Sin fade de opacity en el video: en móvil (columna bajo el fold)

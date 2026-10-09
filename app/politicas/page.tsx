@@ -3,7 +3,7 @@ import { Footer } from "@/components/sections/Footer";
 import { Nav } from "@/components/sections/Nav";
 import { Reveal } from "@/components/motion/Reveal";
 import { TituloTrazo } from "@/components/ui/TituloTrazo";
-import { POLITICAS_CLUB, PRIVACIDAD } from "@/lib/data/politicas";
+import { POLITICAS_CLUB, POLITICAS_OPERACION, PRIVACIDAD } from "@/lib/data/politicas";
 
 export const metadata: Metadata = {
   title: "Políticas y privacidad · InnerFlow",
@@ -30,7 +30,7 @@ export default function PaginaPoliticas() {
 
           <section id="politicas" className="mt-14 scroll-mt-28">
             <Reveal>
-              <h2 className="display-trazo text-titulo text-tinta">
+              <h2 className="text-titulo font-normal tracking-[-0.015em] text-tinta">
                 Políticas del club
               </h2>
             </Reveal>
@@ -51,9 +51,34 @@ export default function PaginaPoliticas() {
             </ol>
           </section>
 
+          <section id="operacion" className="mt-20 scroll-mt-28">
+            <Reveal>
+              <h2 className="text-titulo font-normal tracking-[-0.015em] text-tinta">
+                Reservas y operación
+              </h2>
+              <p className="text-cuerpo-l mt-4 max-w-xl text-tinta-suave">
+                Condiciones operativas de sesiones privadas, celebraciones y
+                experiencias corporativas, según el documento de
+                reestructuración. No sustituyen un aviso legal.
+              </p>
+            </Reveal>
+            <div className="mt-10 space-y-10">
+              {POLITICAS_OPERACION.map((bloque, i) => (
+                <Reveal key={bloque.titulo} indice={i}>
+                  <h3 className="text-etiqueta uppercase text-tinta">
+                    {bloque.titulo}
+                  </h3>
+                  <p className="text-cuerpo-l mt-2 max-w-xl text-tinta">
+                    {bloque.cuerpo}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
           <section id="privacidad" className="mt-20 scroll-mt-28">
             <Reveal>
-              <h2 className="display-trazo text-titulo text-tinta">
+              <h2 className="text-titulo font-normal tracking-[-0.015em] text-tinta">
                 Privacidad
               </h2>
               <p className="text-cuerpo-l mt-4 max-w-xl text-tinta-suave">

@@ -1,5 +1,139 @@
 # Changelog
 
+## 2026-10-09 · Meditation Club octubre
+
+- Calendario del Club: octubre 2026 con 13 sesiones explícitas
+  (`SESIONES_CLUB`, fecha ISO + hora + sede); septiembre deja de
+  mostrarse. Sedes Casa Zenia · Vista Hermosa (azul), Oh my core! ·
+  San Nicolás (tierra) y En línea · Virtual (salvia), con leyenda y
+  horarios “Viernes y domingo · 10:00 a. m.” / “Martes y jueves ·
+  8:00 p. m.” solo como explicación.
+- Mes, año, día de la semana y cuadrícula se derivan de las fechas;
+  el mes activo es el de la próxima sesión (o el último publicado).
+- Sesiones pasadas: siguen en el calendario mensual, atenuadas, con
+  “Sesión realizada” y sin reserva. En `/calendario` van al final
+  bajo “Sesiones realizadas · Octubre”.
+- Próximas sesiones: instante real en America/Monterrey, `inicio >=
+  ahora`, orden ascendente. `/club` y `/calendario` se regeneran
+  cada hora y el cliente actualiza el estado cada minuto.
+- Reserva por sesión vía `enlaceReserva`: “Hola, quiero reservar mi
+  lugar para Meditation Club en Casa Zenia el domingo 25 de octubre
+  a las 10:00 a. m.” / “… online el jueves 29 …”.
+- Precios del Club confirmados sin cambios; el FAQ toma los de
+  sesión suelta de `precios.ts`. Modalidades, Hero y metadatos del
+  Club mencionan Oh my core!.
+- Pruebas: `test-proxima` y `test-calendario` reescritas sobre los
+  datos reales (espejo en `scripts/espejo-club.mjs`) + QA de
+  contenido (sin septiembre, precios, sin disponibilidad inventada).
+
+## 2026-10-09
+
+- Home: se retira la franja de pilares 01 Movimiento · 02 Meditación ·
+  03 Sonido · 04 Conexión de la Intro.
+- Hero de Home audiovisual: bloque editorial redondeado con el video
+  del MOV original convertido a H.264 (escritorio 1600×900 y recorte
+  vertical móvil 600×800) + VP9 de respaldo y posters por breakpoint.
+  Copy “Espacios para / volver a ti” sobre velo localizado, CTAs
+  “Explorar experiencias” y “Ver calendario →”. El MOV queda intacto.
+- Header: cápsula central (Experiencias ▾, Calendario, Meditation
+  Club, Conóceme) + “Hablemos →”; dropdown con los 4 destinos (sin
+  “Ver todas”); el clic tras hover ya no lo cierra. Menú móvil con
+  hojas de experiencias + filas.
+- Home: Intro editorial sin eyebrow + pilares 01–04 en franja;
+  4 tarjetas de experiencias (reemplaza intenciones y lista 01–04);
+  bloque Comunidad compacto con Instagram; Club compacto; sin
+  empty state ni “Próximas”. Footer compacto de 3 columnas.
+- Sesiones privadas: descripciones de una línea, “Pilates”, tabla
+  60/90 min sin “Desde”, máximo 15 personas; fuera “Cómo quieres
+  vivirla”. Celebraciones: cada experiencia autocontenida, logística
+  en 4 puntos, CTA principal después de la información. Empresas:
+  sin intro larga, sin bullets/consecutivas; cierre “Información
+  importante” + CTA. Comunidad/Contacto: textos acortados.
+- Calendario: filas compactas en Jost (sin Shantell en lista larga),
+  etiqueta de mes una sola vez, sin descripción genérica por sesión.
+- Encabezados `SectionHeading` en Jost light; hub de Experiencias y
+  Calendario alineados al patrón de héroes internos; `page-top`
+  con más aire bajo el header en móvil.
+- Eliminados: `QueNecesitasHoy`, `PreviewExperiencias`,
+  `ProximasExperiencias`, `SelectorSesiones`, `CapituloLabel`,
+  `ExperienceDisclosure`. Nueva prueba `scripts/test-contenido.mjs`.
+
+## 2026-09-23
+
+- Home Hero + Intro: composición editorial (copy | video `FondoHero`),
+  tipografía “Espacios para” Jost + “volver a ti” Shantell, CTA
+  secundario subrayado. Intro asimétrica (idea emocional | factual) +
+  pilares tipográficos Movimiento/Meditación/Sonido/Conexión. Puente
+  único: media solapa hacia Intro. Sin copy inventado ni secciones
+  nuevas.
+- Pass de jerarquía informativa (claridad): capítulos tonales por
+  página, sin lavados turbios multi-color. Sesiones privadas 01–06
+  (crema→papel→arena→papel→lima→bosque); selector con activo claro
+  y panel editorial; Ideal para como lista. Home: Club bosque limpio
+  + FlowLine; cierre tierra sin wash barroso. Empresas/celebraciones/
+  eventos/contacto/conóceme: capítulos separados, CTA bosque, menos
+  Shantell (SectionHeading default Jost), contraste tinta-suave
+  reforzado. Sin nuevas rutas ni contenido inventado.
+
+## 2026-09-22
+
+- Coreografía entre secciones: lavados `chapter-wash-*`
+  (arena↔crema↔lima↔bosque↔tierra), soft-rules de continuidad,
+  Universos editorial + puente “Lo que viene” hacia Próximas,
+  Sesiones 4/8 sin dead space, menos Shantell en listas.
+  Sin nuevas rutas ni ondas decorativas.
+- Pass visual premium: sistema de ritmo
+  (`section-y` / tight / expressive), densidades controladas,
+  menos cards, tipografía Jost estructural vs Shantell puntual,
+  firmas por página (selector sesiones, mundos hub, nav sticky
+  empresas, form paths contacto). Sin nuevas rutas ni reescritura
+  factual. Club solo densificado.
+- Arquitectura multipágina: Home = portal; hub `/experiencias`;
+  sesiones y celebraciones bajo `/experiencias/*`;
+  `/empresas-y-colegios`, `/eventos-y-comunidad`; Club en `/club`.
+  Redirects 308 desde URLs legacy. Nav con dropdown Experiencias.
+  Precios de celebraciones centralizados con flag de revisión
+  (discrepancia narrativo vs tabla). Sin `/recursos`.
+- Runtime: script `npm run dev:fresh` (`rm -rf .next && next dev`)
+  para recuperar tras caché `.next` inconsistente que provocaba
+  404 en `/_next/static/*`. Sin cambios de diseño ni de rutas.
+- Contenido factual del DOCX "Restructuración página web" en
+  `experiencias.ts`: INTRO, INTENCIONES, SESIONES/CELEBRACIONES/
+  EMPRESAS/COMUNIDAD_PAGE, CLUB_HOME, precios y copy por experiencia.
+  `experienciaUi` prioriza `priceLabel` e `idealForChips`.
+  `conflictos.ts`: documento encontrado; testimonio y EJEMPLO de
+  calendario no publicados.
+- Páginas de experiencias y meta: sesiones privadas, celebraciones,
+  empresas/colegios, comunidad, calendario, conóceme y contacto.
+  Datos tipados; sin inventar precios, eventos ni certificaciones.
+  Calendario muestra sesiones reales del Club (Septiembre) como
+  meditación. Contacto abre WhatsApp (sin backend falso).
+- Home de marca completa: HeroInicio (HOME_COPY), IntroInnerFlow,
+  QueNecesitasHoy (filas de intenciones), PreviewExperiencias,
+  ProximasExperiencias (EmptyState si EVENTOS vacío), ClubEnHome,
+  CtaContactoHome; Lugar y Footer suavizado (menos claim solo-Club).
+- Primitivos UI: FlowLine, EmptyState, SectionHeading,
+  ExperienceDisclosure, EventCard. Boton con aria-expanded/controls/haspopup.
+- Nav híbrida: barra (Experiencias / Calendario / Club) + Explorar
+  (overlay de hojas, sin hamburguesa) + Hablemos → `/contacto`.
+- Capa de datos de reestructuración: `site`, `experiencias`, `eventos`,
+  `about`, `conflictos`; nav primaria + overlay; tokens de color del
+  brief y `MODO_MOTION` en `breath.ts`. Precios fuera del Club
+  ya integrados desde el DOCX (ver bullet de contenido factual).
+
+## 2026-09-22
+
+- Integración del documento de reestructuración: precios reales,
+  bio de Analú, contacto (email + WhatsApp + IG), políticas
+  operativas y CTAs factuales. Sin testimonios ni eventos de ejemplo.
+
+## 2026-09-10
+
+- Home de marca InnerFlow: hero sin media, vitrina de 5 servicios,
+  El lugar. Meditation Club en `/club` (contenido anterior intacto).
+- Páginas: sesiones privadas, eventos privados, empresas y colegios,
+  comunidad. Nav global con submenú del Club; sin CTA Reservar suelto.
+
 ## 2026-08-30
 
 - El “Reservar” del header vuelve a llevar al calendario; el resto

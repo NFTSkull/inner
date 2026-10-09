@@ -62,7 +62,7 @@ export function Precios() {
     <section
       id="precios"
       aria-label="Membresía"
-      className="scroll-mt-24 px-5 py-28 sm:px-8"
+      className="scroll-mt-24 px-5 py-16 sm:px-8 sm:py-20"
     >
       <div className="mx-auto max-w-3xl">
         <Reveal>

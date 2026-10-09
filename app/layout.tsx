@@ -20,13 +20,13 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://innerflow.mx"),
-  title: "InnerFlow · Meditation Club en Monterrey",
+  title: "InnerFlow · Bienestar en Monterrey",
   description:
-    "Sesiones de meditación guiada, presenciales en Casa Zenia y online desde donde estés. No necesitas experiencia previa.",
+    "Sesiones privadas, eventos, bienestar para empresas y el Meditation Club. Casa Zenia, Monterrey, o donde tú estés.",
   openGraph: {
-    title: "InnerFlow · Meditation Club en Monterrey",
+    title: "InnerFlow · Bienestar en Monterrey",
     description:
-      "Sesiones de meditación guiada, presenciales en Casa Zenia y online. No necesitas experiencia previa.",
+      "Sesiones privadas, eventos, bienestar para empresas y el Meditation Club en Casa Zenia.",
     siteName: "InnerFlow",
     locale: "es_MX",
     type: "website",

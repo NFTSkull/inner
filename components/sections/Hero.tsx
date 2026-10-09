@@ -42,7 +42,7 @@ export function Hero() {
 
           <Reveal indice={3}>
             <p className="text-cuerpo mt-3 max-w-[22rem] text-tinta-suave">
-              Presencial en Casa Zenia y online. No es necesario experiencia previa.
+              Presencial en Casa Zenia y Oh my core!, y online. No es necesario experiencia previa.
             </p>
           </Reveal>
 

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Boton } from "@/components/ui/Boton";
-import { ENLACE_RESERVA } from "@/lib/data/sesiones";
 import {
+  enlaceReservaSesion,
   formatearRestante,
   proximaSesion,
   type SesionProgramada,
@@ -27,7 +27,7 @@ export function BannerPresentacion() {
         setRestante("");
         return;
       }
-      setRestante(formatearRestante(siguiente.fecha.getTime() - Date.now()));
+      setRestante(formatearRestante(siguiente.inicio.getTime() - Date.now()));
     };
 
     tick();
@@ -71,7 +71,7 @@ export function BannerPresentacion() {
         </div>
         <div className="flex flex-col items-start gap-3 md:items-end">
           <Boton
-            href={ENLACE_RESERVA}
+            href={enlaceReservaSesion(sesion)}
             externo
             className="!border-papel !text-papel !text-[1.17rem] !font-bold hover:!text-salvia-hondo focus-visible:!text-salvia-hondo [&::before]:!bg-papel"
           >

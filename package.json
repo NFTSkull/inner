@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:fresh": "rm -rf .next && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --test scripts/test-proxima.mjs"
+    "test": "node --test scripts/test-proxima.mjs scripts/test-calendario.mjs scripts/test-rutas.mjs scripts/test-contenido.mjs"
   },
   "dependencies": {
     "lenis": "^1.3.26",

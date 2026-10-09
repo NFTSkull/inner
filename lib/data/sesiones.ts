@@ -1,47 +1,77 @@
 /**
- * Calendario del Meditation Club. Editable: cambia aquí los días
- * y el sitio se actualiza solo.
+ * Calendario del Meditation Club. Editable: agrega aquí cada sesión
+ * con su fecha real (ISO) y el sitio deriva mes, año y día de la semana.
+ * La lista explícita es la fuente de verdad: no se generan fechas
+ * a partir de reglas de horario.
  */
 
 export type Modalidad = "presencial" | "online";
 
-export const MES_CALENDARIO = {
-  nombre: "Septiembre",
-  anio: 2026,
-  /** Mes en formato JS: septiembre = 8 */
-  mes: 8,
-  dias: 30,
-  /** Día de la semana del 1ro (0 = domingo). Sept 1 2026 es martes. */
-  primerDia: 2,
-} as const;
+export type SedeId = "casa-zenia" | "oh-my-core" | "online";
 
-export const SESIONES: Record<Modalidad, readonly number[]> = {
-  presencial: [1, 6, 15, 22, 27, 29],
-  online: [3, 10, 17, 24],
+export type Sede = {
+  nombre: string;
+  zona: string;
+  modalidad: Modalidad;
 };
 
-export const HORARIOS = {
-  presencial: {
-    lugar: "Casa Zenia, Monterrey",
-    lineas: ["Domingos 10:00 am", "Martes 8:00 pm"],
+export const SEDES: Record<SedeId, Sede> = {
+  "casa-zenia": {
+    nombre: "Casa Zenia",
+    zona: "Vista Hermosa",
+    modalidad: "presencial",
   },
-  online: {
-    lugar: "Por videollamada",
-    lineas: ["Jueves 8:00 pm"],
+  "oh-my-core": {
+    nombre: "Oh my core!",
+    zona: "San Nicolás",
+    modalidad: "presencial",
   },
-} as const;
+  online: { nombre: "En línea", zona: "Virtual", modalidad: "online" },
+};
 
-/** Día de la semana estable (mediodía UTC) para no depender del TZ del servidor. */
-export function diaSemanaDelCalendario(dia: number): number {
-  return new Date(
-    Date.UTC(MES_CALENDARIO.anio, MES_CALENDARIO.mes, dia, 12)
-  ).getUTCDay();
-}
+/** Orden de la leyenda. */
+export const ORDEN_SEDES: readonly SedeId[] = [
+  "casa-zenia",
+  "oh-my-core",
+  "online",
+];
 
-/** Hora de cada día según su día de la semana (domingo 10am, entre semana 8pm) */
-export function horaDeSesion(dia: number): string {
-  return diaSemanaDelCalendario(dia) === 0 ? "10:00 am" : "8:00 pm";
-}
+/** Color por sede (tokens): Casa Zenia azul, Oh my core! tierra, online salvia. */
+export const COLOR_SEDE: Record<SedeId, { texto: string; fondo: string }> = {
+  "casa-zenia": { texto: "text-azul-hondo", fondo: "bg-azul-hondo" },
+  "oh-my-core": { texto: "text-tierra", fondo: "bg-tierra" },
+  online: { texto: "text-salvia-hondo", fondo: "bg-salvia-hondo" },
+};
+
+/** Solo explicación visual del patrón; no se usa para crear fechas. */
+export const HORARIOS_CLUB = [
+  "Viernes y domingo · 10:00 a. m.",
+  "Martes y jueves · 8:00 p. m.",
+] as const;
+
+export type SesionClub = {
+  /** Fecha local de Monterrey, YYYY-MM-DD. */
+  fecha: string;
+  /** Hora local de Monterrey, HH:MM (24 h). */
+  hora: string;
+  sede: SedeId;
+};
+
+export const SESIONES_CLUB: readonly SesionClub[] = [
+  { fecha: "2026-10-01", hora: "20:00", sede: "online" },
+  { fecha: "2026-10-02", hora: "10:00", sede: "oh-my-core" },
+  { fecha: "2026-10-04", hora: "10:00", sede: "casa-zenia" },
+  { fecha: "2026-10-06", hora: "20:00", sede: "casa-zenia" },
+  { fecha: "2026-10-08", hora: "20:00", sede: "online" },
+  { fecha: "2026-10-09", hora: "10:00", sede: "oh-my-core" },
+  { fecha: "2026-10-11", hora: "10:00", sede: "casa-zenia" },
+  { fecha: "2026-10-20", hora: "20:00", sede: "casa-zenia" },
+  { fecha: "2026-10-22", hora: "20:00", sede: "online" },
+  { fecha: "2026-10-23", hora: "10:00", sede: "oh-my-core" },
+  { fecha: "2026-10-25", hora: "10:00", sede: "casa-zenia" },
+  { fecha: "2026-10-27", hora: "20:00", sede: "casa-zenia" },
+  { fecha: "2026-10-29", hora: "20:00", sede: "online" },
+];
 
 /** WhatsApp de reservas (México, sin +) */
 export const WHATSAPP_RESERVA = "528132608095";
@@ -59,24 +89,6 @@ export function enlaceReserva(mensaje: string = MENSAJE_RESERVA_BASE): string {
 
 /** Reserva genérica (nav, footer, banner). */
 export const ENLACE_RESERVA = enlaceReserva();
-
-/** Reserva de un día concreto del calendario. */
-export function enlaceReservaDia(dia: number, modalidad: Modalidad): string {
-  const dias = [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ] as const;
-  const diaSemana = dias[diaSemanaDelCalendario(dia)];
-  const hora = horaDeSesion(dia);
-  const tipo = modalidad === "presencial" ? "presencial" : "online";
-  const mensaje = `Hola, quiero reservar la sesión del ${diaSemana} ${dia} de ${MES_CALENDARIO.nombre.toLowerCase()} a las ${hora} (${tipo}).`;
-  return enlaceReserva(mensaje);
-}
 
 /** Ubicación pública de las sesiones presenciales */
 export const MAPS_CASA_ZENIA =

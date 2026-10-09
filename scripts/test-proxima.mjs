@@ -1,145 +1,144 @@
 /**
- * Pruebas del contador de próxima sesión (algoritmo espejo de
- * lib/data/proxima-sesion.ts). Corre con: npm test
+ * Pruebas del calendario del Meditation Club.
+ * Datos reales (SESIONES_CLUB leído de lib/data/sesiones.ts) + espejo
+ * de la lógica de lib/data/proxima-sesion.ts.
  */
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import {
+  FUENTE_PROXIMA,
+  FUENTE_SESIONES,
+  SESIONES_CLUB,
+  instanteLocal,
+  mensajeReserva,
+  mesActivo,
+  mty,
+  proximasSesiones as proximas,
+  sesionesClub,
+} from "./espejo-club.mjs";
 
-const ANIO = 2026;
-const MES = 8; // septiembre
+describe("datos de octubre 2026", () => {
+  const ESPERADAS = [
+    ["2026-10-01", "20:00", "online"],
+    ["2026-10-02", "10:00", "oh-my-core"],
+    ["2026-10-04", "10:00", "casa-zenia"],
+    ["2026-10-06", "20:00", "casa-zenia"],
+    ["2026-10-08", "20:00", "online"],
+    ["2026-10-09", "10:00", "oh-my-core"],
+    ["2026-10-11", "10:00", "casa-zenia"],
+    ["2026-10-20", "20:00", "casa-zenia"],
+    ["2026-10-22", "20:00", "online"],
+    ["2026-10-23", "10:00", "oh-my-core"],
+    ["2026-10-25", "10:00", "casa-zenia"],
+    ["2026-10-27", "20:00", "casa-zenia"],
+    ["2026-10-29", "20:00", "online"],
+  ];
 
-function pad(n) {
-  return String(n).padStart(2, "0");
-}
-
-function diaSemana(dia) {
-  return new Date(Date.UTC(ANIO, MES, dia, 12)).getUTCDay();
-}
-
-function fechaDeSesion(dia) {
-  const hora = diaSemana(dia) === 0 ? 10 : 20;
-  return new Date(
-    `${ANIO}-${pad(MES + 1)}-${pad(dia)}T${pad(hora)}:00:00-06:00`
-  );
-}
-
-function listar(diasPorModalidad) {
-  const items = [];
-  for (const [modalidad, dias] of Object.entries(diasPorModalidad)) {
-    for (const dia of dias) {
-      items.push({ dia, modalidad, fecha: fechaDeSesion(dia) });
-    }
-  }
-  return items.sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
-}
-
-function proxima(lista, ahora) {
-  const t = ahora.getTime();
-  return lista.find((s) => s.fecha.getTime() > t) ?? null;
-}
-
-function formatearRestante(ms) {
-  if (ms <= 0) return "empezando…";
-  const dias = Math.floor(ms / 86400000);
-  const horas = Math.floor((ms % 86400000) / 3600000);
-  const minutos = Math.floor((ms % 3600000) / 60000);
-  const segundos = Math.floor((ms % 60000) / 1000);
-  if (dias > 0) {
-    return `faltan ${dias} ${dias === 1 ? "día" : "días"} ${horas} ${horas === 1 ? "hora" : "horas"}`;
-  }
-  if (horas > 0) {
-    return `faltan ${horas} ${horas === 1 ? "hora" : "horas"} ${minutos} min`;
-  }
-  if (minutos > 0) {
-    return `faltan ${minutos} min ${segundos} s`;
-  }
-  return `faltan ${segundos} s`;
-}
-
-const SESIONES = {
-  presencial: [1, 6, 15, 22, 27, 29],
-  online: [3, 10, 17, 24],
-};
-
-describe("fechaDeSesion", () => {
-  it("1 sep 2026 es martes 20:00 Monterrey", () => {
-    assert.equal(diaSemana(1), 2);
-    assert.equal(fechaDeSesion(1).toISOString(), "2026-09-02T02:00:00.000Z");
-  });
-
-  it("6 sep 2026 es domingo 10:00 Monterrey", () => {
-    assert.equal(diaSemana(6), 0);
-    assert.equal(fechaDeSesion(6).toISOString(), "2026-09-06T16:00:00.000Z");
-  });
-
-  it("3 sep 2026 es jueves 20:00 Monterrey", () => {
-    assert.equal(diaSemana(3), 4);
-    assert.equal(fechaDeSesion(3).toISOString(), "2026-09-04T02:00:00.000Z");
-  });
-});
-
-describe("proximaSesion", () => {
-  const lista = listar(SESIONES);
-
-  it("ordena el mes cronológicamente", () => {
+  it("son exactamente las 13 sesiones publicadas, sin inventar fechas", () => {
     assert.deepEqual(
-      lista.map((s) => s.dia),
-      [1, 3, 6, 10, 15, 17, 22, 24, 27, 29]
+      SESIONES_CLUB.map((s) => [s.fecha, s.hora, s.sede]),
+      ESPERADAS
     );
   });
 
-  it("el 27 ago apunta al 1 sep presencial", () => {
-    const ahora = new Date("2026-08-27T10:35:00-06:00");
-    const sig = proxima(lista, ahora);
-    assert.ok(sig);
-    assert.equal(sig.dia, 1);
-    assert.equal(sig.modalidad, "presencial");
+  it("no hay fechas duplicadas", () => {
+    const fechas = SESIONES_CLUB.map((s) => s.fecha);
+    assert.equal(new Set(fechas).size, fechas.length);
   });
 
-  it("al pasar el 1 sep salta al 3 online", () => {
-    const ahora = new Date("2026-09-01T20:00:01-06:00");
-    const sig = proxima(lista, ahora);
-    assert.ok(sig);
-    assert.equal(sig.dia, 3);
-    assert.equal(sig.modalidad, "online");
+  it("no quedan sesiones de septiembre ni del calendario anterior", () => {
+    assert.ok(SESIONES_CLUB.every((s) => s.fecha.startsWith("2026-10-")));
+    assert.doesNotMatch(FUENTE_SESIONES, /MES_CALENDARIO|Septiembre|horaDeSesion/);
   });
 
-  it("después de la última del mes no hay siguiente", () => {
-    const ahora = new Date("2026-09-29T20:00:01-06:00");
-    assert.equal(proxima(lista, ahora), null);
+  it("el patrón (vie/dom 10:00, mar/jue 20:00) se cumple pero no genera fechas", () => {
+    for (const s of sesionesClub()) {
+      const manana = s.diaSemana === 5 || s.diaSemana === 0;
+      const noche = s.diaSemana === 2 || s.diaSemana === 4;
+      assert.ok(manana || noche, `${s.fecha} cae fuera del patrón`);
+      assert.equal(s.horaTexto, manana ? "10:00 a. m." : "8:00 p. m.");
+    }
+    assert.doesNotMatch(FUENTE_PROXIMA, /getDay\(\)\s*===|diaSemana\s*===/);
   });
-});
 
-describe("formatearRestante", () => {
-  it("formatea días y horas", () => {
-    assert.equal(formatearRestante(2 * 86400000 + 3 * 3600000), "faltan 2 días 3 horas");
-  });
-
-  it("formatea minutos cercanos", () => {
-    assert.equal(formatearRestante(5 * 60000 + 12 * 1000), "faltan 5 min 12 s");
+  it("cada sede usa su token de color", () => {
+    assert.match(FUENTE_SESIONES, /"casa-zenia": \{ texto: "text-azul-hondo"/);
+    assert.match(FUENTE_SESIONES, /"oh-my-core": \{ texto: "text-tierra"/);
+    assert.match(FUENTE_SESIONES, /online: \{ texto: "text-salvia-hondo"/);
   });
 });
 
-describe("enlaceReserva WhatsApp", () => {
-  const WHATSAPP = "528132608095";
-
-  function enlaceReserva(mensaje) {
-    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
-  }
-
-  it("abre wa.me con el número de Monterrey", () => {
-    const url = enlaceReserva(
-      "Hola, quiero reservar una sesión del Meditation Club Inner Flow."
+describe("instantes en America/Monterrey", () => {
+  it("20:00 del 1 de octubre es 02:00 UTC del día siguiente", () => {
+    assert.equal(
+      instanteLocal("2026-10-01", "20:00").toISOString(),
+      "2026-10-02T02:00:00.000Z"
     );
-    assert.match(url, /^https:\/\/wa\.me\/528132608095\?text=/);
-    assert.ok(url.includes(encodeURIComponent("Inner Flow")));
   });
 
-  it("incluye día y modalidad en el mensaje del calendario", () => {
-    const mensaje =
-      "Hola, quiero reservar la sesión del Martes 1 de septiembre a las 8:00 pm (presencial).";
-    const url = enlaceReserva(mensaje);
-    assert.ok(decodeURIComponent(url).includes("Martes 1 de septiembre"));
-    assert.ok(decodeURIComponent(url).includes("presencial"));
+  it("10:00 del 25 de octubre es 16:00 UTC (sin horario de verano)", () => {
+    assert.equal(
+      instanteLocal("2026-10-25", "10:00").toISOString(),
+      "2026-10-25T16:00:00.000Z"
+    );
+  });
+
+  it("la lógica real compara instantes, no cadenas", () => {
+    assert.match(FUENTE_PROXIMA, /inicio\.getTime\(\) >= ahora\.getTime\(\)/);
+    assert.match(FUENTE_PROXIMA, /ZONA_HORARIA = "America\/Monterrey"/);
+  });
+});
+
+describe("próximas sesiones", () => {
+  it("se ordenan ascendente y excluyen las pasadas", () => {
+    const lista = proximas(mty("2026-10-09T09:00:00"));
+    assert.equal(lista[0].fecha, "2026-10-09");
+    assert.ok(lista.every((s, i) => i === 0 || lista[i - 1].inicio < s.inicio));
+    assert.equal(lista.length, 8);
+  });
+
+  it("una sesión que empieza justo ahora sigue siendo próxima", () => {
+    assert.equal(proximas(mty("2026-10-09T10:00:00"))[0].fecha, "2026-10-09");
+    assert.equal(proximas(mty("2026-10-09T10:00:01"))[0].fecha, "2026-10-11");
+  });
+
+  it("del 12 al 19 no hay sesiones: la siguiente es el martes 20", () => {
+    assert.equal(proximas(mty("2026-10-15T12:00:00"))[0].fecha, "2026-10-20");
+  });
+
+  it("después de la última, no hay próximas y el mes activo sigue siendo octubre", () => {
+    const ahora = mty("2026-10-29T20:00:01");
+    assert.equal(proximas(ahora).length, 0);
+    assert.deepEqual(mesActivo(ahora), { anio: 2026, mes: 10 });
+  });
+
+  it("el mes activo sale de los datos", () => {
+    assert.deepEqual(mesActivo(mty("2026-09-20T12:00:00")), { anio: 2026, mes: 10 });
+  });
+});
+
+describe("mensaje de reserva", () => {
+  const de = (fecha) => sesionesClub().find((s) => s.fecha === fecha);
+
+  it("presencial incluye sede, día, fecha y hora", () => {
+    assert.equal(
+      mensajeReserva(de("2026-10-25")),
+      "Hola, quiero reservar mi lugar para Meditation Club en Casa Zenia el domingo 25 de octubre a las 10:00 a. m."
+    );
+    assert.equal(
+      mensajeReserva(de("2026-10-23")),
+      "Hola, quiero reservar mi lugar para Meditation Club en Oh my core! el viernes 23 de octubre a las 10:00 a. m."
+    );
+  });
+
+  it("online lo indica sin sede física", () => {
+    assert.equal(
+      mensajeReserva(de("2026-10-29")),
+      "Hola, quiero reservar mi lugar para Meditation Club online el jueves 29 de octubre a las 8:00 p. m."
+    );
+  });
+
+  it("usa el helper único de WhatsApp", () => {
+    assert.match(FUENTE_PROXIMA, /return enlaceReserva\(mensajeReserva\(sesion\)\)/);
   });
 });
