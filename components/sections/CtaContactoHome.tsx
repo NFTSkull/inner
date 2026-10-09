@@ -24,7 +24,11 @@ export function CtaContactoHome() {
           {HOME_COPY.cierreSoporte}
         </p>
         <div className="mt-8 flex justify-center">
-          <Boton variante="primario" href={RUTAS.contacto}>
+          <Boton
+            variante="primario"
+            href={RUTAS.contacto}
+            className="pildora-blanca"
+          >
             {HOME_COPY.cierreCtaHablemos}
           </Boton>
         </div>

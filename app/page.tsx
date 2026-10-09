@@ -9,6 +9,9 @@ import { IntroInnerFlow } from "@/components/sections/IntroInnerFlow";
 import { MundosExperiencia } from "@/components/sections/MundosExperiencia";
 import { Nav } from "@/components/sections/Nav";
 
+/** Re-evalúa cada hora el próximo evento de Comunidad. */
+export const revalidate = 3600;
+
 const DATOS_LOCALES = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",

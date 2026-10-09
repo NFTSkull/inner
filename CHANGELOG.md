@@ -1,5 +1,41 @@
 # Changelog
 
+## 2026-10-09 · Evento Yoga & Matcha
+
+- Primer evento abierto real en `EVENTOS`: Yoga & Matcha, sábado 31
+  de octubre de 2026, 2:00 PM – 4:30 PM, Cuarto Vital, Mty.
+  (presencial, Eventos y colaboraciones), con agenda Registro / Yoga /
+  Matcha & tisanas e imágenes del flyer.
+- Eventos y comunidad: bloque “Próximo encuentro” (texto 5 / imagen 7
+  en desktop, imagen arriba en móvil) con fecha, horario, lugar,
+  “Reservar mi lugar” por WhatsApp y “Ver horario completo”
+  desplegable (línea de tiempo + miniatura del flyer).
+- Home · Comunidad: preview “Próximo evento” con recorte de la imagen
+  principal; mantiene “Ver eventos y comunidad →”.
+- Calendario: el evento aparece en Todos y en “Eventos y
+  colaboraciones” con hora local correcta y reserva; la agenda se
+  agrupa por mes (“Octubre”, “Realizadas · Octubre”).
+- Token `--color-rosa` (acento suave, solo en el “&” del título).
+- Home y Eventos se re-evalúan cada hora: el evento sale solo al pasar.
+
+## 2026-10-09 · Botones con presencia en reposo
+
+- Botones píldora (`.pildora`, usada por `Boton`): estado default café
+  sólido `--color-tierra` (#695537) con texto `--color-crema`
+  (#f1e4d0) y borde café. Hover, tamaños, radio, tipografía y motion
+  sin cambios.
+- Sobre fondos bosque/salvia: variante global `pildora-clara` (crema
+  con texto oscuro; el hover sube papel). Reemplaza los contornos
+  blancos que se repetían en Club (Home y banner), Contacto,
+  Sesiones privadas, Empresas y Comunidad.
+- Links editoriales (Instagram, “Ver calendario”, “Conocer Inner
+  Flow”, “Hablemos” del header) siguen como links.
+- “Hablemos” del cierre de Home: variante `pildora-blanca` (blanco en
+  reposo; al hover sube la tinta y texto + isotipo quedan blancos).
+- Isotipo de los botones primarios visible en reposo con el color del
+  texto (`currentColor`): café en botones claros, crema en café; cambia
+  junto con el texto en hover/focus. Conserva el giro al hover.
+
 ## 2026-10-09 · Meditation Club octubre
 
 - Calendario del Club: octubre 2026 con 13 sesiones explícitas

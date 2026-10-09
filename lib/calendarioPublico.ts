@@ -1,11 +1,15 @@
 /**
  * Items del calendario publico.
- * EVENTOS abiertos (vacio a proposito) + sesiones reales del Club.
+ * EVENTOS abiertos confirmados + sesiones reales del Club.
  */
 
 import {
   CALENDARIO_COPY,
   EVENTOS,
+  FILTROS_CALENDARIO,
+  enlaceReservaEvento,
+  inicioEvento,
+  rangoEvento,
   type Evento,
   type FiltroCalendarioId,
 } from "@/lib/data/eventos";
@@ -42,23 +46,12 @@ export type ItemCalendario = {
 };
 
 function itemDesdeEvento(e: Evento, ahora: Date): ItemCalendario {
-  let day: string | undefined;
-  let month: string | undefined;
-  let inicio: number | undefined;
-  if (e.fecha) {
-    const d = new Date(e.fecha);
-    if (!Number.isNaN(d.getTime())) {
-      inicio = d.getTime();
-      day = String(d.getUTCDate());
-      month = d
-        .toLocaleString("es-MX", { month: "short", timeZone: "UTC" })
-        .replace(".", "")
-        .toUpperCase()
-        .slice(0, 3);
-    }
-  }
-
+  const inicio = inicioEvento(e)?.getTime();
+  const [, mesNum, diaNum] = (e.fecha ?? "").split("-").map(Number);
+  const mes = mesNum ? nombreMes(mesNum) : undefined;
   const realizado = inicio !== undefined && inicio < ahora.getTime();
+  const online = e.modalidad === "online";
+  const categoria = FILTROS_CALENDARIO.find((f) => f.id === e.categoria)?.label;
 
   return {
     id: e.id,
@@ -67,15 +60,22 @@ function itemDesdeEvento(e: Evento, ahora: Date): ItemCalendario {
     name: e.nombre,
     intention: e.intencion,
     description: e.descripcion,
-    day,
-    month,
-    startTime: e.horaInicio,
+    day: diaNum ? String(diaNum) : undefined,
+    month: mes?.slice(0, 3).toUpperCase(),
+    startTime: e.horaInicio ? rangoEvento(e.horaInicio, e.horaFin) : undefined,
     location: e.ubicacion,
-    categoryLabel: e.categoria,
-    filtros: [e.categoria],
+    categoryLabel: [categoria, e.modalidad && (online ? "Online" : "Presencial")]
+      .filter(Boolean)
+      .join(" · "),
+    filtros: online && e.categoria !== "online" ? [e.categoria, "online"] : [e.categoria],
     ...(realizado
-      ? {}
-      : { ctaTexto: e.ctaTexto, ctaHref: e.ctaHref, ctaExterno: true }),
+      ? { fuente: mes && `Realizadas · ${mes}` }
+      : {
+          ctaTexto: e.ctaTexto ?? "Reservar mi lugar",
+          ctaHref: enlaceReservaEvento(e),
+          ctaExterno: true,
+          fuente: mes,
+        }),
   };
 }
 
@@ -100,9 +100,9 @@ function itemDesdeClub(s: SesionProgramada, ahora: Date): ItemCalendario {
           ctaTexto: "Reservar este día",
           ctaHref: enlaceReservaSesion(s),
           ctaExterno: true,
-          fuente: `Meditation Club · ${mes}`,
+          fuente: mes,
         }
-      : { fuente: `Sesiones realizadas · ${mes}` }),
+      : { fuente: `Realizadas · ${mes}` }),
   };
 }
 
@@ -111,12 +111,17 @@ const porInicio = (a: ItemCalendario, b: ItemCalendario) =>
   (b.inicio ?? Number.POSITIVE_INFINITY);
 
 /**
- * Agenda: primero lo próximo (eventos abiertos + todas las sesiones
- * futuras del Club), luego lo ya realizado del mes activo, discreto.
+ * Agenda agrupada por mes: primero lo próximo (eventos abiertos +
+ * sesiones futuras del Club), luego lo ya realizado del mes activo.
  */
 export function itemsCalendario(ahora: Date = new Date()): ItemCalendario[] {
-  const abiertos = EVENTOS.map((e) => itemDesdeEvento(e, ahora));
   const mes = mesActivo(ahora);
+  const claveMes = mes?.clave;
+  const abiertos = EVENTOS.filter(
+    (e) =>
+      (inicioEvento(e)?.getTime() ?? Infinity) >= ahora.getTime() ||
+      e.fecha?.slice(0, 7) === claveMes
+  ).map((e) => itemDesdeEvento(e, ahora));
   const club = [
     ...proximasSesiones(ahora),
     ...(mes ? sesionesDelMes(mes) : []).filter(

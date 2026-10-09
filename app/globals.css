@@ -25,6 +25,8 @@
   --color-crema: #f1e4d0;
   --color-cielo: #98bcd8;
   --color-bosque: #3a5659;
+  /* Acento puntual de eventos (Yoga & Matcha); nunca como fondo grande */
+  --color-rosa: #d98fae;
 
   /* Tipografía */
   --font-display: var(--font-shantell), cursive;
@@ -344,13 +346,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  border: 1.5px solid var(--color-tinta);
+  border: 1.5px solid var(--color-tierra);
   border-radius: 999px;
-  color: var(--color-tinta);
+  color: var(--color-crema);
   font-family: var(--font-cuerpo);
   font-weight: 400;
   cursor: pointer;
-  background: transparent;
+  background: var(--color-tierra);
   transition: color var(--dur-larga) var(--ease-respiro);
 
   &::before {
@@ -372,6 +374,36 @@
   &:hover::before,
   &:focus-visible::before {
     transform: translateY(0);
+  }
+
+  /* Sobre fondos oscuros (bosque, salvia): crema con texto oscuro;
+     el hover sube papel y el texto toma el color del fondo. */
+  &.pildora-clara {
+    border-color: var(--color-crema);
+    background: var(--color-crema);
+    color: var(--color-tinta);
+  }
+
+  &.pildora-clara::before {
+    background: var(--color-papel);
+  }
+
+  &.pildora-clara:hover,
+  &.pildora-clara:focus-visible {
+    color: var(--color-bosque);
+  }
+
+  /* Blanca: papel con texto tinta; al hover sube la tinta y texto e
+     isotipo (currentColor) quedan en blanco papel. */
+  &.pildora-blanca {
+    border-color: var(--color-papel);
+    background: var(--color-papel);
+    color: var(--color-tinta);
+  }
+
+  &.pildora-blanca:hover,
+  &.pildora-blanca:focus-visible {
+    color: var(--color-papel);
   }
 }
 

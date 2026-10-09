@@ -52,7 +52,7 @@ export default function PaginaContacto() {
                 <Boton
                   variante="primario"
                   href={RUTAS.experiencias}
-                  className="!border-papel !text-papel hover:!text-bosque focus-visible:!text-bosque [&::before]:!bg-papel"
+                  className="pildora-clara"
                 >
                   Explorar experiencias
                 </Boton>

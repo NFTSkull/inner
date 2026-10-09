@@ -41,7 +41,7 @@ export function ClubEnHome() {
             <Boton
               variante="primario"
               href={CLUB_HOME.ctaConocerHref}
-              className="!border-papel !text-papel hover:!text-bosque focus-visible:!text-bosque [&::before]:!bg-papel"
+              className="pildora-clara"
             >
               {CLUB_HOME.ctaConocer}
             </Boton>

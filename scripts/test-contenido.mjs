@@ -216,6 +216,57 @@ describe("intro de Home", () => {
   });
 });
 
+describe("botones: estado default", () => {
+  const css = leer("app/globals.css");
+  const pildora = css.slice(css.indexOf("@utility pildora"), css.indexOf("@utility enlace-plumon"));
+
+  it("la píldora global es café sólido con texto crema en reposo", () => {
+    assert.match(pildora, /border: 1\.5px solid var\(--color-tierra\);/);
+    assert.match(pildora, /\n  background: var\(--color-tierra\);/);
+    assert.match(pildora, /\n  color: var\(--color-crema\);/);
+    assert.doesNotMatch(pildora, /background: transparent/);
+  });
+
+  it("los tokens conservan los valores pedidos", () => {
+    assert.match(css, /--color-tierra: #695537;/);
+    assert.match(css, /--color-crema: #f1e4d0;/);
+  });
+
+  it("fondos oscuros usan la variante clara global, sin contornos sueltos", () => {
+    assert.match(pildora, /&\.pildora-clara \{/);
+    for (const ruta of TODO) {
+      assert.doesNotMatch(leer(ruta), /!border-papel !text-papel/, ruta);
+    }
+  });
+
+  it("Hablemos (cierre de Home) es blanco y al hover texto e isotipo quedan blancos", () => {
+    assert.match(leer("components/sections/CtaContactoHome.tsx"), /className="pildora-blanca"/);
+    assert.match(
+      pildora,
+      /&\.pildora-blanca:hover,\s*&\.pildora-blanca:focus-visible \{\s*color: var\(--color-papel\);/
+    );
+    assert.match(leer("components/ui/IsotipoTrazo.tsx"), /stroke="currentColor"/);
+  });
+
+  it("el isotipo del botón es visible y hereda el color del texto", () => {
+    const boton = leer("components/ui/Boton.tsx");
+    const clase = boton.match(/<IsotipoTrazo\s+className="([^"]+)"/)?.[1] ?? "";
+    assert.ok(clase, "Boton no renderiza IsotipoTrazo");
+    assert.doesNotMatch(clase, /opacity-0/);
+    assert.doesNotMatch(clase, /\b(text|fill|stroke)-(?!\[)[a-z]/);
+    assert.match(clase, /duration-\[var\(--dur-larga\)\]/);
+    const svg = leer("components/ui/IsotipoTrazo.tsx");
+    assert.doesNotMatch(svg, /(fill|stroke)="(?!none|currentColor)[^"]*"/);
+  });
+
+  it("Instagram sigue siendo link editorial", () => {
+    for (const ruta of TODO) {
+      const texto = leer(ruta);
+      assert.doesNotMatch(texto, /<Boton[^>]*SITE\.instagram/, ruta);
+    }
+  });
+});
+
 describe("Meditation Club: octubre y precios", () => {
   it("sin calendario de septiembre ni mes fijo en código productivo", () => {
     for (const ruta of TODO) {
@@ -256,5 +307,39 @@ describe("Meditation Club: octubre y precios", () => {
     assert.match(c, /mesActivo\(ahora\)/);
     assert.match(c, /HORARIOS_CLUB/);
     assert.match(c, /Sesión realizada/);
+  });
+});
+
+describe("Yoga & Matcha: presentación", () => {
+  const css = leer("app/globals.css");
+  const destacado = leer("components/sections/EventoDestacado.tsx");
+  const horario = leer("components/ui/HorarioEvento.tsx");
+
+  it("rosa suave solo como acento (token, nunca fondo)", () => {
+    assert.match(css, /--color-rosa: #[0-9a-f]{6};/);
+    for (const ruta of TODO) {
+      assert.doesNotMatch(leer(ruta), /\bbg-rosa\b|section-bg-rosa/, ruta);
+    }
+  });
+
+  it("Próximo encuentro con CTAs y horario desplegable accesible", () => {
+    assert.ok(destacado.includes("Próximo encuentro"));
+    assert.match(destacado, /lg:col-span-5/);
+    assert.match(destacado, /lg:col-span-7/);
+    assert.match(destacado, /aspect-\[7\/5\][^"]*"/);
+    assert.match(destacado, /object-top/);
+    assert.ok(horario.includes("Ver horario completo"));
+    assert.match(horario, /aria-expanded=\{abierto\}/);
+    assert.match(horario, /aria-controls=\{panelId\}/);
+    assert.match(horario, /inert=\{!abierto\}/);
+    assert.match(horario, /motion-reduce:transition-none/);
+    assert.doesNotMatch(horario, /<table/);
+  });
+
+  it("Home muestra el preview con el CTA a Eventos y comunidad", () => {
+    const home = leer("components/sections/ComunidadEnHome.tsx");
+    assert.ok(home.includes("Próximo evento"));
+    assert.match(home, /\{p\.ctaTexto\} →/);
+    assert.match(leer("lib/data/experiencias.ts"), /ctaTexto: "Ver eventos y comunidad"/);
   });
 });

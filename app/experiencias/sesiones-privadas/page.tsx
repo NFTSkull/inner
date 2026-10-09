@@ -208,7 +208,7 @@ export default function PaginaSesionesPrivadas() {
                   variante="primario"
                   href={p.ctaAgendarHref}
                   externo
-                  className="!border-papel !text-papel hover:!text-bosque focus-visible:!text-bosque [&::before]:!bg-papel"
+                  className="pildora-clara"
                 >
                   {p.ctaAgendar}
                 </Boton>

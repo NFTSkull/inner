@@ -1,5 +1,58 @@
 # Devlog: decisiones
 
+## 2026-10-09 · Yoga & Matcha
+
+- **Una sola fuente.** El evento vive en `lib/data/eventos.ts`
+  (fecha ISO + horas 24 h locales + agenda + imágenes). Home
+  (`proximosEventos`), Eventos (`EventoDestacado`) y Calendario
+  (`itemsCalendario`) leen de ahí; ningún componente repite fecha,
+  lugar ni rutas de imagen (lo verifica `test-calendario`).
+- **Hora real de Monterrey.** `itemDesdeEvento` usaba
+  `new Date(fecha)` (medianoche UTC = día anterior en Mty). Ahora usa
+  `instanteLocal(fecha, horaInicio)`, igual que el Club, para ordenar
+  y decidir próximo/realizado.
+- **Reserva por el helper existente.** `enlaceReservaEvento` arma el
+  mensaje desde los datos y lo pasa a `enlaceReserva` (mismo número de
+  WhatsApp). Formato de hora “2:00 PM” como en el flyer; el Club
+  conserva “10:00 a. m.”.
+- **La imagen no es un póster.** El flyer trae texto impreso en el 41 %
+  inferior; se recorta 7:5 anclado arriba (vasos + bandeja) y toda la
+  información va en HTML. El flyer con horario queda como miniatura
+  opcional dentro del desplegable.
+- **Horario desplegable** con el patrón de `Faq` (grid-rows 0fr→1fr,
+  `aria-expanded`/`aria-controls`, `inert` cerrado, sin animación con
+  reduce-motion). En desktop las columnas se alinean arriba para que
+  la imagen no salte al abrir.
+- **Rosa como acento mínimo.** Token nuevo `--color-rosa` solo para el
+  “&” del título en Shantell; matcha = `lima`/`salvia-doc` existentes.
+- **Agrupación del calendario por mes.** Con eventos mezclados, la
+  etiqueta “Meditation Club · Octubre” quedaba encima del evento;
+  ahora es “Octubre” / “Realizadas · Octubre” y cada tarjeta dice su
+  categoría.
+- **Revalidate 3600 en Home y Eventos** para que el bloque desaparezca
+  solo cuando el evento pase, sin redeploy.
+
+## 2026-10-09 · Botones en reposo
+
+- **Un solo punto de cambio.** Todos los CTA píldora salen de
+  `@utility pildora`; el default pasa de transparente a tierra/crema
+  con los tokens existentes (contraste crema sobre tierra ≈ 5.6:1).
+  El hover conserva el relleno tinta que sube y el texto papel.
+- **Variante clara anidada en la utilidad** (`&.pildora-clara`) en
+  lugar de sobrescrituras `!border-papel …` por página: café sobre
+  bosque perdía contraste, así que en fondos oscuros se invierte
+  (crema + tinta) y el hover mantiene la intención original (papel
+  que sube, texto del color del fondo).
+- **El botón del Hero sobre video** ya tenía su variante clara
+  explícita (`!bg-papel`); no se tocó.
+- **Isotipo: la causa era la opacidad, no el color.** `IsotipoTrazo`
+  ya pinta con `stroke="currentColor"` y hereda el color del botón
+  (medido cuadro a cuadro: mismo valor que el texto durante toda la
+  transición). Estaba en `opacity-0` hasta el hover, así que en
+  reposo “desaparecía” y solo se veía con el botón ya oscuro. Ahora
+  es visible siempre; conserva el giro con `--dur-larga`. Sin colores
+  por variante: cada botón controla `color` y el icono lo hereda.
+
 ## 2026-10-09 · Calendario del Club dinámico
 
 - **Lista explícita como fuente de verdad.** `SESIONES_CLUB` guarda

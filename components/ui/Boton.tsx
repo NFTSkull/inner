@@ -6,7 +6,7 @@ type Props = {
   /** Si hay href se renderiza como enlace */
   href?: string;
   onClick?: () => void;
-  /** El primario lleva el isotipo, que aparece al hover con giro */
+  /** El primario lleva el isotipo (color del texto), que gira al hover */
   variante?: "primario" | "secundario";
   className?: string;
   externo?: boolean;
@@ -35,7 +35,7 @@ export function Boton({
     <>
       {variante === "primario" && (
         <IsotipoTrazo
-          className="h-[1.2em] w-[1.2em] -rotate-12 opacity-0 transition-[opacity,transform] duration-[600ms] ease-[var(--ease-respiro)] group-hover:rotate-0 group-hover:opacity-100 group-focus-visible:rotate-0 group-focus-visible:opacity-100 motion-reduce:transition-none"
+          className="h-[1.2em] w-[1.2em] shrink-0 -rotate-12 transition-transform duration-[var(--dur-larga)] ease-[var(--ease-respiro)] group-hover:rotate-0 group-focus-visible:rotate-0 motion-reduce:transition-none"
         />
       )}
       <span>{children}</span>

@@ -84,6 +84,13 @@ export function nombreMes(mes: number): string {
   return capitalizar(MESES[mes - 1]);
 }
 
+/** "2026-10-31" → "Sábado, 31 de octubre de 2026" */
+export function fechaLarga(fecha: string): string {
+  const [anio, mes, dia] = fecha.split("-").map(Number);
+  const diaSemana = new Date(Date.UTC(anio, mes - 1, dia, 12)).getUTCDay();
+  return `${capitalizar(DIAS_SEMANA[diaSemana])}, ${dia} de ${MESES[mes - 1]} de ${anio}`;
+}
+
 let formatoDesfase: Intl.DateTimeFormat | null = null;
 
 /** Desfase de Monterrey respecto a UTC (ms) en un instante dado. */

@@ -73,7 +73,7 @@ export function BannerPresentacion() {
           <Boton
             href={enlaceReservaSesion(sesion)}
             externo
-            className="!border-papel !text-papel !text-[1.17rem] !font-bold hover:!text-salvia-hondo focus-visible:!text-salvia-hondo [&::before]:!bg-papel"
+            className="pildora-clara !text-[1.17rem] !font-bold hover:!text-salvia-hondo focus-visible:!text-salvia-hondo"
           >
             Reservar lugar
           </Boton>

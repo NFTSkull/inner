@@ -20,8 +20,7 @@ const NAV_INTERNO = [
 const CLASE_H2 =
   "text-[clamp(1.6rem,3vw,2.3rem)] font-light leading-[1.08] tracking-[-0.025em]";
 
-const CTA_PAPEL =
-  "!border-papel !text-papel hover:!text-bosque focus-visible:!text-bosque [&::before]:!bg-papel";
+const CTA_PAPEL = "pildora-clara";
 
 /**
  * Empresas y colegios: servicios → programas → cómo funciona → propuesta.

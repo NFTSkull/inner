@@ -3,8 +3,9 @@ import { Footer } from "@/components/sections/Footer";
 import { Nav } from "@/components/sections/Nav";
 import { Boton } from "@/components/ui/Boton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { EventoDestacado } from "@/components/sections/EventoDestacado";
 import { COMUNIDAD_PAGE } from "@/lib/data/experiencias";
-import { EVENTOS } from "@/lib/data/eventos";
+import { fechaEvento, proximosEventos } from "@/lib/data/eventos";
 import { SITE } from "@/lib/data/site";
 import type { Metadata } from "next";
 
@@ -13,12 +14,15 @@ export const metadata: Metadata = {
   description: COMUNIDAD_PAGE.intro,
 };
 
-const CTA_PAPEL =
-  "!border-papel !text-papel hover:!text-bosque focus-visible:!text-bosque [&::before]:!bg-papel";
+/** Re-evalúa cada hora qué evento sigue vigente. */
+export const revalidate = 3600;
+
+const CTA_PAPEL = "pildora-clara";
 
 export default function PaginaComunidad() {
   const p = COMUNIDAD_PAGE;
-  const n = EVENTOS.length;
+  const [destacado, ...otros] = proximosEventos(new Date());
+  const n = otros.length;
 
   return (
     <>
@@ -64,11 +68,13 @@ export default function PaginaComunidad() {
           </div>
         </section>
 
+        {destacado && <EventoDestacado evento={destacado} />}
+
         {n > 0 && (
           <section className="section-bg-crema section-y-tight page-pad-x sm:px-8">
             <div className="mx-auto max-w-[76rem]">
               <Reveal>
-                <SectionHeading title="Próximas experiencias" />
+                <SectionHeading title="Más encuentros" />
                 <ul
                   className={`mt-8 grid gap-6 ${
                     n === 2
@@ -78,10 +84,10 @@ export default function PaginaComunidad() {
                         : ""
                   }`}
                 >
-                  {EVENTOS.map((ev) => (
+                  {otros.map((ev) => (
                     <li key={ev.id} className="border-t-2 border-tierra pt-5">
-                      <p className="numero-tabular text-[clamp(1.6rem,3.6vw,2.2rem)] leading-none text-tierra">
-                        {ev.fecha ?? "—"}
+                      <p className="text-etiqueta uppercase text-tierra">
+                        {fechaEvento(ev) ?? "—"}
                       </p>
                       <h3 className="mt-3 text-titulo font-normal text-tinta">
                         {ev.nombre}
