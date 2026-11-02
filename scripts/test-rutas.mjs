@@ -12,6 +12,7 @@ const RUTAS = {
   celebraciones: "/experiencias/celebraciones",
   empresasColegios: "/empresas-y-colegios",
   eventosComunidad: "/eventos-y-comunidad",
+  mindfulHangout: "/eventos-y-comunidad/the-mindful-hangout",
   calendario: "/calendario",
   club: "/club",
   conoceme: "/conoceme",
@@ -35,6 +36,11 @@ describe("rutas multipagina", () => {
 
   it("hub de experiencias existe como ruta propia", () => {
     assert.equal(RUTAS.experiencias, "/experiencias");
+  });
+
+  it("Mindful Hangout tiene landing dedicada", () => {
+    assert.equal(RUTAS.mindfulHangout, "/eventos-y-comunidad/the-mindful-hangout");
+    assert.ok(RUTAS.mindfulHangout.startsWith(RUTAS.eventosComunidad + "/"));
   });
 
   it("club conserva /club", () => {
