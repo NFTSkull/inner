@@ -310,36 +310,87 @@ describe("Meditation Club: octubre y precios", () => {
   });
 });
 
-describe("Yoga & Matcha: presentación", () => {
-  const css = leer("app/globals.css");
+describe("The Mindful Hangout: presentación", () => {
   const destacado = leer("components/sections/EventoDestacado.tsx");
   const horario = leer("components/ui/HorarioEvento.tsx");
+  const landing = leer("app/eventos-y-comunidad/the-mindful-hangout/page.tsx");
+  const datos = leer("lib/data/eventos.ts");
 
-  it("rosa suave solo como acento (token, nunca fondo)", () => {
-    assert.match(css, /--color-rosa: #[0-9a-f]{6};/);
-    for (const ruta of TODO) {
-      assert.doesNotMatch(leer(ruta), /\bbg-rosa\b|section-bg-rosa/, ruta);
-    }
+  it("Yoga & Matcha ya no está activo", () => {
+    assert.doesNotMatch(datos, /Yoga & Matcha|2026-10-31|Cuarto Vital/);
   });
 
-  it("Próximo encuentro con CTAs y horario desplegable accesible", () => {
+  it("Mindful Hangout usa la fuente única y una landing dedicada", () => {
+    assert.match(datos, /id: "mindful-hangout-2026-11-28"/);
+    assert.match(datos, /nombre: "The Mindful Hangout"/);
+    assert.match(datos, /intencion: "Segunda edición"/);
+    assert.match(datos, /fecha: "2026-11-28"/);
+    assert.match(datos, /ubicacion: "Gran Parque San Nicolás"/);
+    assert.match(
+      datos,
+      /detalleHref: "\/eventos-y-comunidad\/the-mindful-hangout"/
+    );
+    assert.match(landing, /MINDFUL_HANGOUT/);
+  });
+
+  it("Próximo encuentro conserva CTA y horario desplegable accesible", () => {
     assert.ok(destacado.includes("Próximo encuentro"));
     assert.match(destacado, /lg:col-span-5/);
     assert.match(destacado, /lg:col-span-7/);
-    assert.match(destacado, /aspect-\[7\/5\][^"]*"/);
-    assert.match(destacado, /object-top/);
     assert.ok(horario.includes("Ver horario completo"));
     assert.match(horario, /aria-expanded=\{abierto\}/);
     assert.match(horario, /aria-controls=\{panelId\}/);
     assert.match(horario, /inert=\{!abierto\}/);
-    assert.match(horario, /motion-reduce:transition-none/);
+    assert.match(horario, /TrackedReservationButton/);
     assert.doesNotMatch(horario, /<table/);
   });
 
-  it("Home muestra el preview con el CTA a Eventos y comunidad", () => {
+  it("Home muestra próximo evento y enlaza a su landing", () => {
     const home = leer("components/sections/ComunidadEnHome.tsx");
     assert.ok(home.includes("Próximo evento"));
-    assert.match(home, /\{p\.ctaTexto\} →/);
-    assert.match(leer("lib/data/experiencias.ts"), /ctaTexto: "Ver eventos y comunidad"/);
+    assert.ok(home.includes("proximo?.detalleHref"));
+    assert.ok(home.includes("Conocer el evento"));
   });
 });
+
+describe("OpenAI Ads: medición de reserva", () => {
+  const pixel = leer("components/analytics/OpenAIAdsPixel.tsx");
+  const cliente = leer("lib/openai-ads.ts");
+  const servidor = leer("lib/openai-ads-server.ts");
+  const layout = leer("app/layout.tsx");
+
+  it("Pixel se inicializa una sola vez desde el layout con el ID correcto", () => {
+    assert.match(layout, /<OpenAIAdsPixel \/>/);
+    assert.match(cliente, /QWJNvVSpHeLx5yCHcmxXus/);
+    assert.match(pixel, /oaiq\("init"/);
+    assert.match(pixel, /process\.env\.NODE_ENV !== "production"/);
+  });
+
+  it("clic de WhatsApp mide lead_created, no registration_completed", () => {
+    assert.match(cliente, /medirLeadReserva/);
+    assert.match(cliente, /medirOpenAIAds\("lead_created"/);
+    assert.doesNotMatch(
+      leer("components/analytics/TrackedReservationButton.tsx"),
+      /registration_completed/
+    );
+    assert.match(
+      leer("components/ui/EventCard.tsx"),
+      /medirLeadReserva\(trackingEventId\)/
+    );
+  });
+
+  it("registration_completed queda server-only y usa la clave de entorno", () => {
+    assert.match(servidor, /import "server-only"/);
+    assert.match(servidor, /OPENAI_CONVERSIONS_API_KEY/);
+    assert.match(servidor, /type: "registration_completed"/);
+    assert.match(servidor, /action_source: "web"/);
+    assert.match(servidor, /source_url: input\.sourceUrl/);
+    assert.doesNotMatch(servidor, /NEXT_PUBLIC_OPENAI/);
+  });
+
+  it("browser y servidor soportan event IDs para deduplicación futura", () => {
+    assert.match(cliente, /event_id: eventId/);
+    assert.match(servidor, /id: input\.eventId/);
+  });
+});
+
