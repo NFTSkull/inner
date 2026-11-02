@@ -10,6 +10,7 @@ export const RUTAS = {
   celebraciones: "/experiencias/celebraciones",
   empresasColegios: "/empresas-y-colegios",
   eventosComunidad: "/eventos-y-comunidad",
+  mindfulHangout: "/eventos-y-comunidad/the-mindful-hangout",
   calendario: "/calendario",
   club: "/club",
   conoceme: "/conoceme",
