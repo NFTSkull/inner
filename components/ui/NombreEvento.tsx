@@ -1,13 +1,4 @@
-/** "Yoga & Matcha" → el "&" en rosa suave; el resto hereda el color. */
+/** Nombre editorial del evento; el color y tipografía los controla el contexto. */
 export function NombreEvento({ nombre }: { nombre: string }) {
-  return (
-    <>
-      {nombre.split("&").map((parte, i) => (
-        <span key={i}>
-          {i > 0 && <span className="text-rosa">&amp;</span>}
-          {parte}
-        </span>
-      ))}
-    </>
-  );
+  return <>{nombre}</>;
 }
