@@ -103,6 +103,7 @@ export default function MindfulHangoutPage() {
                     alt={evento.imagen.alt}
                     fill
                     priority
+                    unoptimized
                     sizes="(min-width: 1024px) 52vw, 100vw"
                     className="object-cover"
                   />
@@ -170,6 +171,7 @@ export default function MindfulHangoutPage() {
                     src={evento.imagenHorario.src}
                     alt={evento.imagenHorario.alt}
                     fill
+                    unoptimized
                     sizes="(min-width: 1024px) 42vw, 100vw"
                     className="object-cover"
                   />
