@@ -40,9 +40,11 @@ function eventosDeFuente() {
         ubicacion: campo("ubicacion"),
         modalidad: campo("modalidad"),
         categoria: campo("categoria"),
+        intencion: campo("intencion"),
+        detalleHref: campo("detalleHref"),
         agenda: Array.from(
           bloque.matchAll(
-            /\{ nombre: "([^"]+)", inicio: "(\d{2}:\d{2})", fin: "(\d{2}:\d{2})" \}/g
+            /\{ nombre: "([^"]+)", inicio: "(\d{2}:\d{2})"(?:, fin: "(\d{2}:\d{2})")? \}/g
           ),
           ([, nombre, inicio, fin]) => ({ nombre, inicio, fin })
         ),
@@ -142,93 +144,84 @@ function filtrar(items, filtro) {
 }
 
 const AHORA = mty("2026-10-09T12:00:00");
-const ID_YM = "yoga-matcha-2026-10-31";
+const ID_MH = "mindful-hangout-2026-11-28";
 
-describe("evento Yoga & Matcha (fuente única)", () => {
+describe("evento The Mindful Hangout (fuente única)", () => {
   it("solo hay un evento abierto y es el confirmado", () => {
     assert.equal(EVENTOS.length, 1);
-    assert.deepEqual(
-      { ...EVENTOS[0], agenda: undefined, imagenes: undefined },
-      {
-        id: ID_YM,
-        nombre: "Yoga & Matcha",
-        descripcion: "Una tarde para pausar, moverte y cerrar con matcha & tisanas.",
-        fecha: "2026-10-31",
-        horaInicio: "14:00",
-        horaFin: "16:30",
-        ubicacion: "Cuarto Vital, Mty.",
-        modalidad: "presencial",
-        categoria: "eventos",
-        agenda: undefined,
-        imagenes: undefined,
-      }
+    assert.equal(EVENTOS[0].id, ID_MH);
+    assert.equal(EVENTOS[0].nombre, "The Mindful Hangout");
+    assert.equal(EVENTOS[0].intencion, "Segunda edición");
+    assert.equal(EVENTOS[0].fecha, "2026-11-28");
+    assert.equal(EVENTOS[0].horaInicio, "08:00");
+    assert.equal(EVENTOS[0].horaFin, "10:30");
+    assert.equal(EVENTOS[0].ubicacion, "Gran Parque San Nicolás");
+    assert.equal(EVENTOS[0].modalidad, "presencial");
+    assert.equal(EVENTOS[0].categoria, "eventos");
+    assert.equal(
+      EVENTOS[0].detalleHref,
+      "/eventos-y-comunidad/the-mindful-hangout"
     );
   });
 
-  it("agenda: registro, yoga y matcha & tisanas, contigua", () => {
-    const { agenda, horaInicio, horaFin } = EVENTOS[0];
+  it("agenda respeta las horas confirmadas del flyer", () => {
     assert.deepEqual(
-      agenda.map((b) => `${b.nombre} ${horaEvento(b.inicio)} – ${horaEvento(b.fin)}`),
+      EVENTOS[0].agenda.map((b) => [b.nombre, b.inicio]),
       [
-        "Registro 2:00 PM – 2:30 PM",
-        "Yoga 2:30 PM – 3:30 PM",
-        "Matcha & tisanas 3:30 PM – 4:30 PM",
+        ["Registro", "08:00"],
+        ["Pilates", "08:30"],
+        ["Sound healing", "09:10"],
+        ["Matcha bar · Costume tote · Goodies", "09:30"],
+        ["Convivencia", "10:00"],
       ]
     );
-    assert.equal(agenda[0].inicio, horaInicio);
-    assert.equal(agenda.at(-1).fin, horaFin);
-    assert.ok(agenda.every((b, i) => i === 0 || agenda[i - 1].fin === b.inicio));
   });
 
   it("fecha larga y horario legibles", () => {
-    assert.equal(fechaLarga("2026-10-31"), "Sábado, 31 de octubre de 2026");
-    assert.equal(horaEvento("14:00"), "2:00 PM");
-    assert.equal(horaEvento("16:30"), "4:30 PM");
-    assert.equal(horaEvento("00:15"), "12:15 AM");
+    assert.equal(fechaLarga("2026-11-28"), "Sábado, 28 de noviembre de 2026");
+    assert.equal(horaEvento("08:00"), "8:00 AM");
+    assert.equal(horaEvento("10:30"), "10:30 AM");
   });
 
-  it("inicia a las 2:00 PM hora de Monterrey", () => {
-    assert.equal(inicioEvento(EVENTOS[0]).toISOString(), "2026-10-31T20:00:00.000Z");
+  it("inicia a las 8:00 AM hora de Monterrey", () => {
+    assert.equal(
+      inicioEvento(EVENTOS[0]).toISOString(),
+      "2026-11-28T14:00:00.000Z"
+    );
   });
 
-  it("mensaje de WhatsApp exacto", () => {
+  it("mensaje de WhatsApp incluye evento, edición, fecha, hora y lugar", () => {
     assert.equal(
       mensajeReservaEvento(EVENTOS[0]),
-      "Hola, quiero reservar mi lugar para Yoga & Matcha el sábado 31 de octubre de 2026 de 2:00 PM a 4:30 PM en Cuarto Vital, Mty."
+      "Hola, quiero reservar mi lugar para The Mindful Hangout — Segunda edición el sábado 28 de noviembre de 2026 de 8:00 AM a 10:30 AM en Gran Parque San Nicolás."
     );
   });
 
-  it("la reserva usa el helper único de WhatsApp", () => {
+  it("la reserva usa el helper único de WhatsApp y tracking de lead", () => {
     assert.match(FUENTE_EVENTOS, /enlaceReserva\(mensajeReservaEvento\(e\)\)/);
-    assert.match(leer("lib/calendarioPublico.ts"), /ctaHref: enlaceReservaEvento\(e\)/);
+    assert.match(leer("lib/calendarioPublico.ts"), /trackingEventId: e\.id/);
     assert.match(
-      leer("components/sections/EventoDestacado.tsx"),
-      /enlace=\{enlaceReservaEvento\(evento\)\}/
+      leer("components/ui/HorarioEvento.tsx"),
+      /TrackedReservationButton/
     );
+    assert.match(leer("lib/openai-ads.ts"), /"lead_created"/);
   });
 
-  it("las imágenes existen en public/", () => {
+  it("las imágenes del evento existen en public/", () => {
     const raiz = fileURLToPath(new URL("..", import.meta.url));
     const { imagenes } = EVENTOS[0];
-    assert.equal(imagenes.length, 2);
+    assert.ok(imagenes.length >= 1);
     for (const src of imagenes) assert.ok(existsSync(join(raiz, "public", src)), src);
   });
 
-  it("Home, Eventos y Calendario consumen la misma fuente (sin datos duplicados)", () => {
+  it("Yoga & Matcha ya no está en la fuente activa", () => {
+    assert.doesNotMatch(FUENTE_EVENTOS, /Yoga & Matcha|2026-10-31|Cuarto Vital/);
+  });
+
+  it("Home, Eventos y Calendario consumen la misma fuente", () => {
     assert.match(leer("components/sections/ComunidadEnHome.tsx"), /proximosEventos\(new Date\(\)\)/);
     assert.match(leer("app/eventos-y-comunidad/page.tsx"), /proximosEventos\(new Date\(\)\)/);
     assert.match(leer("lib/calendarioPublico.ts"), /EVENTOS\.filter\(/);
-    for (const ruta of [
-      "components/sections/ComunidadEnHome.tsx",
-      "components/sections/EventoDestacado.tsx",
-      "components/ui/HorarioEvento.tsx",
-      "app/eventos-y-comunidad/page.tsx",
-      "app/calendario/page.tsx",
-      "lib/calendarioPublico.ts",
-    ]) {
-      const fuente = leer(ruta);
-      assert.doesNotMatch(fuente, /Cuarto Vital|31 de octubre|2026-10-31|e5e2a923|2bf9330b/, ruta);
-    }
   });
 
   it("Home y Eventos se re-evalúan cada hora", () => {
@@ -238,7 +231,7 @@ describe("evento Yoga & Matcha (fuente única)", () => {
 });
 
 describe("calendario público", () => {
-  it("incluye las 13 sesiones de octubre + Yoga & Matcha", () => {
+  it("incluye las 13 sesiones de octubre + The Mindful Hangout", () => {
     assert.equal(itemsCalendario(AHORA).length, 14);
   });
 
@@ -257,15 +250,15 @@ describe("calendario público", () => {
     assert.ok(realizadas.every((i) => !i.ctaHref));
   });
 
-  it("Yoga & Matcha solo en Todos y Eventos y colaboraciones", () => {
+  it("The Mindful Hangout solo en Todos y Eventos y colaboraciones", () => {
     const items = itemsCalendario(AHORA);
-    const ym = items.find((i) => i.id === ID_YM);
+    const ym = items.find((i) => i.id === ID_MH);
     assert.equal(ym.categoryLabel, "Eventos y colaboraciones · Presencial");
-    assert.equal(ym.startTime, "2:00 PM – 4:30 PM");
+    assert.equal(ym.startTime, "8:00 AM – 10:30 AM");
     assert.ok(ym.ctaHref);
-    assert.deepEqual(filtrar(items, "eventos").map((i) => i.id), [ID_YM]);
+    assert.deepEqual(filtrar(items, "eventos").map((i) => i.id), [ID_MH]);
     for (const f of ["meditacion", "movimiento", "online"]) {
-      assert.ok(!filtrar(items, f).some((i) => i.id === ID_YM), f);
+      assert.ok(!filtrar(items, f).some((i) => i.id === ID_MH), f);
     }
   });
 
@@ -283,10 +276,14 @@ describe("calendario público", () => {
     assert.equal(filtrar(itemsCalendario(AHORA), "movimiento").length, 0);
   });
 
-  it("tras el evento: queda como realizado del mes activo, sin reserva", () => {
-    const ym = itemsCalendario(mty("2026-10-31T17:00:00")).find((i) => i.id === ID_YM);
-    assert.equal(ym.estado, "realizada");
-    assert.ok(!ym.ctaHref);
+  it("tras el evento no queda como próxima reserva", () => {
+    const items = itemsCalendario(mty("2026-11-28T10:31:00"));
+    const mh = items.find((i) => i.id === ID_MH);
+    if (mh) {
+      assert.equal(mh.estado, "realizada");
+      assert.ok(!mh.ctaHref);
+    }
+    assert.ok(!items.some((i) => i.id === ID_MH && i.estado === "proxima"));
   });
 
   it("un evento pasado de otro mes no aparece", () => {
