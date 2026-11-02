@@ -13,7 +13,7 @@ export function OpenAIAdsPixel() {
     "});";
 
   return (
-    <Script id="openai-ads-pixel" strategy="afterInteractive">
+    <Script id="openai-ads-pixel" strategy="beforeInteractive">
       {init}
     </Script>
   );
