@@ -70,7 +70,7 @@ export function CalendarioPublico({ ahoraISO }: { ahoraISO: string }) {
         </div>
       </LayoutGroup>
 
-          <div className="mt-8">
+      <div className="mt-8">
         <AnimatePresence mode="wait">
           {visibles.length === 0 ? (
             <motion.div
@@ -163,6 +163,7 @@ function TarjetaItem({
         ctaTexto={item.ctaTexto}
         ctaHref={item.ctaHref}
         ctaExterno={item.ctaExterno}
+        trackingEventId={item.trackingEventId}
         realizada={item.estado === "realizada"}
       />
     </div>

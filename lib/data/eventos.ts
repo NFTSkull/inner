@@ -16,7 +16,8 @@ export type BloqueAgenda = {
   nombre: string;
   /** HH:MM, hora local de Monterrey */
   inicio: string;
-  fin: string;
+  /** Opcional cuando el flyer solo confirma la hora de inicio. */
+  fin?: string;
 };
 
 export type ImagenEvento = {
@@ -45,9 +46,9 @@ export type Evento = {
   disponibles?: number;
   incluye?: readonly string[];
   agenda?: readonly BloqueAgenda[];
-  /** Imagen principal (se recorta la parte superior, sin el texto del flyer). */
+  tags?: readonly string[];
+  detalleHref?: string;
   imagen?: ImagenEvento;
-  /** Flyer con el desglose de horarios (apoyo). */
   imagenHorario?: ImagenEvento;
   categoria: "meditacion" | "movimiento" | "eventos" | "online";
   estado?: EstadoEvento;
@@ -55,37 +56,49 @@ export type Evento = {
   ctaHref?: string;
 };
 
-export const EVENTOS: readonly Evento[] = [
-  {
-    id: "yoga-matcha-2026-10-31",
-    nombre: "Yoga & Matcha",
-    descripcion: "Una tarde para pausar, moverte y cerrar con matcha & tisanas.",
-    fecha: "2026-10-31",
-    horaInicio: "14:00",
-    horaFin: "16:30",
-    ubicacion: "Cuarto Vital, Mty.",
-    modalidad: "presencial",
-    categoria: "eventos",
-    agenda: [
-      { nombre: "Registro", inicio: "14:00", fin: "14:30" },
-      { nombre: "Yoga", inicio: "14:30", fin: "15:30" },
-      { nombre: "Matcha & tisanas", inicio: "15:30", fin: "16:30" },
-    ],
-    imagen: {
-      src: "/e5e2a923-8ba7-4046-bf26-08fc2e984bc7.JPG",
-      alt: "Mano con guante verde sosteniendo dos matchas helados en un portavasos.",
-      ancho: 1080,
-      alto: 1350,
-    },
-    imagenHorario: {
-      src: "/2bf9330b-8659-428b-8881-a153ff217bb7.JPG",
-      alt: "Flyer de Yoga & Matcha con el horario: registro, yoga y matcha & tisanas.",
-      ancho: 1080,
-      alto: 1350,
-    },
-    ctaTexto: "Reservar mi lugar",
+export const MINDFUL_HANGOUT: Evento = {
+  id: "mindful-hangout-2026-11-28",
+  nombre: "The Mindful Hangout",
+  intencion: "Segunda edición",
+  descripcion:
+    "Una mañana para moverte, hacer una pausa y compartir en comunidad.",
+  fecha: "2026-11-28",
+  horaInicio: "08:00",
+  horaFin: "10:30",
+  ubicacion: "Gran Parque San Nicolás",
+  modalidad: "presencial",
+  categoria: "eventos",
+  tags: [
+    "Pilates",
+    "Sound healing",
+    "Matcha bar",
+    "Goodies",
+    "Costume tote",
+  ],
+  agenda: [
+    { nombre: "Registro", inicio: "08:00" },
+    { nombre: "Pilates", inicio: "08:30" },
+    { nombre: "Sound healing", inicio: "09:10" },
+    { nombre: "Matcha bar · Costume tote · Goodies", inicio: "09:30" },
+    { nombre: "Convivencia", inicio: "10:00" },
+  ],
+  imagen: {
+    src: "/mindful-hangout-main.webp",
+    alt: "Flyer de The Mindful Hangout, segunda edición, con fecha, horario, lugar y experiencias.",
+    ancho: 540,
+    alto: 675,
   },
-];
+  imagenHorario: {
+    src: "/mindful-hangout-agenda.webp",
+    alt: "Programa de The Mindful Hangout con registro, Pilates, sound healing, matcha bar, goodies, costume tote y convivencia.",
+    ancho: 540,
+    alto: 675,
+  },
+  detalleHref: "/eventos-y-comunidad/the-mindful-hangout",
+  ctaTexto: "Reservar mi lugar",
+};
+
+export const EVENTOS: readonly Evento[] = [MINDFUL_HANGOUT];
 
 /** "14:00" → "2:00 PM" */
 export function horaEvento(hora: string): string {
@@ -118,7 +131,8 @@ export function proximosEventos(ahora: Date = new Date()): Evento[] {
 }
 
 export function mensajeReservaEvento(e: Evento): string {
-  const partes = [`Hola, quiero reservar mi lugar para ${e.nombre}`];
+  const nombre = [e.nombre, e.intencion].filter(Boolean).join(" — ");
+  const partes = [`Hola, quiero reservar mi lugar para ${nombre}`];
   if (e.fecha) {
     partes.push(`el ${fechaLarga(e.fecha).replace(",", "").toLowerCase()}`);
   }

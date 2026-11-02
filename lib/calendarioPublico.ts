@@ -42,6 +42,8 @@ export type ItemCalendario = {
   ctaTexto?: string;
   ctaHref?: string;
   ctaExterno?: boolean;
+  /** Solo eventos de campaña usan este key para medir lead_created. */
+  trackingEventId?: string;
   fuente?: string;
 };
 
@@ -74,6 +76,7 @@ function itemDesdeEvento(e: Evento, ahora: Date): ItemCalendario {
           ctaTexto: e.ctaTexto ?? "Reservar mi lugar",
           ctaHref: enlaceReservaEvento(e),
           ctaExterno: true,
+          trackingEventId: e.id,
           fuente: mes,
         }),
   };
@@ -110,10 +113,6 @@ const porInicio = (a: ItemCalendario, b: ItemCalendario) =>
   (a.inicio ?? Number.POSITIVE_INFINITY) -
   (b.inicio ?? Number.POSITIVE_INFINITY);
 
-/**
- * Agenda agrupada por mes: primero lo próximo (eventos abiertos +
- * sesiones futuras del Club), luego lo ya realizado del mes activo.
- */
 export function itemsCalendario(ahora: Date = new Date()): ItemCalendario[] {
   const mes = mesActivo(ahora);
   const claveMes = mes?.clave;

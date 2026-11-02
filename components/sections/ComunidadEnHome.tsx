@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { Boton } from "@/components/ui/Boton";
 import { NombreEvento } from "@/components/ui/NombreEvento";
@@ -6,11 +7,6 @@ import { COMUNIDAD_HOME } from "@/lib/data/experiencias";
 import { fechaEvento, proximosEventos } from "@/lib/data/eventos";
 import { SITE } from "@/lib/data/site";
 
-/**
- * Comunidad en Inicio: concepto + destino. Si hay un evento próximo,
- * muestra su preview (imagen recortada sin el texto del flyer); si no,
- * el bloque queda compacto con la foto del espacio (sin empty state).
- */
 export function ComunidadEnHome() {
   const p = COMUNIDAD_HOME;
   const proximo = proximosEventos(new Date())[0];
@@ -25,19 +21,21 @@ export function ComunidadEnHome() {
       <div className="mx-auto grid max-w-[76rem] items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-14">
         <Reveal className="md:col-span-5">
           {imagen ? (
-            <div
-              className="group relative aspect-[7/5] overflow-hidden bg-white shadow-papel"
+            <Link
+              href={proximo?.detalleHref ?? p.ctaHref}
+              className="group relative block aspect-[4/5] overflow-hidden bg-white shadow-papel sm:aspect-[7/5]"
               style={{ borderRadius: "var(--radius-papel)" }}
+              aria-label={`Conocer ${proximo?.nombre ?? "el próximo evento"}`}
             >
               <Image
                 src={imagen.src}
                 alt={imagen.alt}
                 fill
-                quality={75}
+                quality={80}
                 sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover object-top transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.02] motion-reduce:transition-none"
+                className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.018] motion-reduce:transition-none"
               />
-            </div>
+            </Link>
           ) : (
             <div
               className="relative aspect-[16/10] overflow-hidden md:aspect-[5/4]"
@@ -68,9 +66,6 @@ export function ComunidadEnHome() {
           <p className="mt-4 max-w-[30rem] text-cuerpo-l text-tinta">
             {p.texto}
           </p>
-          <p className="mt-4 max-w-[34rem] text-cuerpo text-tinta-suave">
-            {p.formatos.join(" · ")}
-          </p>
 
           {proximo && (
             <div className="mt-7 max-w-[34rem] border-t border-tinta/12 pt-5">
@@ -81,14 +76,34 @@ export function ComunidadEnHome() {
                 />
                 Próximo evento
               </p>
-              <h3 className="mt-2 font-display text-[clamp(1.6rem,2.6vw,2.1rem)] font-semibold leading-tight text-tinta">
+              <h3 className="mt-2 text-[clamp(1.75rem,2.8vw,2.35rem)] font-light leading-tight tracking-[-0.025em] text-tinta">
                 <NombreEvento nombre={proximo.nombre} />
               </h3>
-              <p className="mt-1.5 text-cuerpo text-tinta-suave">
+              {proximo.intencion && (
+                <p className="mt-1 firma-trazo text-[1.05rem] text-salvia-hondo">
+                  {proximo.intencion}
+                </p>
+              )}
+              <p className="mt-2 text-cuerpo text-tinta-suave">
                 {[fechaEvento(proximo), proximo.ubicacion]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
+              {proximo.tags && (
+                <p className="mt-2 text-cuerpo text-tinta">
+                  {proximo.tags.slice(0, 3).join(" · ")}
+                </p>
+              )}
+              {proximo.detalleHref && (
+                <p className="mt-4">
+                  <Link
+                    href={proximo.detalleHref}
+                    className="enlace-plumon text-cuerpo font-normal text-tinta"
+                  >
+                    Conocer el evento →
+                  </Link>
+                </p>
+              )}
             </div>
           )}
 

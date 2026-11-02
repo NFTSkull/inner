@@ -1,10 +1,12 @@
+"use client";
+
+import { medirLeadReserva } from "@/lib/openai-ads";
+
 export type EventCardData = {
   name?: string;
   intention?: string;
   description?: string;
-  /** Día grande (ej. "15"). */
   day?: string;
-  /** Mes corto (ej. "OCT"). */
   month?: string;
   startTime?: string;
   endTime?: string;
@@ -18,7 +20,7 @@ export type EventCardData = {
   ctaTexto?: string;
   ctaHref?: string;
   ctaExterno?: boolean;
-  /** Ya ocurrió: se atenúa y no ofrece reserva. */
+  trackingEventId?: string;
   realizada?: boolean;
 };
 
@@ -26,10 +28,6 @@ type Props = EventCardData & {
   className?: string;
 };
 
-/**
- * Fila editorial de evento: fecha · nombre y datos · reservar.
- * Solo renderiza campos presentes.
- */
 export function EventCard({
   name,
   intention,
@@ -48,6 +46,7 @@ export function EventCard({
   ctaTexto,
   ctaHref,
   ctaExterno = true,
+  trackingEventId,
   realizada = false,
   className = "",
 }: Props) {
@@ -112,6 +111,9 @@ export function EventCard({
           {...(ctaExterno
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
+          onClick={() => {
+            if (trackingEventId) medirLeadReserva(trackingEventId);
+          }}
           className="group col-start-2 inline-flex items-center gap-1.5 justify-self-start text-cuerpo font-normal text-tinta sm:col-start-3 sm:justify-self-end"
         >
           <span className="enlace-plumon">{ctaTexto}</span>
