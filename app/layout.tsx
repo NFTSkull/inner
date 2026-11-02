@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Jost, Shantell_Sans } from "next/font/google";
+import { OpenAIAdsPixel } from "@/components/analytics/OpenAIAdsPixel";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { Preloader } from "@/components/motion/Preloader";
 import { Grano } from "@/components/ui/Grano";
@@ -45,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="es-MX" className={`${shantell.variable} ${jost.variable}`}>
       <body>
+        <OpenAIAdsPixel />
         <LenisProvider>{children}</LenisProvider>
         <Preloader />
         <Grano />
