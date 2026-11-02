@@ -45,8 +45,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es-MX" className={`${shantell.variable} ${jost.variable}`}>
-      <body>
+      <head>
         <OpenAIAdsPixel />
+      </head>
+      <body>
         <LenisProvider>{children}</LenisProvider>
         <Preloader />
         <Grano />
