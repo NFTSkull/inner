@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import Image from "next/image";
-import { Boton } from "@/components/ui/Boton";
+import { TrackedReservationButton } from "@/components/analytics/TrackedReservationButton";
 import {
   rangoEvento,
   type BloqueAgenda,
@@ -12,12 +12,19 @@ import {
 type Props = {
   ctaTexto: string;
   enlace: string;
+  eventKey: string;
   agenda?: readonly BloqueAgenda[];
   imagenHorario?: ImagenEvento;
 };
 
 /** CTAs del evento + horario completo desplegable (sin tabla dura). */
-export function HorarioEvento({ ctaTexto, enlace, agenda, imagenHorario }: Props) {
+export function HorarioEvento({
+  ctaTexto,
+  enlace,
+  eventKey,
+  agenda,
+  imagenHorario,
+}: Props) {
   const [abierto, setAbierto] = useState(false);
   const panelId = useId();
   const hayHorario = !!agenda?.length;
@@ -25,9 +32,9 @@ export function HorarioEvento({ ctaTexto, enlace, agenda, imagenHorario }: Props
   return (
     <div>
       <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-        <Boton variante="primario" href={enlace} externo>
+        <TrackedReservationButton href={enlace} eventKey={eventKey}>
           {ctaTexto}
-        </Boton>
+        </TrackedReservationButton>
         {hayHorario && (
           <button
             type="button"
@@ -106,7 +113,7 @@ export function HorarioEvento({ ctaTexto, enlace, agenda, imagenHorario }: Props
                     />
                   </span>
                   <span className="text-cuerpo text-tinta-suave underline decoration-tinta/25 underline-offset-4 transition-colors duration-[var(--dur-corta)] group-hover:text-tinta">
-                    Ver flyer con horario ↗
+                    Ver programa completo ↗
                   </span>
                 </a>
               )}
