@@ -25,8 +25,6 @@
   --color-crema: #f1e4d0;
   --color-cielo: #98bcd8;
   --color-bosque: #3a5659;
-  /* Acento puntual de eventos (Yoga & Matcha); nunca como fondo grande */
-  --color-rosa: #d98fae;
 
   /* Tipografía */
   --font-display: var(--font-shantell), cursive;
