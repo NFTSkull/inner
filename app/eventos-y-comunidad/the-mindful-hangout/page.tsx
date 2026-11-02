@@ -179,7 +179,7 @@ export default function MindfulHangoutPage() {
           </div>
         </section>
 
-        <section className="section-bg-bosque page-pad-x py-14 text-crema sm:px-8 lg:py-18">
+        <section className="section-bg-bosque page-pad-x py-14 text-crema sm:px-8 lg:py-20">
           <Reveal className="mx-auto max-w-[76rem]">
             <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
               <div className="lg:col-span-8">
