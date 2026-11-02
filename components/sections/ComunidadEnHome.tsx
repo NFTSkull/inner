@@ -31,7 +31,7 @@ export function ComunidadEnHome() {
                 src={imagen.src}
                 alt={imagen.alt}
                 fill
-                quality={80}
+                unoptimized
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.018] motion-reduce:transition-none"
               />
