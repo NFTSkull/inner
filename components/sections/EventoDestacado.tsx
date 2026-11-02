@@ -38,6 +38,7 @@ export function EventoDestacado({ evento }: { evento: Evento }) {
                 src={evento.imagen.src}
                 alt={evento.imagen.alt}
                 fill
+                unoptimized
                 sizes="(min-width: 1024px) 56vw, 100vw"
                 className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.018] motion-reduce:transition-none"
               />
