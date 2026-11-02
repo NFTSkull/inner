@@ -22,35 +22,33 @@ import {
 const FUENTE_EVENTOS = leer("lib/data/eventos.ts");
 
 function eventosDeFuente() {
-  const desde = FUENTE_EVENTOS.indexOf("export const EVENTOS");
-  const lista = FUENTE_EVENTOS.slice(desde, FUENTE_EVENTOS.indexOf("\n];", desde));
-  return lista
-    .split(/\n  \{\n/)
-    .slice(1)
-    .map((b) => `\n${b}`)
-    .map((bloque) => {
-      const campo = (k) => new RegExp(`\\n    ${k}: "([^"]*)"`).exec(bloque)?.[1];
-      return {
-        id: campo("id"),
-        nombre: campo("nombre"),
-        descripcion: campo("descripcion"),
-        fecha: campo("fecha"),
-        horaInicio: campo("horaInicio"),
-        horaFin: campo("horaFin"),
-        ubicacion: campo("ubicacion"),
-        modalidad: campo("modalidad"),
-        categoria: campo("categoria"),
-        intencion: campo("intencion"),
-        detalleHref: campo("detalleHref"),
-        agenda: Array.from(
-          bloque.matchAll(
-            /\{ nombre: "([^"]+)", inicio: "(\d{2}:\d{2})"(?:, fin: "(\d{2}:\d{2})")? \}/g
-          ),
-          ([, nombre, inicio, fin]) => ({ nombre, inicio, fin })
+  const desde = FUENTE_EVENTOS.indexOf("export const MINDFUL_HANGOUT");
+  const hasta = FUENTE_EVENTOS.indexOf("\nexport const EVENTOS", desde);
+  const bloque = FUENTE_EVENTOS.slice(desde, hasta);
+  const campo = (k) => new RegExp(`\\n  ${k}: "([^"]*)"`).exec(bloque)?.[1];
+
+  return [
+    {
+      id: campo("id"),
+      nombre: campo("nombre"),
+      descripcion: campo("descripcion"),
+      fecha: campo("fecha"),
+      horaInicio: campo("horaInicio"),
+      horaFin: campo("horaFin"),
+      ubicacion: campo("ubicacion"),
+      modalidad: campo("modalidad"),
+      categoria: campo("categoria"),
+      intencion: campo("intencion"),
+      detalleHref: campo("detalleHref"),
+      agenda: Array.from(
+        bloque.matchAll(
+          /\{ nombre: "([^"]+)", inicio: "(\d{2}:\d{2})"(?:, fin: "(\d{2}:\d{2})")? \}/g
         ),
-        imagenes: Array.from(bloque.matchAll(/src: "([^"]+)"/g), (m) => m[1]),
-      };
-    });
+        ([, nombre, inicio, fin]) => ({ nombre, inicio, fin })
+      ),
+      imagenes: Array.from(bloque.matchAll(/src: "([^"]+)"/g), (m) => m[1]),
+    },
+  ];
 }
 
 const EVENTOS = eventosDeFuente();
@@ -74,7 +72,8 @@ function fechaLarga(fecha) {
 }
 
 function mensajeReservaEvento(e) {
-  const partes = [`Hola, quiero reservar mi lugar para ${e.nombre}`];
+  const nombre = [e.nombre, e.intencion].filter(Boolean).join(" — ");
+  const partes = [`Hola, quiero reservar mi lugar para ${nombre}`];
   if (e.fecha) partes.push(`el ${fechaLarga(e.fecha).replace(",", "").toLowerCase()}`);
   if (e.horaInicio) {
     partes.push(
