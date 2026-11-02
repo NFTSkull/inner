@@ -85,14 +85,14 @@ export const MINDFUL_HANGOUT: Evento = {
   imagen: {
     src: "/mindful-hangout-main.webp",
     alt: "Flyer de The Mindful Hangout, segunda edición, con fecha, horario, lugar y experiencias.",
-    ancho: 720,
-    alto: 900,
+    ancho: 1080,
+    alto: 1350,
   },
   imagenHorario: {
     src: "/mindful-hangout-agenda.webp",
     alt: "Programa de The Mindful Hangout con registro, Pilates, sound healing, matcha bar, goodies, costume tote y convivencia.",
-    ancho: 720,
-    alto: 900,
+    ancho: 1080,
+    alto: 1350,
   },
   detalleHref: "/eventos-y-comunidad/the-mindful-hangout",
   ctaTexto: "Reservar mi lugar",
