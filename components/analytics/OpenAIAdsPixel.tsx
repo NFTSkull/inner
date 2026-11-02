@@ -1,7 +1,10 @@
-import Script from "next/script";
 import { OPENAI_ADS_PIXEL_ID } from "@/lib/openai-ads";
 
-/** Inicializa una sola vez el OpenAI Ads Measurement Pixel. */
+/**
+ * Bootstrap inline del Measurement Pixel.
+ * Se renderiza dentro de <head> desde app/layout.tsx para inicializarlo
+ * temprano sin depender de next/script.
+ */
 export function OpenAIAdsPixel() {
   const debug = process.env.NODE_ENV !== "production";
   const init =
@@ -12,9 +15,5 @@ export function OpenAIAdsPixel() {
     String(debug) +
     "});";
 
-  return (
-    <Script id="openai-ads-pixel" strategy="beforeInteractive">
-      {init}
-    </Script>
-  );
+  return <script id="openai-ads-pixel" dangerouslySetInnerHTML={{ __html: init }} />;
 }
