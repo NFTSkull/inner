@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { HorarioEvento } from "@/components/ui/HorarioEvento";
 import { NombreEvento } from "@/components/ui/NombreEvento";
@@ -9,11 +10,6 @@ import {
   type Evento,
 } from "@/lib/data/eventos";
 
-/**
- * Próximo encuentro: texto 5 / imagen 7 en desktop, imagen arriba en
- * móvil. La imagen se recorta arriba (7:5) para no mostrar el texto del
- * flyer; toda la información vive en HTML.
- */
 export function EventoDestacado({ evento }: { evento: Evento }) {
   const meta = [
     { etiqueta: "Fecha", valor: fechaEvento(evento) },
@@ -32,18 +28,20 @@ export function EventoDestacado({ evento }: { evento: Evento }) {
       <div className="mx-auto grid max-w-[76rem] gap-9 lg:grid-cols-12 lg:items-start lg:gap-14">
         {evento.imagen && (
           <Reveal className="lg:order-2 lg:col-span-7">
-            <div
-              className="group relative aspect-[7/5] overflow-hidden bg-white shadow-papel"
+            <Link
+              href={evento.detalleHref ?? "#"}
+              className="group relative block aspect-[4/5] overflow-hidden bg-white shadow-papel sm:aspect-[7/5]"
               style={{ borderRadius: "var(--radius-papel)" }}
+              aria-label={`Conocer ${evento.nombre}`}
             >
               <Image
                 src={evento.imagen.src}
                 alt={evento.imagen.alt}
                 fill
                 sizes="(min-width: 1024px) 56vw, 100vw"
-                className="object-cover object-top transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.02] motion-reduce:transition-none"
+                className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-respiro)] group-hover:scale-[1.018] motion-reduce:transition-none"
               />
-            </div>
+            </Link>
           </Reveal>
         )}
 
@@ -54,10 +52,35 @@ export function EventoDestacado({ evento }: { evento: Evento }) {
           </p>
           <h2
             id={`evento-${evento.id}`}
-            className="mt-4 font-display text-[clamp(2.6rem,5vw,4rem)] leading-[1.04] font-semibold text-tinta"
+            className="mt-4 text-[clamp(2.6rem,5vw,4rem)] leading-[0.98] font-light tracking-[-0.035em] text-tinta"
           >
             <NombreEvento nombre={evento.nombre} />
           </h2>
+          {evento.intencion && (
+            <p className="mt-2 firma-trazo text-[1.25rem] text-salvia-hondo">
+              {evento.intencion}
+            </p>
+          )}
+
+          {evento.tags && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {evento.tags.map((tag, i) => {
+                const clases = [
+                  "border-tierra/30 text-tierra",
+                  "border-salvia-doc/40 text-salvia-hondo",
+                  "border-cielo/80 text-bosque",
+                ];
+                return (
+                  <span
+                    key={tag}
+                    className={`rounded-full border px-3 py-1.5 text-etiqueta font-normal ${clases[i % clases.length]}`}
+                  >
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
+          )}
 
           <dl className="mt-7 border-t border-tinta/12">
             {meta.map((m) => (
@@ -79,10 +102,22 @@ export function EventoDestacado({ evento }: { evento: Evento }) {
             </p>
           )}
 
+          {evento.detalleHref && (
+            <p className="mt-5">
+              <Link
+                href={evento.detalleHref}
+                className="enlace-plumon text-cuerpo font-normal text-tinta"
+              >
+                Conocer el evento →
+              </Link>
+            </p>
+          )}
+
           <div className="mt-8">
             <HorarioEvento
               ctaTexto={evento.ctaTexto ?? "Reservar mi lugar"}
               enlace={enlaceReservaEvento(evento)}
+              eventKey={evento.id}
               agenda={evento.agenda}
               imagenHorario={evento.imagenHorario}
             />
